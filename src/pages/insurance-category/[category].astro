@@ -1,23 +1,22 @@
 ---
 import type { GetStaticPaths } from "astro";
-import Layout from '../../layouts/Layout.astro';
+import Layout from "../../layouts/Layout.astro";
 
-import fetchApi from '../../lib/strapi';
-import type InsuranceCategory from '../../models/insurance-category';
+import fetchApi from "../../lib/strapi";
+import type InsuranceCategory from "../../models/insurance-category";
 import "../../styles/global.css";
 
 export const getStaticPaths = (() => {
-	
-	return [
-		{
-			params: {
-				category: 'travel-insurance',
-			},
-			props: {
-				title: 'Travel Insurance',
-			},
-		},
-	];
+  return [
+    {
+      params: {
+        category: "travel-insurance",
+      },
+      props: {
+        title: "Travel Insurance",
+      },
+    },
+  ];
 }) satisfies GetStaticPaths;
 
 const { category } = Astro.params;
@@ -25,51 +24,54 @@ const { category } = Astro.params;
 let insurances: InsuranceCategory[];
 
 try {
-	insurances = await fetchApi<InsuranceCategory[]>({
-	  endpoint: `insurances?filters[insurance_category][slug][$contains]=${category}&populate=images`,
-	  wrappedByKey: 'data',
-	});
-	
-	console.log(insurances);
-	
-} catch (error) {
-  return Astro.redirect('/404');
-}
+  insurances = await fetchApi<InsuranceCategory[]>({
+    endpoint: `insurances?filters[insurance_category][slug][$contains]=${category}&populate=images`,
+    wrappedByKey: "data",
+  });
 
+  console.log(insurances);
+} catch (error) {
+  return Astro.redirect("/404");
+}
 ---
 
 <Layout title="Travel Insurance">
-	<main>
-		<h1 class="text-center text-7xl font-extrabold mb-24">Insurances</h1>
+  <main>
+    <h1 class="text-center text-7xl font-extrabold mb-24">Insurances</h1>
 
-		<section>
-			<div class="px-4 mx-auto max-w-screen-xl">
-				<div class="grid gap-6 md:grid-cols-2">
-					{
-						insurances.map(({ slug, name, description, image }) => (
-							<article class="flex flex-col">
-								<a href={`/${slug}`} class="mb-2 xl:mb-0 transition hover:scale-110">
-									{/* <img
+    <section>
+      <div class="px-4 mx-auto max-w-screen-xl">
+        <div class="grid gap-6 md:grid-cols-2">
+          {
+            insurances.map(({ slug, name, description, image }) => (
+              <article class="flex flex-col">
+                <a
+                  href={`/${slug}`}
+                  class="mb-2 xl:mb-0 transition hover:scale-110"
+                >
+                  {/* <img
 										transition:name={`img-${slug}`}
 										class="mr-5 w-48 rounded"
 										src={`${import.meta.env.STRAPI_URL}${image.url}`}
 										alt={name}
 									/> */}
-								</a>
-								
-								<div class="flex flex-col justify-center">
-									<h2 transition:name={`title-${slug}`} class="mb-2 text-2xl font-bold leading-tight text-white">
-										{name}
-									</h2>
+                </a>
 
-									<p class="mb-4 text-gray-300 max-w-sm">{description}</p>
-								</div>
-							</article>
-							)
-						)
-					}
-				</div>
-			</div>
-		</section>
-	</main>
+                <div class="flex flex-col justify-center">
+                  <h2
+                    transition:name={`title-${slug}`}
+                    class="mb-2 text-2xl font-bold leading-tight text-white"
+                  >
+                    {name}
+                  </h2>
+
+                  <p class="mb-4 text-gray-300 max-w-sm">{description}</p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </main>
 </Layout>
