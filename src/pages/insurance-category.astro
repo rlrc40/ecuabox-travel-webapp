@@ -26,13 +26,13 @@ try {
 	<main>
 		<h1 class="text-center text-7xl font-extrabold mb-24">Insurance Categories</h1>
 
-		<section aria-label="Libros recomendados para programadores">
+		<section aria-label="Categorías de seguros">
 			<div class="px-4 mx-auto max-w-screen-xl">
 				<div class="grid gap-6 md:grid-cols-2">
 					{
 						insuranceCategories.map(({ slug, name, description, image }) => (
 							<article class="flex flex-col">
-								<a href={`/libro/${slug}`} class="mb-2 xl:mb-0 transition hover:scale-110">
+								<a href={`/insurance-category/${slug}`} class="mb-2 xl:mb-0 transition hover:scale-110">
 									<img
 										transition:name={`img-${slug}`}
 										class="mr-5 w-48 rounded"
