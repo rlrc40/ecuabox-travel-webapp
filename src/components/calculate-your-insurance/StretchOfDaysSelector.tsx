@@ -1,9 +1,22 @@
 import { useState, useEffect, useRef } from "react";
 
-export function StretchOfDaysSelector() {
+interface StretchOfDaysSelectorProps {
+  apply: ({
+    startDate,
+    endDate,
+  }: {
+    startDate: string;
+    endDate: string;
+  }) => void;
+}
+
+export function StretchOfDaysSelector({ apply }: StretchOfDaysSelectorProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedStartDate, setSelectedStartDate] = useState(null);
-  const [selectedEndDate, setSelectedEndDate] = useState(null);
+
+  const [selectedStartDate, setSelectedStartDate] = useState("");
+
+  const [selectedEndDate, setSelectedEndDate] = useState("");
+
   const [isOpen, setIsOpen] = useState(false);
 
   const datepickerRef = useRef(null);
@@ -56,10 +69,10 @@ export function StretchOfDaysSelector() {
     return daysArray;
   };
 
-  const handleDayClick = (selectedDay) => {
+  const handleDayClick = (selectedDay: string) => {
     if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
       setSelectedStartDate(selectedDay);
-      setSelectedEndDate(null);
+      setSelectedEndDate("");
     } else {
       if (new Date(selectedDay) < new Date(selectedStartDate)) {
         setSelectedEndDate(selectedStartDate);
@@ -85,13 +98,13 @@ export function StretchOfDaysSelector() {
   };
 
   const handleApply = () => {
-    console.log("Applied:", selectedStartDate, selectedEndDate);
+    apply({ startDate: selectedStartDate, endDate: selectedEndDate });
     setIsOpen(false);
   };
 
   const handleCancel = () => {
-    setSelectedStartDate(null);
-    setSelectedEndDate(null);
+    setSelectedStartDate("");
+    setSelectedEndDate("");
     setIsOpen(false);
   };
 

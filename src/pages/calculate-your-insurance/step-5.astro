@@ -1,4 +1,5 @@
 ---
+import NextStepButton from "@/components/calculate-your-insurance/NextStepButton.astro";
 import Layout from "../../layouts/Layout.astro";
 import Steps from "@/components/calculate-your-insurance/steps/steps.astro";
 ---
@@ -20,13 +21,8 @@ import Steps from "@/components/calculate-your-insurance/steps/steps.astro";
         </section>
       </article>
     </div>
+    <section>
+      <NextStepButton nextStep="6" />
+    </section>
   </main>
-  <section>
-    <a
-      class="w-100 inline-block rounded-sm border border-primary px-12 py-3 text-sm font-medium text-primary hover:bg-primary hover:text-white focus:ring-3 focus:outline-hidden"
-      href="/calculate-your-insurance/step-6"
-    >
-      Siguiente
-    </a>
-  </section>
 </Layout>
