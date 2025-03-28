@@ -1,0 +1,26 @@
+---
+import StepCalendarIcon from "./step-calendar-icon.astro";
+import StepConfirmationIcon from "./step-confirmation-icon.astro";
+import StepPaymentIcon from "./step-payment-icon.astro";
+import StepPersonalInfoIcon from "./step-personal-info-icon.astro";
+import StepPinIcon from "./step-pin-icon.astro";
+import StepSummaryIcon from "./step-summary-icon.astro";
+
+const { icon } = Astro.props;
+---
+
+{
+  icon === "calendar" ? (
+    <StepCalendarIcon />
+  ) : icon === "location" ? (
+    <StepPinIcon />
+  ) : icon === "summary" ? (
+    <StepSummaryIcon />
+  ) : icon === "personal-info" ? (
+    <StepPersonalInfoIcon />
+  ) : icon === "payment" ? (
+    <StepPaymentIcon />
+  ) : icon === "confirmation" ? (
+    <StepConfirmationIcon />
+  ) : null
+}

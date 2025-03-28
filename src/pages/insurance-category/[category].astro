@@ -43,32 +43,34 @@ try {
       <div class="px-4 mx-auto max-w-screen-xl">
         <div class="grid gap-6 md:grid-cols-2">
           {
-            insurances.map(({ slug, name, description, image }) => (
-              <article class="flex flex-col">
-                <a
-                  href={`/${slug}`}
-                  class="mb-2 xl:mb-0 transition hover:scale-110"
-                >
-                  {/* <img
-										transition:name={`img-${slug}`}
-										class="mr-5 w-48 rounded"
-										src={`${import.meta.env.STRAPI_URL}${image.url}`}
-										alt={name}
-									/> */}
-                </a>
-
-                <div class="flex flex-col justify-center">
-                  <h2
-                    transition:name={`title-${slug}`}
-                    class="mb-2 text-2xl font-bold leading-tight text-white"
+            insurances.map(
+              ({ documentId, slug, name, description, images }) => (
+                <article class="flex flex-col">
+                  <a
+                    href={`/insurance/${documentId}`}
+                    class="mb-2 xl:mb-0 transition hover:scale-110"
                   >
-                    {name}
-                  </h2>
+                    <img
+                      transition:name={`img-${slug}`}
+                      class="mr-5 w-48 rounded"
+                      src={`${import.meta.env.STRAPI_URL}${images[0].url}`}
+                      alt={name}
+                    />
+                  </a>
 
-                  <p class="mb-4 text-gray-300 max-w-sm">{description}</p>
-                </div>
-              </article>
-            ))
+                  <div class="flex flex-col justify-center">
+                    <h2
+                      transition:name={`title-${slug}`}
+                      class="mb-2 text-2xl font-bold leading-tight text-white"
+                    >
+                      {name}
+                    </h2>
+
+                    <p class="mb-4 text-gray-300 max-w-sm">{description}</p>
+                  </div>
+                </article>
+              )
+            )
           }
         </div>
       </div>

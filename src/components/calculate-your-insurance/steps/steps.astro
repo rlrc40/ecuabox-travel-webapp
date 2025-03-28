@@ -1,0 +1,53 @@
+---
+import StepCompleteIcon from "./icons/step-complete-icon.astro";
+import StepIcon from "./icons/step-icon.astro";
+
+const { currentStep } = Astro.props;
+
+const steps = [
+  {
+    title: "Dates and Travelers",
+    description: "Step details here",
+    icon: "calendar",
+  },
+  {
+    title: "Destiny and origin",
+    description: "Step details here",
+    icon: "location",
+  },
+  {
+    title: "Summary",
+    description: "Step details here",
+    icon: "summary",
+  },
+  {
+    title: "Personal Info",
+    description: "Step details here",
+    icon: "personal-info",
+  },
+  {
+    title: "Payment",
+    description: "Step details here",
+    icon: "payment",
+  },
+  {
+    title: "Confirmation",
+    description: "Step details here",
+    icon: "confirmation",
+  },
+];
+---
+
+<ol
+  class="relative text-gray-500 border-s border-gray-200 dark:border-gray-700 dark:text-gray-400"
+>
+  {
+    steps.map(({ title, description, icon }, index) => (
+      <li class="mb-10 ms-6">
+        {currentStep > index ? <StepCompleteIcon /> : <StepIcon icon={icon} />}
+        <h3 class="font-medium leading-tight">{title}</h3>
+        <p class="text-sm">{description}</p>
+      </li>
+    ))
+  }
+</ol>

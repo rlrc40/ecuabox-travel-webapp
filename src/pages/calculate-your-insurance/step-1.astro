@@ -1,0 +1,60 @@
+---
+import { StretchOfDaysSelector } from "@/components/calculate-your-insurance/StretchOfDaysSelector";
+import Layout from "../../layouts/Layout.astro";
+import Steps from "@/components/calculate-your-insurance/steps/steps.astro";
+---
+
+<Layout title="Calcula tu seguro">
+  <main class="flex flex-col items-center justify-center w-full">
+    <div class="flex flex-row gap-8 w-full max-w-screen-xl mx-auto px-4 pb-8">
+      <aside class="w-50">
+        <Steps currentStep="0" />
+      </aside>
+      <article>
+        <section class="flex flex-col items-center justify-center w-100">
+          <h2 class="mb-0 text-center font-light">
+            Calcula tu seguro de viaje
+          </h2>
+          <h1 class="mb-10 text-center font-semibold">
+            ¿Qué tipo de seguro necesitas?
+          </h1>
+          <StretchOfDaysSelector client:load />
+
+          <div class="relative">
+            <input
+              type="number"
+              placeholder="Travelers"
+              class="h-12 appearance-none rounded-lg border border-stroke pl-12 pr-4 text-dark outline-none focus:border-primary dark:border-dark-3 dark:bg-dark-2 dark:text-white"
+            />
+            <span
+              class="absolute inset-y-0 flex h-12 w-12 items-center justify-center text-dark-5"
+            >
+              <svg
+                class="w-6 h-6 text-gray-800 dark:text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z"
+                  clip-rule="evenodd"></path>
+              </svg>
+            </span>
+          </div>
+        </section>
+      </article>
+    </div>
+    <section>
+      <a
+        class="w-100 inline-block rounded-sm border border-primary px-12 py-3 text-sm font-medium text-primary hover:bg-primary hover:text-white focus:ring-3 focus:outline-hidden"
+        href="/calculate-your-insurance/step-2"
+      >
+        Siguiente
+      </a>
+    </section>
+  </main>
+</Layout>

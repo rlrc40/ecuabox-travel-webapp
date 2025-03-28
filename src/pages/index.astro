@@ -26,7 +26,14 @@ try {
   <main>
     <img src={image} class="mb-6 w-full h-auto rounded-lg" />
 
-    <article class="rich-text" set:html={marked.parse(homeData.content)} } />
+    <a
+      class="inline-block rounded-sm border border-indigo-600 px-12 py-3 text-sm font-medium text-indigo-600 hover:bg-indigo-600 hover:text-white focus:ring-3 focus:outline-hidden"
+      href="/calculate-your-insurance/step-1"
+    >
+      {homeData.calculateInsuranceButtonTitle}
+    </a>
+
+    <article class="rich-text" set:html={marked.parse(homeData.content)} />
   </main>
 </Layout>
 

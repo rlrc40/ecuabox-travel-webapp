@@ -1,10 +1,22 @@
 ---
-// Define a list of supported languages
-const languages = [
-  { code: "en", name: "English" },
-  { code: "es", name: "Español" },
-  { code: "fr", name: "Français" },
-];
+import fetchApi from "../lib/strapi";
+import type StrechOfDays from "../models/strech-of-days";
+
+const { insuranceCategory } = Astro.props;
+
+let stretchesOfDates: StrechOfDays[];
+
+try {
+  stretchesOfDates = await fetchApi<StrechOfDays[]>({
+    endpoint:
+      "strech-of-days",
+    wrappedByKey: "data",
+  });
+
+  console.log(stretchesOfDates);
+} catch (error) {
+  return Astro.redirect("/404");
+}
 ---
 
 <div class="w-full max-w-sm">
@@ -12,8 +24,8 @@ const languages = [
     <select
       class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer"
     >
-      {languages.map(({ code, name }) => <option value={code}>
-        <a href="?lang=code">{name}</a>
+      {stretchesOfDates.map(({ code }) => <option value={code}>
+        <a href="?lang=code">{code}</a>
       </option>)}
     </select>
     <svg

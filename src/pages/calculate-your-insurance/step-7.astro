@@ -1,0 +1,32 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Steps from "@/components/calculate-your-insurance/steps/steps.astro";
+---
+
+<Layout title="Calcula tu seguro">
+  <main class="flex flex-col items-center justify-center w-full">
+    <div class="flex flex-row gap-8 w-full max-w-screen-xl mx-auto px-4 pb-8">
+      <aside class="w-50">
+        <Steps currentStep="6" />
+      </aside>
+      <article>
+        <section class="flex flex-col items-center justify-center w-100">
+          <h2 class="mb-0 text-center font-light">
+            Calcula tu seguro de viaje
+          </h2>
+          <h1 class="mb-10 text-center font-semibold">
+            ¿Qué tipo de seguro necesitas?
+          </h1>
+        </section>
+      </article>
+    </div>
+  </main>
+  <section>
+    <a
+      class="w-100 inline-block rounded-sm border border-primary px-12 py-3 text-sm font-medium text-primary hover:bg-primary hover:text-white focus:ring-3 focus:outline-hidden"
+      href="/calculate-your-insurance/step-6"
+    >
+      Siguiente
+    </a>
+  </section>
+</Layout>

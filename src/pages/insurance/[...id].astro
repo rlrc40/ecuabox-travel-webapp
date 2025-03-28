@@ -1,0 +1,68 @@
+---
+import type { GetStaticPaths } from "astro";
+import Layout from "../../layouts/Layout.astro";
+
+import fetchApi from "../../lib/strapi";
+import type InsuranceCategory from "../../models/insurance-category";
+import "../../styles/global.css";
+import StretchOfDaysSelector from "../../components/StretchOfDaysSelector.astro";
+
+const { insuranceCategory, id } = Astro.params;
+
+let insurance: InsuranceCategory;
+
+try {
+  insurance = await fetchApi<InsuranceCategory>({
+    endpoint: `insurances/${id}?populate=images&populate[insurance_category][fields][0]=slug`,
+    wrappedByKey: "data",
+  });
+
+  console.log(insurance);
+} catch (error) {
+  return Astro.redirect("/404");
+}
+
+export const prerender = false;
+---
+
+<Layout title="Travel Insurance">
+  <main>
+    <h1 class="text-center text-7xl font-extrabold mb-24">Insurance</h1>
+
+    {
+      insurance && (
+        <section>
+          <div class="px-4 mx-auto max-w-screen-xl">
+            <div class="grid gap-6 md:grid-cols-2">
+              <article class="flex flex-col">
+                <img
+                  transition:name={`img-${insurance.documentId}`}
+                  class="mr-5 w-48 rounded"
+                  src={`${import.meta.env.STRAPI_URL}${insurance.images[0].url}`}
+                  alt={insurance.name}
+                />
+
+                <div class="flex flex-col justify-center">
+                  <h2
+                    transition:name={`title-${id}`}
+                    class="mb-2 text-2xl font-bold leading-tight text-white"
+                  >
+                    {insurance.name}
+                  </h2>
+
+                  <p class="mb-4 text-gray-300 max-w-sm">
+                    {insurance.description}
+                  </p>
+
+                  <StretchOfDaysSelector
+                    insuranceCategory={insurance.insurance_category}
+                  />
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+      )
+    }
+  </main>
+</Layout>
