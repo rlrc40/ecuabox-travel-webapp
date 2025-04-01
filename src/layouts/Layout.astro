@@ -182,7 +182,9 @@ const { title } = Astro.props;
       </nav>
     </header>
 
-    <slot />
+    <main class="flex flex-col items-center justify-center w-full">
+      <slot />
+    </main>
 
     <footer class="bg-white dark:bg-gray-800">
       <div class="max-w-screen-xl p-4 py-6 mx-auto lg:py-16 md:p-8 lg:p-10">
@@ -431,8 +433,19 @@ const { title } = Astro.props;
     color: #fff;
   }
 
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
   body > main {
-    @apply grid place-content-center p-20;
+    @apply grid place-content-center p-24;
   }
 
   main > div {

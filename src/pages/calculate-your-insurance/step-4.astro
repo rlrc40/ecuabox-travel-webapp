@@ -1,28 +1,12 @@
 ---
-import NextStepButton from "@/components/calculate-your-insurance/NextStepButton.astro";
-import Layout from "../../layouts/Layout.astro";
-import Steps from "@/components/calculate-your-insurance/steps/steps.astro";
 import PersonalInfoForm from "@/components/calculate-your-insurance/steps/PersonalInfoForm";
+import Step from "./step.astro";
 ---
 
-<Layout title="Calcula tu seguro">
-  <main class="flex flex-col items-center justify-center w-full">
-    <div class="flex flex-row gap-8 w-full max-w-screen-xl mx-auto px-4 pb-8">
-      <aside class="w-50">
-        <Steps currentStep="3" />
-      </aside>
-      <article>
-        <section class="flex flex-col items-center justify-center w-100">
-          <h2 class="mb-0 text-center font-light">Información Personal</h2>
-          <h1 class="mb-10 text-center font-semibold">
-            Introduce tus datos personales para completar la reserva.
-          </h1>
-        </section>
-        <PersonalInfoForm client:load />
-      </article>
-    </div>
-    <section>
-      <NextStepButton nextStep="5" />
-    </section>
-  </main>
-</Layout>
+<Step
+  step="4"
+  title="Información Personal"
+  description="Introduce tus datos personales para completar la reserva."
+>
+  <PersonalInfoForm client:load />
+</Step>

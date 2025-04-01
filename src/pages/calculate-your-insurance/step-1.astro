@@ -1,28 +1,12 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import Steps from "@/components/calculate-your-insurance/steps/steps.astro";
 import Step1Form from "@/components/calculate-your-insurance/steps/Step1Form";
-import NextStepButton from "@/components/calculate-your-insurance/NextStepButton.astro";
+import Step from "./step.astro";
 ---
 
-<Layout title="Calcula tu seguro">
-  <main class="flex flex-col items-center justify-center w-full">
-    <div class="flex flex-row gap-8 w-full max-w-screen-xl mx-auto px-4 pb-8">
-      <aside class="w-50">
-        <Steps currentStep="0" />
-      </aside>
-      <article>
-        <section class="flex flex-col items-center justify-center w-100">
-          <h2 class="mb-0 text-center font-light">Fechas y Viajeros</h2>
-          <h1 class="mb-10 text-center font-semibold">
-            Selecciona las fechas de tu viaje y los viajeros que te acompañarán.
-          </h1>
-          <Step1Form client:load />
-        </section>
-      </article>
-    </div>
-    <section>
-      <NextStepButton nextStep="2" />
-    </section>
-  </main>
-</Layout>
+<Step
+  step="1"
+  title="Fechas y Viajeros"
+  description="Selecciona las fechas de tu viaje y los viajeros que te acompañarán."
+>
+  <Step1Form client:load />
+</Step>

@@ -1,0 +1,27 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Steps from "@/components/calculate-your-insurance/steps/steps.astro";
+import NextStepButton from "@/components/calculate-your-insurance/NextStepButton.astro";
+
+const { step, title, description } = Astro.props;
+---
+
+<Layout title="Calcula tu seguro">
+  <div class="flex flex-row gap-8 w-full max-w-screen-xl mx-auto px-4 pb-8">
+    <aside class="w-50">
+      <Steps currentStep={step} />
+    </aside>
+    <article>
+      <section class="flex flex-col items-center justify-center w-100">
+        <h2 class="mb-0 text-center font-light">{title}</h2>
+        <h1 class="mb-10 text-center font-semibold">
+          {description}
+        </h1>
+        <slot />
+      </section>
+    </article>
+  </div>
+  <section>
+    <NextStepButton nextStep={Number(step) + 1} />
+  </section>
+</Layout>
