@@ -1,16 +1,16 @@
 import { useSessionStorage } from "@/hooks/useSessionStorage";
-import type { CalculateYourInsuranceForm } from "@/models/calculate-your-insurance-form";
+import type { CalculateYourInsuranceForm } from "@/models/calculate-your-insurance/calculate-your-insurance-form";
 
 export default function PersonalInfoForm() {
-  const [htmlFormValue, setFormValue] =
+  const [formValue, setFormValue] =
     useSessionStorage<CalculateYourInsuranceForm>(
       "calculateYourInsuranceForm",
       {},
     );
 
-  console.log(htmlFormValue);
+  console.log(formValue);
 
-  const { startDate, endDate, pax, origin, destination } = htmlFormValue;
+  const { startDate, endDate, pax, origin, destination } = formValue;
 
   return (
     <form>

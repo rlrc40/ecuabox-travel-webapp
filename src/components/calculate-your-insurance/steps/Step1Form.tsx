@@ -1,4 +1,4 @@
-import type { CalculateYourInsuranceForm } from "@/models/calculate-your-insurance-form";
+import type { CalculateYourInsuranceForm } from "@/models/calculate-your-insurance/calculate-your-insurance-form";
 import { StretchOfDaysSelector } from "../StretchOfDaysSelector";
 import { useSessionStorage } from "@/hooks/useSessionStorage";
 

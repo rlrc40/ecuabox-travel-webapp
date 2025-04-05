@@ -8,7 +8,9 @@ export const useSessionStorage = <T>(
 ): UseSessionStorageType<T> => {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
-      const item = window.sessionStorage.getItem(key);
+      if (!window) return initialValue;
+
+      const item = window.sessionStorage.getItem(key) || null;
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       console.error(error);
@@ -17,7 +19,7 @@ export const useSessionStorage = <T>(
   });
 
   useEffect(() => {
-    window.sessionStorage.setItem(key, JSON.stringify(storedValue));
+    if (window) window.sessionStorage.setItem(key, JSON.stringify(storedValue));
   }, [key, storedValue]);
 
   return [storedValue, setStoredValue];

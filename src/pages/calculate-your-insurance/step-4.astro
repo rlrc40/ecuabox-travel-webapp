@@ -1,10 +1,11 @@
 ---
 import PersonalInfoForm from "@/components/calculate-your-insurance/steps/PersonalInfoForm";
 import Step from "./step.astro";
+import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
 ---
 
 <Step
-  step="4"
+  step={CalculateYourInsuranceStep.PersonalInfo}
   title="Información Personal"
   description="Introduce tus datos personales para completar la reserva."
 >

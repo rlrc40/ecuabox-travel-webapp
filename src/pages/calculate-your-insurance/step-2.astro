@@ -1,10 +1,11 @@
 ---
 import Step2Form from "@/components/calculate-your-insurance/steps/Step2Form";
 import Step from "./step.astro";
+import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
 ---
 
 <Step
-  step="2"
+  step={CalculateYourInsuranceStep.OriginAndDestination}
   title="Destino y Origen"
   description="Indica tu lugar de salida y tu destino para el viaje."
 >

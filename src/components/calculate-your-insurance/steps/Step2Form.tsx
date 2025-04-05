@@ -1,5 +1,5 @@
 import { useSessionStorage } from "@/hooks/useSessionStorage";
-import type { CalculateYourInsuranceForm } from "@/models/calculate-your-insurance-form";
+import type { CalculateYourInsuranceForm } from "@/models/calculate-your-insurance/calculate-your-insurance-form";
 
 export default function Step2Form() {
   const [formValue, setFormValue] =

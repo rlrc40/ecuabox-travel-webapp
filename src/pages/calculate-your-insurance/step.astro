@@ -2,8 +2,18 @@
 import Layout from "../../layouts/Layout.astro";
 import Steps from "@/components/calculate-your-insurance/steps/steps.astro";
 import NextStepButton from "@/components/calculate-your-insurance/NextStepButton.astro";
+import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
+import PaymentButton from "@/components/calculate-your-insurance/steps/PaymentButton";
+import { ReactNode } from "react";
 
-const { step, title, description } = Astro.props;
+interface Props {
+  step: CalculateYourInsuranceStep;
+  title: string;
+  description: string;
+  children?: ReactNode;
+}
+
+const { step, title, description } = Astro.props<Props>;
 ---
 
 <Layout title="Calcula tu seguro">
@@ -22,6 +32,12 @@ const { step, title, description } = Astro.props;
     </article>
   </div>
   <section>
-    <NextStepButton nextStep={Number(step) + 1} />
+    {
+      step == CalculateYourInsuranceStep.Payment ? (
+        <PaymentButton client:load />
+      ) : (
+        <NextStepButton nextStep={Number(step) + 1} />
+      )
+    }
   </section>
 </Layout>

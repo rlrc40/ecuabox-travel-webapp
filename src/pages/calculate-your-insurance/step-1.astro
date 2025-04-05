@@ -1,10 +1,11 @@
 ---
 import Step1Form from "@/components/calculate-your-insurance/steps/Step1Form";
 import Step from "./step.astro";
+import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
 ---
 
 <Step
-  step="1"
+  step={CalculateYourInsuranceStep.InsuranceInfo}
   title="Fechas y Viajeros"
   description="Selecciona las fechas de tu viaje y los viajeros que te acompañarán."
 >
