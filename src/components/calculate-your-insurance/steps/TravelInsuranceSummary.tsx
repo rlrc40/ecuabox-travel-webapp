@@ -96,7 +96,7 @@ export default function TravelInsuranceSummary() {
           </thead>
           <tbody>
             {insuranceData.categories.map((category, categoryIndex) => (
-              <>
+              <div key={categoryIndex}>
                 <tr key={categoryIndex} className="bg-gray-200">
                   <td
                     colSpan={2}
@@ -115,7 +115,7 @@ export default function TravelInsuranceSummary() {
                     </td>
                   </tr>
                 ))}
-              </>
+              </div>
             ))}
           </tbody>
         </table>
