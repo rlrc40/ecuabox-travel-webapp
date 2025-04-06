@@ -10,7 +10,7 @@ export const useSessionStorage = <T>(
     try {
       if (!window) return initialValue;
 
-      const item = window.sessionStorage.getItem(key) || null;
+      const item = window?.sessionStorage.getItem(key) || null;
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       console.error(error);

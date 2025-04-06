@@ -3,8 +3,7 @@ enum CalculateYourInsuranceStep {
   OriginAndDestination = 2,
   Summary = 3,
   PersonalInfo = 4,
-  Payment = 5,
-  Confirmation = 6,
+  Confirmation = 5,
 }
 
 export default CalculateYourInsuranceStep;

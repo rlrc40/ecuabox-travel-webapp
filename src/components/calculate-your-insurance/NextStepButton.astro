@@ -1,7 +1,23 @@
 ---
+import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
+
 const { nextStep } = Astro.props;
 
 const nextStepHref = `/calculate-your-insurance/step-${nextStep}`;
+
+let title = "Siguiente";
+
+switch (nextStep) {
+  case CalculateYourInsuranceStep.Summary:
+    title = "Calcular precio";
+    break;
+  case CalculateYourInsuranceStep.PersonalInfo:
+    title = "Reservar";
+    break;
+
+  default:
+    break;
+}
 ---
 
 <a
@@ -9,5 +25,5 @@ const nextStepHref = `/calculate-your-insurance/step-${nextStep}`;
   class="w-100 inline-block text-center rounded-sm border border-primary px-12 py-3 text-sm font-medium text-primary hover:bg-secondary hover:text-white focus:ring-3 focus:outline-hidden"
   href={nextStepHref}
 >
-  Siguiente
+  {title}
 </a>

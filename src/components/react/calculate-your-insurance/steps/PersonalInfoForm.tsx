@@ -90,14 +90,6 @@ export default function PersonalInfoForm() {
     const { document, firstName, lastName, email, termsAndConditions } =
       personalInfo;
 
-    console.log({
-      document,
-      firstName,
-      lastName,
-      email,
-      termsAndConditions,
-    });
-
     if (document && firstName && lastName && email && termsAndConditions)
       enableNextStepButton();
   }, [formValue, enableNextStepButton]);

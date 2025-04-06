@@ -1,5 +1,10 @@
 ---
+import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
 import Step from "./step.astro";
 ---
 
-<Step step="5" title="Payment" description="Datos de pago" />
+<Step
+  step={CalculateYourInsuranceStep.Confirmation}
+  title="Pago realizado"
+  description="Tu pago ha sido realizado con éxito. En breve recibirás un correo con los detalles de tu seguro de viaje."
+/>
