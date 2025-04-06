@@ -82,6 +82,7 @@ export default function PaymentButton() {
   return (
     <>
       <button
+        id="calculate-your-insurance-payment-button"
         type="button"
         onClick={handlePayment}
         className="w-100 inline-block text-center rounded-sm border cursor-pointer border-primary px-12 py-3 text-sm font-medium text-primary hover:bg-secondary hover:text-white focus:ring-3 focus:outline-hidden"

@@ -62,7 +62,7 @@ export default function PersonalInfoForm() {
 
   const disableNextStepButton = () => {
     const nextStepButton = document.getElementById(
-      "calculate-your-insurance-next-step-button",
+      "calculate-your-insurance-payment-button",
     ) as HTMLButtonElement;
     if (nextStepButton) {
       nextStepButton.classList.replace("text-primary", "text-gray-400");
@@ -73,7 +73,7 @@ export default function PersonalInfoForm() {
 
   const enableNextStepButton = () => {
     const nextStepButton = document.getElementById(
-      "calculate-your-insurance-next-step-button",
+      "calculate-your-insurance-payment-button",
     ) as HTMLButtonElement;
     if (nextStepButton) {
       nextStepButton.classList.replace("text-gray-400", "text-primary");
