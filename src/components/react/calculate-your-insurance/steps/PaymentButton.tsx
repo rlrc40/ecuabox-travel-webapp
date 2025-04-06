@@ -7,35 +7,26 @@ interface PaymentData {
   amount: number;
   currency: "eur";
   concept: string;
-  metadata: {
-    startDate: string;
-    endDate: string;
-    pax: number;
-    origin: string;
-    destination: string;
-  };
+  metadata: CalculateYourInsuranceForm;
 }
 
 export default function PaymentButton() {
   const [isLoading, setIsLoading] = useState(false);
-  const [sessionId, setSessionId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const [formValue] = useSessionStorage<CalculateYourInsuranceForm>(
-    "calculateYourInsuranceForm",
-    {},
-  );
+  const [{ personalInfo, ...formValue }] =
+    useSessionStorage<CalculateYourInsuranceForm>(
+      "calculateYourInsuranceForm",
+      {},
+    );
 
   const paymentData: PaymentData = {
     amount: 50,
     currency: "eur",
     concept: "Seguro de viaje",
     metadata: {
-      startDate: formValue.startDate || "",
-      endDate: formValue.endDate || "",
-      pax: formValue.pax || 0,
-      origin: formValue.origin || "",
-      destination: formValue.destination || "",
+      ...formValue,
+      ...personalInfo,
     },
   };
 
@@ -66,7 +57,6 @@ export default function PaymentButton() {
       }
 
       const data = await response.json();
-      setSessionId(data.sessionId);
       await stripe?.redirectToCheckout({
         sessionId: data.sessionId,
       });
