@@ -1,4 +1,5 @@
 ---
+import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
 import StepCompleteIcon from "./icons/step-complete-icon.astro";
 import StepIcon from "./icons/step-icon.astro";
 
@@ -44,7 +45,12 @@ const steps = [
   {
     steps.map(({ title, description, icon }, index) => (
       <li class="mb-10 ms-6">
-        {currentStep > index ? <StepCompleteIcon /> : <StepIcon icon={icon} />}
+        {currentStep > index ||
+        currentStep == CalculateYourInsuranceStep.Confirmation ? (
+          <StepCompleteIcon />
+        ) : (
+          <StepIcon icon={icon} />
+        )}
         <h3 class="font-medium leading-tight">{title}</h3>
         <p class="text-sm">{description}</p>
       </li>
