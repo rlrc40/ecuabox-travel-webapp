@@ -39,10 +39,7 @@ export default function PaymentButton() {
         import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY || "",
       );
 
-      const url = new URL(`http://127.0.0.1:1337/api/orders`);
-
-      console.log("New Strapi request:", url.toString());
-      console.log("Token:", import.meta.env.STRAPI_TOKEN);
+      const url = new URL(`${import.meta.env.PUBLIC_STRAPI_URL}/api/orders`);
 
       const response = await fetch(url.toString(), {
         method: "POST",

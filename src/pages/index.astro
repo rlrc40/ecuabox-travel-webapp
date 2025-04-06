@@ -15,7 +15,7 @@ try {
     wrappedByKey: "data",
   });
 
-  image = `${import.meta.env.STRAPI_URL}${homeData.background.url}`;
+  image = `${import.meta.env.PUBLIC_STRAPI_URL}${homeData.background.url}`;
 } catch (error) {
   return Astro.redirect("/404");
 }

@@ -37,7 +37,7 @@ export const prerender = false;
                 <img
                   transition:name={`img-${insurance.documentId}`}
                   class="mr-5 w-48 rounded"
-                  src={`${import.meta.env.STRAPI_URL}${insurance.images[0].url}`}
+                  src={`${import.meta.env.PUBLIC_STRAPI_URL}${insurance.images[0].url}`}
                   alt={insurance.name}
                 />
 
