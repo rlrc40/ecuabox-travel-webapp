@@ -2,6 +2,19 @@
 import Step2Form from "@/components/react/calculate-your-insurance/steps/Step2Form";
 import Step from "./step.astro";
 import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
+import { Country } from "@/models/Country";
+import fetchApi from "@/lib/strapi";
+
+let countries: Country[] = [];
+
+try {
+  countries = await fetchApi<Country[]>({
+    endpoint: `master-data/country`,
+    wrappedByKey: "countries",
+  });
+} catch (error) {
+  return Astro.redirect("/404");
+}
 ---
 
 <Step
@@ -9,5 +22,5 @@ import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/Calcul
   title="Destino y Origen"
   description="Indica tu lugar de salida y tu destino para el viaje."
 >
-  <Step2Form client:load />
+  <Step2Form client:load countries={countries} />
 </Step>
