@@ -22,7 +22,7 @@ const { step, title, description } = Astro.props<Props>;
       <Steps currentStep={step} />
     </aside>
     <article>
-      <section class="flex flex-col items-center justify-center w-100">
+      <section class="flex flex-col items-center justify-center w-full">
         <h2 class="mb-0 text-center font-light">{title}</h2>
         <h1 class="mb-10 text-center font-semibold">
           {description}
@@ -34,7 +34,7 @@ const { step, title, description } = Astro.props<Props>;
   <section>
     {
       step == CalculateYourInsuranceStep.PersonalInfo ? (
-        <PaymentButton client:load />
+        <PaymentButton client:only />
       ) : (
         <NextStepButton
           nextStep={

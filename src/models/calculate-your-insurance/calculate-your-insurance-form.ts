@@ -4,13 +4,19 @@ export type CalculateYourInsuranceForm = {
   pax?: number;
   destination?: string;
   origin?: string;
-  personalInfo?: {
-    firstName?: string;
-    lastName?: string;
-    document?: string;
-    email?: string;
-    phone?: string;
-    address?: string;
-    termsAndConditions?: boolean;
-  };
+  travelers?: Traveler[];
+};
+
+export type Traveler = {
+  isHolder?: boolean;
+  firstName?: string;
+  lastName?: string;
+  document?: string;
+  birthdate?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  postalCode?: string;
+  city?: string;
+  termsAndConditions?: boolean;
 };

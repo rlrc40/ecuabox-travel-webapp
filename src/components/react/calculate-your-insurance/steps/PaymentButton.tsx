@@ -1,20 +1,24 @@
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import type { CalculateYourInsuranceForm } from "@/models/calculate-your-insurance/calculate-your-insurance-form";
+import type {
+  CalculateYourInsuranceForm,
+  Traveler,
+} from "@/models/calculate-your-insurance/calculate-your-insurance-form";
 import { useSessionStorage } from "@/hooks/useSessionStorage";
 
 interface PaymentData {
   amount: number;
   currency: "eur";
   concept: string;
-  metadata: CalculateYourInsuranceForm;
+  travelers?: Traveler[];
+  metadata: object;
 }
 
 export default function PaymentButton() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [{ personalInfo, ...formValue }] =
+  const [{ travelers, ...formValue }] =
     useSessionStorage<CalculateYourInsuranceForm>(
       "calculateYourInsuranceForm",
       {},
@@ -24,9 +28,9 @@ export default function PaymentButton() {
     amount: 50,
     currency: "eur",
     concept: "Seguro de viaje",
+    travelers,
     metadata: {
       ...formValue,
-      ...personalInfo,
     },
   };
 

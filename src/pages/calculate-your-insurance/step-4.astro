@@ -1,5 +1,5 @@
 ---
-import PersonalInfoForm from "@/components/react/calculate-your-insurance/steps/PersonalInfoForm";
+import TravelersForm from "@/components/react/calculate-your-insurance/steps/TravelersForm";
 import Step from "./step.astro";
 import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
 ---
@@ -9,5 +9,5 @@ import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/Calcul
   title="Información Personal"
   description="Introduce tus datos personales para completar la reserva."
 >
-  <PersonalInfoForm client:load />
+  <TravelersForm client:only />
 </Step>
