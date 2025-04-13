@@ -8,5 +8,6 @@ export default {
       colors: {},
     },
   },
+  darkMode: "false",
   plugins: [Typography],
 };
