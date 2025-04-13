@@ -30,10 +30,14 @@ export default function Step1Form() {
       <div className="relative">
         <input
           type="number"
+          id="travelers"
           placeholder="Travelers"
-          className="h-12 appearance-none rounded-lg border border-stroke pl-12 pr-4 text-dark outline-none focus:border-primary dark:border-dark-3 dark:bg-dark-2 dark:text-white"
+          aria-describedby="Number of travelers"
           onChange={handlePaxChange}
+          className="h-12 bg-gray-50 border border-gray-300 pl-12 pr-4 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          required
         />
+
         <span className="absolute inset-y-0 flex h-12 w-12 items-center justify-center text-dark-5">
           <svg
             className="w-6 h-6 text-gray-800 dark:text-white"
