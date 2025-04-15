@@ -1,19 +1,65 @@
 import { useSessionStorage } from "@/hooks/useSessionStorage";
 import type { CalculateYourInsuranceForm } from "@/models/calculate-your-insurance/calculate-your-insurance-form";
+import type { Policy } from "@/models/policy";
+import { useEffect, useState } from "react";
 
 export default function TravelInsuranceSummary() {
-  // Obtiene los valores del formulario desde sessionStorage
-  const [formValue] = useSessionStorage<CalculateYourInsuranceForm>(
-    "calculateYourInsuranceForm",
-    {},
-  );
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Extrae los valores específicos del formulario
-  const { startDate, endDate, origin, destination } = formValue;
+  const [formValue, setFormValue] =
+    useSessionStorage<CalculateYourInsuranceForm>(
+      "calculateYourInsuranceForm",
+      {},
+    );
+
+  const [policy, setPolicy] = useState<Policy>();
+
+  const { startDate, endDate, origin, destination, pax } = formValue;
+
+  useEffect(() => {
+    const fetchInsuranceData = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const numberOfDays =
+          startDate &&
+          endDate &&
+          Math.ceil(
+            (new Date(endDate).getTime() - new Date(startDate).getTime()) /
+              (1000 * 60 * 60 * 24),
+          );
+        const url =
+          new URL(`${import.meta.env.PUBLIC_STRAPI_URL}/api/policy?`) +
+          new URLSearchParams({
+            numberOfDays: numberOfDays?.toString() || "0",
+            numberOfPax: pax?.toString() || "0",
+          }).toString();
+
+        const response = await fetch(url.toString());
+
+        if (!response.ok) {
+          throw new Error("Failed fetch insurance data");
+        }
+
+        const data = await response.json();
+
+        setPolicy(data.policy);
+        setFormValue({ ...formValue, amount: data.policy.retailPriceAmount });
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "An unknown error occurred",
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchInsuranceData();
+  }, []);
 
   // Datos del seguro de viaje
   const insuranceData = {
-    price: 299.99,
     categories: [
       {
         title: "Garantías de asistencia - incluida cobertura covid-19",
@@ -63,23 +109,36 @@ export default function TravelInsuranceSummary() {
       <h2 className="text-2xl font-semibold text-gray-900 mb-4">
         Resumen del Seguro de Viaje
       </h2>
-      <div className="text-gray-700">
-        <p>
-          <strong>Precio:</strong> ${insuranceData.price}
-        </p>
-        <p>
-          <strong>Fecha de Inicio:</strong> {formattedStartDate}
-        </p>
-        <p>
-          <strong>Fecha de Fin:</strong> {formattedEndDate}
-        </p>
-        <p>
-          <strong>Origen:</strong> {origin || "N/A"}
-        </p>
-        <p>
-          <strong>Destino:</strong> {destination || "N/A"}
-        </p>
-      </div>
+      {isLoading ? (
+        <div role="status" className="max-w-sm animate-pulse">
+          <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+          <span className="sr-only">Loading...</span>
+        </div>
+      ) : (
+        <div className="text-gray-700">
+          <p>
+            <strong>Precio:</strong> $
+            {policy?.retailPriceAmount.toFixed(2) || "N/A"}
+          </p>
+          <p>
+            <strong>Fecha de Inicio:</strong> {formattedStartDate}
+          </p>
+          <p>
+            <strong>Fecha de Fin:</strong> {formattedEndDate}
+          </p>
+          <p>
+            <strong>Origen:</strong> {origin || "N/A"}
+          </p>
+          <p>
+            <strong>Destino:</strong> {destination || "N/A"}
+          </p>
+        </div>
+      )}
 
       {/* Tabla de coberturas del seguro con agrupaciones */}
       <div className="overflow-x-auto bg-white shadow-md rounded-lg mt-4">

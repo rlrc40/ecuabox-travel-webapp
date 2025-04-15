@@ -18,14 +18,14 @@ export default function PaymentButton() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [{ travelers, ...formValue }] =
+  const [{ travelers, amount = 0, ...formValue }] =
     useSessionStorage<CalculateYourInsuranceForm>(
       "calculateYourInsuranceForm",
       {},
     );
 
   const paymentData: PaymentData = {
-    amount: 50,
+    amount: amount * 100,
     currency: "eur",
     concept: "Seguro de viaje",
     travelers,

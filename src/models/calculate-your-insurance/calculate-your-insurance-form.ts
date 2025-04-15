@@ -5,6 +5,7 @@ export type CalculateYourInsuranceForm = {
   destination?: string;
   origin?: string;
   travelers?: Traveler[];
+  amount?: number;
 };
 
 export type Traveler = {
