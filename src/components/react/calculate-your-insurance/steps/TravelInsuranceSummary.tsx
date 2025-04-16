@@ -31,7 +31,7 @@ export default function TravelInsuranceSummary() {
               (1000 * 60 * 60 * 24),
           );
         const url =
-          new URL(`${import.meta.env.PUBLIC_STRAPI_URL}/api/policy?`) +
+          new URL(`${import.meta.env.PUBLIC_STRAPI_URL}/api/policies?`) +
           new URLSearchParams({
             numberOfDays: numberOfDays?.toString() || "0",
             numberOfPax: pax?.toString() || "0",
