@@ -1,6 +1,8 @@
 import { useSessionStorage } from "@/hooks/useSessionStorage";
 import type { CalculateYourInsuranceForm } from "@/models/calculate-your-insurance/calculate-your-insurance-form";
 import type { Country } from "@/models/Country";
+import { AutocompleteInput } from "../../ui/AutoCompleteInput";
+import { Autocomplete, AutocompleteItem } from "@heroui/react";
 
 export default function Step2Form({
   countries = [],
@@ -13,51 +15,46 @@ export default function Step2Form({
       {},
     );
 
+  const countryList = countries.map((country) => ({
+    label: country.name,
+    key: country.name,
+  }));
+
   return (
     <form className="max-w-sm mx-auto">
-      <div className="mb-4">
-        <label
-          htmlFor="origin"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >
-          Select your origin
-        </label>
-        <select
-          onChange={(e) =>
-            setFormValue({ ...formValue, origin: e.target.value })
-          }
+      <div className="flex w-[300px] flex-wrap md:flex-nowrap gap-4 mb-5">
+        <Autocomplete
           id="origin"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        >
-          <option>Choose a country</option>
-          {countries?.map((country) => (
-            <option key={country.id} value={country.name}>
-              {country.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label
-          htmlFor="destination"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >
-          Select your destination
-        </label>
-        <select
-          onChange={(e) =>
-            setFormValue({ ...formValue, destination: e.target.value })
+          className="max-w-xs"
+          defaultItems={countryList}
+          label="Origen"
+          placeholder="Selecciona tu país de origen"
+          aria-label="Selecciona tu país de origen"
+          onSelectionChange={(item) =>
+            setFormValue({ ...formValue, origin: item as string })
           }
-          id="destination"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         >
-          <option>Choose a country</option>
-          {countries?.map((country) => (
-            <option key={country.id} value={country.name}>
-              {country.name}
-            </option>
-          ))}
-        </select>
+          {(item) => (
+            <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>
+          )}
+        </Autocomplete>
+      </div>
+      <div className="flex w-[300px] flex-wrap md:flex-nowrap gap-4">
+        <Autocomplete
+          id="destination"
+          className="max-w-xs"
+          defaultItems={countryList}
+          label="Destino"
+          placeholder="Selecciona tu país de destino"
+          aria-label="Selecciona tu país de destino"
+          onSelectionChange={(item) =>
+            setFormValue({ ...formValue, destination: item as string })
+          }
+        >
+          {(item) => (
+            <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>
+          )}
+        </Autocomplete>
       </div>
     </form>
   );

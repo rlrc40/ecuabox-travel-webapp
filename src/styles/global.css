@@ -1,9 +1,21 @@
 @import "tailwindcss";
+@config "../../tailwind.config.mjs";
+@plugin './hero.ts';
+
+@source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary: #01beff;
+  --color-primary: #005a7a;
   --color-secondary: #00334a;
   --color-tertiary: #0dff96;
+}
+
+.ui-input {
+  @apply h-12 bg-gray-50 border border-gray-300 pl-12 pr-4 text-gray-900 text-sm rounded-lg outline-primary focus:ring-primary focus:border-primary block w-[250px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary;
+}
+
+.ui-button {
+  @apply text-white bg-primary border border-gray-300 focus:outline-none hover:bg-gray-100 hover:text-primary focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2;
 }

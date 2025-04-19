@@ -51,7 +51,7 @@ export function StretchOfDaysSelector({ apply }: StretchOfDaysSelectorProps) {
         new Date(day) > new Date(selectedStartDate) &&
         new Date(day) < new Date(selectedEndDate)
       ) {
-        className += " bg-dark-3 rounded-none";
+        className += " border-y-1 border-primary rounded-none";
       }
 
       daysArray.push(
@@ -124,12 +124,12 @@ export function StretchOfDaysSelector({ apply }: StretchOfDaysSelectorProps) {
 
   return (
     <section className="py-5 dark:bg-dark">
-      <div className="mx-auto max-w-[380px]" ref={datepickerRef}>
+      <div className="mx-auto max-w-[380px] relative" ref={datepickerRef}>
         <div className="relative mb-3">
           <input
             type="text"
             placeholder="Pick a date"
-            className="h-12 w-[250px] bg-gray-50 border border-gray-300 pl-12 pr-4 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="ui-input"
             value={updateInput()}
             onClick={toggleDatepicker}
             readOnly
@@ -194,7 +194,7 @@ export function StretchOfDaysSelector({ apply }: StretchOfDaysSelectorProps) {
         </div>
 
         {isOpen && (
-          <div className="shadow-xs bg-gray-50 flex w-full flex-col rounded-lg border border-stroke px-4 py-6 sm:px-6 sm:py-[30px] dark:border-dark-3 dark:bg-dark-2">
+          <div className="absolute shadow-xs bg-gray-50 flex w-full min-w-[373px] z-9 flex-col rounded-lg border border-stroke px-4 py-6 sm:px-6 sm:py-[30px] dark:border-dark-3 dark:bg-dark-2">
             <div className="flex items-center justify-between pb-2">
               <p className="text-base font-medium text-dark dark:text-white">
                 {currentDate.toLocaleString("default", {
@@ -277,14 +277,14 @@ export function StretchOfDaysSelector({ apply }: StretchOfDaysSelectorProps) {
             <div className="mt-5 flex justify-end space-x-2.5 border-t border-stroke p-5 dark:border-dark-3">
               <button
                 id="cancelButton"
-                className="rounded-lg border border-primary px-5 py-2.5 text-base font-medium text-primary hover:bg-blue-light-5"
+                className="ui-button"
                 onClick={handleCancel}
               >
                 Cancel
               </button>
               <button
                 id="applyButton"
-                className="rounded-lg bg-primary px-5 py-2.5 text-base font-medium text-white hover:bg-[#1B44C8]"
+                className="ui-button"
                 onClick={handleApply}
               >
                 Apply

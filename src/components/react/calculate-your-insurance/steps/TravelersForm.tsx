@@ -1,9 +1,19 @@
 import { useSessionStorage } from "@/hooks/useSessionStorage";
 import type { CalculateYourInsuranceForm } from "@/models/calculate-your-insurance/calculate-your-insurance-form";
+import {
+  Checkbox,
+  DatePicker,
+  Input,
+  Tab,
+  Tabs,
+  type DateValue,
+} from "@heroui/react";
 import { useEffect, useState } from "react";
 
-const inputClass =
-  "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
+const parseDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toISOString().split("T")[0];
+};
 
 export default function TravelersForm() {
   const [formValue, setFormValue] =
@@ -38,6 +48,20 @@ export default function TravelersForm() {
     };
     setFormValue({ ...formValue, travelers: updatedTravelers });
     console.log("Updated travelers:", updatedTravelers);
+  };
+
+  const handleTravelerBirthdateChange = (
+    index: number,
+    date: DateValue | null,
+  ) => {
+    if (!date) return;
+
+    const updatedTravelers = [...travelers];
+    updatedTravelers[index] = {
+      ...updatedTravelers[index],
+      birthdate: date ? parseDate(date.toString()) : "",
+    };
+    setFormValue({ ...formValue, travelers: updatedTravelers });
   };
 
   const validateDocument = (document: string): boolean => {
@@ -116,19 +140,19 @@ export default function TravelersForm() {
   return (
     <div>
       <div className="tabs flex space-x-4 mb-6">
-        {travelers.map((_, index) => (
-          <button
-            key={index}
-            className={`tab px-4 py-2 rounded-lg font-medium ${
-              activeTab === index
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-            }`}
-            onClick={() => setActiveTab(index)}
-          >
-            Viajero {index + 1}
-          </button>
-        ))}
+        <Tabs
+          aria-label="Viajeros"
+          radius="full"
+          onSelectionChange={(index) => setActiveTab(Number(index))}
+        >
+          {travelers.map((_, index) => (
+            <Tab
+              key={index}
+              title={`Viajero ${index + 1}`}
+              onClick={() => setActiveTab(index)}
+            />
+          ))}
+        </Tabs>
       </div>
       <form>
         {travelers.map((traveler, index) => (
@@ -143,178 +167,102 @@ export default function TravelersForm() {
 
               {/* General Data */}
               <div className="grid gap-6 mb-6 md:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="firstName"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Nombre *
-                  </label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    value={traveler.firstName || ""}
-                    onChange={(e) => handleTravelerChange(index, e)}
-                    required
-                    className={inputClass}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="lastName"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Apellidos *
-                  </label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    value={traveler.lastName || ""}
-                    onChange={(e) => handleTravelerChange(index, e)}
-                    required
-                    className={inputClass}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="document"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Documento de Identidad *
-                  </label>
-                  <input
-                    type="text"
-                    id="document"
-                    value={traveler.document || ""}
-                    onChange={(e) => handleDocumentChange(index, e)}
-                    required
-                    className={inputClass}
-                  />
-                  {documentError && (
-                    <p className="mt-2 text-sm text-red-600">{documentError}</p>
-                  )}
-                </div>
-                <div>
-                  <label
-                    htmlFor="birthdate"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Fecha de Nacimiento *
-                  </label>
-                  <input
-                    type="date"
-                    id="birthdate"
-                    value={traveler.birthdate || ""}
-                    onChange={(e) => handleTravelerChange(index, e)}
-                    required
-                    className={inputClass}
-                  />
-                </div>
+                <Input
+                  id="firstName"
+                  label="Nombre"
+                  aria-label="Nombre"
+                  value={traveler.firstName || ""}
+                  onChange={(e) => handleTravelerChange(index, e)}
+                  isRequired
+                />
+                <Input
+                  id="lastName"
+                  label="Apellidos"
+                  aria-label="Apellidos"
+                  isRequired
+                  value={traveler.lastName || ""}
+                  onChange={(e) => handleTravelerChange(index, e)}
+                />
+                <Input
+                  id="document"
+                  label="Documento de Identidad"
+                  aria-label="Documento de Identidad"
+                  placeholder="DNI, NIE o CIF"
+                  value={traveler.document || ""}
+                  onChange={(e) => handleDocumentChange(index, e)}
+                  isRequired
+                  isInvalid={!!documentError}
+                  errorMessage={documentError}
+                />
+                <DatePicker
+                  className="max-w-[284px]"
+                  label="Fecha de Nacimiento"
+                  aria-label="Fecha de Nacimiento"
+                  onChange={(date) =>
+                    handleTravelerBirthdateChange(index, date)
+                  }
+                  isRequired
+                />
               </div>
 
               {/* Contact Data */}
               <h3 className="text-md font-semibold mb-2">Datos de Contacto</h3>
               <div className="grid gap-6 mb-6 md:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="phone"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Teléfono
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    value={traveler.phone || ""}
-                    onChange={(e) => handleTravelerChange(index, e)}
-                    className={inputClass}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={traveler.email || ""}
-                    onChange={(e) => handleTravelerChange(index, e)}
-                    required
-                    className={inputClass}
-                  />
-                </div>
+                <Input
+                  type="phone"
+                  id="phone"
+                  label="Teléfono"
+                  aria-label="Teléfono"
+                  value={traveler.phone || ""}
+                  onChange={(e) => handleTravelerChange(index, e)}
+                />
+                <Input
+                  type="email"
+                  id="email"
+                  label="Email"
+                  aria-label="Email"
+                  value={traveler.email || ""}
+                  onChange={(e) => handleTravelerChange(index, e)}
+                  isRequired
+                />
               </div>
 
               {/* Address Data */}
               <h3 className="text-md font-semibold mb-2">Dirección</h3>
-              <div className="mb-4">
-                <label
-                  htmlFor="address"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Dirección
-                </label>
-                <input
-                  type="text"
+              <div className="grid gap-6 mb-6 md:grid-cols-2">
+                <Input
                   id="address"
+                  label="Dirección"
+                  aria-label="Dirección"
                   value={traveler.address || ""}
                   onChange={(e) => handleTravelerChange(index, e)}
-                  className={inputClass}
                 />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="postalCode"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Código Postal
-                </label>
-                <input
-                  type="text"
+                <Input
                   id="postalCode"
+                  label="Código Postal"
+                  aria-label="Código Postal"
                   value={traveler.postalCode || ""}
                   onChange={(e) => handleTravelerChange(index, e)}
-                  className={inputClass}
                 />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="city"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Ciudad
-                </label>
-                <input
-                  type="text"
+                <Input
                   id="city"
+                  label="Ciudad"
+                  aria-label="Ciudad"
                   value={traveler.city || ""}
                   onChange={(e) => handleTravelerChange(index, e)}
-                  className={inputClass}
                 />
               </div>
 
               {/* Terms */}
               <div className="flex items-start mt-6">
                 <div className="flex items-center h-5">
-                  <input
-                    id="termsAndConditions"
-                    type="checkbox"
-                    onChange={(e) => handleTravelerChange(index, e)}
-                    checked={traveler.termsAndConditions || false}
-                    required
-                    className="w-4 h-4"
-                  />
+                  <Checkbox defaultSelected isRequired>
+                    Estoy de acuerdo con los{" "}
+                    <a href="#" className="text-blue-600 hover:underline">
+                      términos y condiciones
+                    </a>
+                  </Checkbox>
                 </div>
-                <label htmlFor="termsAndConditions" className="ml-2 text-sm">
-                  Estoy de acuerdo con los{" "}
-                  <a href="#" className="text-blue-600 hover:underline">
-                    términos y condiciones
-                  </a>
-                  .
-                </label>
               </div>
             </div>
           </div>
