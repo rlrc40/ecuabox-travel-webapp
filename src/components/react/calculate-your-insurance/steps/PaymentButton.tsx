@@ -3,7 +3,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import type {
   CalculateYourInsuranceForm,
   Traveler,
-} from "@/models/calculate-your-insurance/calculate-your-insurance-form";
+} from "@/models/calculate-your-insurance/new-insurance";
 import { useSessionStorage } from "@/hooks/useSessionStorage";
 
 interface PaymentData {

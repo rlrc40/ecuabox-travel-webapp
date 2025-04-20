@@ -5,5 +5,10 @@ export interface Country {
   iso3: string;
   capital: string;
   translations: Record<string, string>;
-  provinces: string[];
+  provinces: Province[];
+}
+
+export interface Province {
+  id: number;
+  name: string;
 }

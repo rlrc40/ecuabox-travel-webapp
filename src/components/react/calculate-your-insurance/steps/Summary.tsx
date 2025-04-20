@@ -1,21 +1,24 @@
 import { useSessionStorage } from "@/hooks/useSessionStorage";
-import type { CalculateYourInsuranceForm } from "@/models/calculate-your-insurance/calculate-your-insurance-form";
+import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
 import type { Policy } from "@/models/policy";
 import { useEffect, useState } from "react";
 
-export default function TravelInsuranceSummary() {
+export default function Summary() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [formValue, setFormValue] =
-    useSessionStorage<CalculateYourInsuranceForm>(
-      "calculateYourInsuranceForm",
-      {},
-    );
+  const [policyParams, setPolicyParams] = useSessionStorage<PolicyParams>(
+    "policy-params",
+    {},
+  );
 
-  const [policy, setPolicy] = useState<Policy>();
+  const [newInsurance, setNewInsurance] = useSessionStorage<NewInsurance>(
+    "new-insurance",
+    {},
+  );
 
-  const { startDate, endDate, origin, destination, pax } = formValue;
+  const { startDate, endDate, pax, destinationCountry, originCountry } =
+    policyParams;
 
   useEffect(() => {
     const fetchInsuranceData = async () => {
@@ -43,10 +46,42 @@ export default function TravelInsuranceSummary() {
           throw new Error("Failed fetch insurance data");
         }
 
-        const data = await response.json();
+        const { policy } = (await response.json()) as { policy: Policy };
 
-        setPolicy(data.policy);
-        setFormValue({ ...formValue, amount: data.policy.retailPriceAmount });
+        setNewInsurance({
+          ...newInsurance,
+          quotePresetList: [
+            {
+              paxNum: Number(pax),
+              basePrices: { idDyn: policy.basePrices.idDyn },
+              priceListParamsValues1: { idDyn: policy.priceListParamsValues1 },
+              priceListParamsValues2: { idDyn: policy.priceListParamsValues2 },
+              insuredAmount: policy.retailPriceAmount,
+              countryDestiny: {
+                idDyn: policyParams.destinationCountry!.id,
+                name: policyParams.destinationCountry!.name,
+                isoCode3: policyParams.destinationCountry!.iso3,
+              },
+              countryOrigin: {
+                idDyn: policyParams.originCountry!.id,
+                name: policyParams.originCountry!.name,
+                isoCode3: policyParams.originCountry!.iso3,
+              },
+            },
+          ],
+          policy: {
+            idDyn: policy.id,
+            policyNumber: policy.name,
+            product: {
+              idDyn: policy.productId,
+              productName: policy.productName,
+            },
+          },
+        });
+        setPolicyParams({
+          ...policyParams,
+          amount: policy.retailPriceAmount,
+        });
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "An unknown error occurred",
@@ -122,8 +157,7 @@ export default function TravelInsuranceSummary() {
       ) : (
         <div className="text-gray-700">
           <p>
-            <strong>Precio:</strong> $
-            {policy?.retailPriceAmount.toFixed(2) || "N/A"}
+            <strong>Precio:</strong> ${policyParams.amount?.toFixed(2) || "N/A"}
           </p>
           <p>
             <strong>Fecha de Inicio:</strong> {formattedStartDate}
@@ -132,10 +166,10 @@ export default function TravelInsuranceSummary() {
             <strong>Fecha de Fin:</strong> {formattedEndDate}
           </p>
           <p>
-            <strong>Origen:</strong> {origin || "N/A"}
+            <strong>Origen:</strong> {originCountry?.name || "N/A"}
           </p>
           <p>
-            <strong>Destino:</strong> {destination || "N/A"}
+            <strong>Destino:</strong> {destinationCountry?.name || "N/A"}
           </p>
         </div>
       )}

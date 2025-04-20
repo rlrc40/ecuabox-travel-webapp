@@ -1,7 +1,20 @@
 ---
-import TravelersForm from "@/components/react/calculate-your-insurance/steps/TravelersForm";
+import InsuredForm from "@/components/react/calculate-your-insurance/steps/InsuredForm";
 import Step from "./step.astro";
 import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
+import { Country } from "@/models/Country";
+import fetchApi from "@/lib/strapi";
+
+let countries: Country[] = [];
+
+try {
+  countries = await fetchApi<Country[]>({
+    endpoint: `master-data/country`,
+    wrappedByKey: "countries",
+  });
+} catch (error) {
+  return Astro.redirect("/404");
+}
 ---
 
 <Step
@@ -9,5 +22,5 @@ import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/Calcul
   title="Información Personal"
   description="Introduce tus datos personales para completar la reserva."
 >
-  <TravelersForm client:only />
+  <InsuredForm client:only countries={countries} />
 </Step>

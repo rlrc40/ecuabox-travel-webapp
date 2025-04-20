@@ -1,5 +1,5 @@
 ---
-import TravelInsuranceSummary from "@/components/react/calculate-your-insurance/steps/TravelInsuranceSummary";
+import Summary from "@/components/react/calculate-your-insurance/steps/Summary";
 import Step from "./step.astro";
 import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
 ---
@@ -9,5 +9,5 @@ import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/Calcul
   title="Resumen del seguro"
   description="Revisa los detalles de tu seguro de viaje antes de continuar con la compra."
 >
-  <TravelInsuranceSummary client:load />
+  <Summary client:load />
 </Step>

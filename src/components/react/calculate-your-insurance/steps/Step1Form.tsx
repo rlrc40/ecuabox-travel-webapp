@@ -1,5 +1,3 @@
-import type { CalculateYourInsuranceForm } from "@/models/calculate-your-insurance/calculate-your-insurance-form";
-import { StretchOfDaysSelector } from "../StretchOfDaysSelector";
 import { useSessionStorage } from "@/hooks/useSessionStorage";
 import {
   DateRangePicker,
@@ -7,26 +5,26 @@ import {
   type DateValue,
   type RangeValue,
 } from "@heroui/react";
+import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
 
 export default function Step1Form() {
-  const [formValue, setFormValue] =
-    useSessionStorage<CalculateYourInsuranceForm>(
-      "calculateYourInsuranceForm",
-      {},
-    );
+  const [policyParams, setPolicyParams] = useSessionStorage<PolicyParams>(
+    "policy-params",
+    {},
+  );
 
   const handleApplyStretchOfDays = (value: RangeValue<DateValue> | null) => {
     if (!value) return;
 
-    setFormValue({
-      ...formValue,
+    setPolicyParams({
+      ...policyParams,
       startDate: value.start.toString(),
       endDate: value.end.toString(),
     });
   };
 
   const handlePaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValue({ ...formValue, pax: parseInt(e.target.value) });
+    setPolicyParams({ ...policyParams, pax: parseInt(e.target.value) });
   };
 
   const PaxIconSVG = () => (
@@ -62,7 +60,6 @@ export default function Step1Form() {
         placeholder="Número de viajeros"
         aria-describedby="Número de viajeros"
         aria-label="Número de viajeros"
-        label="Número de viajeros"
         onChange={handlePaxChange}
         startContent={<PaxIconSVG />}
         className="max-w-xs"
