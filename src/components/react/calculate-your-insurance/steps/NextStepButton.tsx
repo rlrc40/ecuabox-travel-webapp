@@ -38,6 +38,7 @@ export const NextStepButton = ({ nextStep }: NextStepButtonProps) => {
         </Button>
       )}
       <Button
+        id="calculate-your-insurance-next-step-button"
         onPress={() => setIsLoading(true)}
         isLoading={isLoading}
         href={nextStepHref}

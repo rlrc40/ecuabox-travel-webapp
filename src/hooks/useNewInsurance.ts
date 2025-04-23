@@ -1,7 +1,10 @@
 import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
 import { useSessionStorage } from "./useSessionStorage";
 import type { Policy } from "@/models/policy";
-import type { NewInsurance } from "@/models/calculate-your-insurance/new-insurance";
+import type {
+  InsuranceInsured,
+  NewInsurance,
+} from "@/models/calculate-your-insurance/new-insurance";
 
 const useNewInsurance = () => {
   const [newInsurance, setNewInsurance] = useSessionStorage<NewInsurance>(
@@ -57,9 +60,55 @@ const useNewInsurance = () => {
     });
   };
 
+  const initInsuranceInsured = (pax: number) => {
+    if (!pax) return;
+
+    const insuredList = newInsurance.insuranceInsuredList?.length
+      ? newInsurance.insuranceInsuredList
+      : Array.from({ length: pax || 1 }, (_, i) => ({
+          isMainInsured: i === 0,
+          insured: {
+            name: "",
+            surname: "",
+            documentNumber: "",
+            documentType: "Resto del mundo",
+            birthDate: "",
+            contactInfoList: [
+              {
+                email: "",
+                phoneNumber: "",
+                web: "",
+              },
+            ],
+            addressInfoList: [
+              {
+                commercialAddress: "",
+                commercialPostalCode: "",
+              },
+            ],
+          },
+        }));
+
+    setNewInsurance({ ...newInsurance, insuranceInsuredList: insuredList });
+  };
+
+  const updateInsuranceInsured = (index: number, insured: InsuranceInsured) => {
+    if (!newInsurance.insuranceInsuredList) return;
+
+    const updatedInsuredList = [...newInsurance.insuranceInsuredList];
+    updatedInsuredList[index] = insured;
+
+    setNewInsurance({
+      ...newInsurance,
+      insuranceInsuredList: updatedInsuredList,
+    });
+  };
+
   return {
     newInsurance,
     initInsurance,
+    initInsuranceInsured,
+    updateInsuranceInsured,
   };
 };
 

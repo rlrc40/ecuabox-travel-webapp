@@ -6,6 +6,7 @@ import type { Policy } from "@/models/policy";
 
 const useTravelInsuranceSteps = () => {
   const [isLoading, setIsLoading] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
 
   const [policyParams, setPolicyParams] = useSessionStorage<PolicyParams>(
@@ -23,8 +24,7 @@ const useTravelInsuranceSteps = () => {
     });
   };
 
-  const setPolicyPax = (pax: number) => {
-    if (!pax) return;
+  const setPolicyPax = (pax: number | undefined) => {
     setPolicyParams({
       ...policyParams,
       pax,
@@ -102,7 +102,8 @@ const useTravelInsuranceSteps = () => {
       "calculate-your-insurance-next-step-button",
     ) as HTMLButtonElement;
 
-    if (btn) btn.classList.replace("ui-button", "ui-button-disabled");
+    if (btn) btn.classList.add("opacity-disabled");
+    if (btn) btn.classList.add("pointer-events-none");
   };
 
   const enableNextStepButton = () => {
@@ -110,7 +111,26 @@ const useTravelInsuranceSteps = () => {
       "calculate-your-insurance-next-step-button",
     ) as HTMLButtonElement;
 
-    if (btn) btn.classList.replace("ui-button-disabled", "ui-button");
+    if (btn) btn.classList.remove("opacity-disabled");
+    if (btn) btn.classList.remove("pointer-events-none");
+  };
+
+  const disablePaymentButton = () => {
+    const btn = document.getElementById(
+      "calculate-your-insurance-payment-button",
+    ) as HTMLButtonElement;
+
+    if (btn) btn.classList.add("opacity-disabled");
+    if (btn) btn.classList.add("pointer-events-none");
+  };
+
+  const enablePaymentButton = () => {
+    const btn = document.getElementById(
+      "calculate-your-insurance-payment-button",
+    ) as HTMLButtonElement;
+
+    if (btn) btn.classList.remove("opacity-disabled");
+    if (btn) btn.classList.remove("pointer-events-none");
   };
 
   return {
@@ -126,6 +146,8 @@ const useTravelInsuranceSteps = () => {
     getInsurancePolicy,
     disableNextStepButton,
     enableNextStepButton,
+    disablePaymentButton,
+    enablePaymentButton,
   };
 };
 

@@ -1,5 +1,3 @@
-import { useSessionStorage } from "@/hooks/useSessionStorage";
-import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
 import type { Country, Province } from "@/models/country";
 import {
   Autocomplete,
@@ -14,19 +12,19 @@ import {
 import { useEffect, useState } from "react";
 
 import { parseDate } from "@internationalized/date";
-import type { NewInsurance } from "@/models/calculate-your-insurance/new-insurance";
+import useNewInsurance from "@/hooks/useNewInsurance";
+import useTravelInsuranceSteps from "@/hooks/useTravelInsuranceSteps";
 
 interface InsuredFormProps {
   countries: Country[];
 }
 
 export default function InsuredForm({ countries }: InsuredFormProps) {
-  const [newInsurance, setNewInsurance] = useSessionStorage<NewInsurance>(
-    "new-insurance",
-    {},
-  );
+  const { newInsurance, initInsuranceInsured, updateInsuranceInsured } =
+    useNewInsurance();
 
-  const [policyParams] = useSessionStorage<PolicyParams>("policy-params", {});
+  const { policyParams, disablePaymentButton, enablePaymentButton } =
+    useTravelInsuranceSteps();
 
   const [documentError, setDocumentError] = useState<string | null>(null);
 
@@ -47,17 +45,14 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
     const { id, value, type, checked } = e.target;
     const updatedInsuranceInsuredList = [...insuranceInsuredList];
 
-    updatedInsuranceInsuredList[index].insured = {
-      ...updatedInsuranceInsuredList[index].insured,
+    const insuranceInsuredToUpdate = updatedInsuranceInsuredList[index];
+
+    insuranceInsuredToUpdate.insured = {
+      ...insuranceInsuredToUpdate.insured,
       [id]: type === "checkbox" ? checked : value,
     };
 
-    setNewInsurance({
-      ...newInsurance,
-      insuranceInsuredList: updatedInsuranceInsuredList,
-    });
-
-    console.log("Updated insuranceInsuredList:", updatedInsuranceInsuredList);
+    updateInsuranceInsured(index, insuranceInsuredToUpdate);
   };
 
   const handleTravelerAddressChange = (
@@ -67,16 +62,14 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
     const { id, value } = e.target;
     const updatedInsuranceInsuredList = [...insuranceInsuredList];
 
-    updatedInsuranceInsuredList[index].insured.addressInfoList[0] = {
-      ...updatedInsuranceInsuredList[index].insured.addressInfoList[0],
+    const insuranceInsuredToUpdate = updatedInsuranceInsuredList[index];
+
+    insuranceInsuredToUpdate.insured.addressInfoList[0] = {
+      ...insuranceInsuredToUpdate.insured.addressInfoList[0],
       [id]: value,
     };
 
-    setNewInsurance({
-      ...newInsurance,
-      insuranceInsuredList: updatedInsuranceInsuredList,
-    });
-    console.log("Updated insuranceInsuredList:", updatedInsuranceInsuredList);
+    updateInsuranceInsured(index, insuranceInsuredToUpdate);
   };
 
   const handleTravelerContactChange = (
@@ -86,16 +79,14 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
     const { id, value } = e.target;
     const updatedInsuranceInsuredList = [...insuranceInsuredList];
 
-    updatedInsuranceInsuredList[index].insured.contactInfoList[0] = {
-      ...updatedInsuranceInsuredList[index].insured.contactInfoList[0],
+    const insuranceInsuredToUpdate = updatedInsuranceInsuredList[index];
+
+    insuranceInsuredToUpdate.insured.contactInfoList[0] = {
+      ...insuranceInsuredToUpdate.insured.contactInfoList[0],
       [id]: value,
     };
 
-    setNewInsurance({
-      ...newInsurance,
-      insuranceInsuredList: updatedInsuranceInsuredList,
-    });
-    console.log("Updated insuranceInsuredList:", updatedInsuranceInsuredList);
+    updateInsuranceInsured(index, insuranceInsuredToUpdate);
   };
 
   const handleTravelerBirthdateChange = (
@@ -105,14 +96,15 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
     if (!date) return;
 
     const updatedInsuranceInsuredList = [...insuranceInsuredList];
-    updatedInsuranceInsuredList[index].insured = {
-      ...updatedInsuranceInsuredList[index].insured,
+
+    const insuranceInsuredToUpdate = updatedInsuranceInsuredList[index];
+
+    insuranceInsuredToUpdate.insured = {
+      ...insuranceInsuredToUpdate.insured,
       birthDate: date.toString(),
     };
-    setNewInsurance({
-      ...newInsurance,
-      insuranceInsuredList: updatedInsuranceInsuredList,
-    });
+
+    updateInsuranceInsured(index, insuranceInsuredToUpdate);
   };
 
   const handleTravelerCountryChange = (index: number, key: number) => {
@@ -121,19 +113,15 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
 
     if (!country) return;
 
-    updatedInsuranceInsuredList[
-      index
-    ].insured.addressInfoList[0].commercialCountry = {
+    const insuranceInsuredToUpdate = updatedInsuranceInsuredList[index];
+
+    insuranceInsuredToUpdate.insured.addressInfoList[0].commercialCountry = {
       idDyn: country.id,
       name: country.name,
       isoCode3: country.iso3,
     };
 
-    setNewInsurance({
-      ...newInsurance,
-      insuranceInsuredList: updatedInsuranceInsuredList,
-    });
-    setProvinces(country.provinces || []);
+    updateInsuranceInsured(index, insuranceInsuredToUpdate);
   };
 
   const handleTravelerProvinceChange = (index: number, key: number) => {
@@ -142,17 +130,14 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
 
     if (!province) return;
 
-    updatedInsuranceInsuredList[
-      index
-    ].insured.addressInfoList[0].commercialProvince = {
+    const insuranceInsuredToUpdate = updatedInsuranceInsuredList[index];
+
+    insuranceInsuredToUpdate.insured.addressInfoList[0].commercialProvince = {
       idDyn: province.id,
       name: province.name,
     };
 
-    setNewInsurance({
-      ...newInsurance,
-      insuranceInsuredList: updatedInsuranceInsuredList,
-    });
+    updateInsuranceInsured(index, insuranceInsuredToUpdate);
   };
 
   const validateDocument = (document: string): boolean => {
@@ -179,60 +164,23 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
     }
 
     const updatedInsuranceInsuredList = [...insuranceInsuredList];
-    updatedInsuranceInsuredList[index].insured = {
-      ...updatedInsuranceInsuredList[index].insured,
+
+    const insuranceInsuredToUpdate = updatedInsuranceInsuredList[index];
+
+    insuranceInsuredToUpdate.insured = {
+      ...insuranceInsuredToUpdate.insured,
       [id]: value,
     };
-    setNewInsurance({
-      ...newInsurance,
-      insuranceInsuredList: updatedInsuranceInsuredList,
-    });
+    updateInsuranceInsured(index, insuranceInsuredToUpdate);
   };
 
-  const disableNextStepButton = () => {
-    const btn = document.getElementById(
-      "calculate-your-insurance-payment-button",
-    ) as HTMLButtonElement;
-
-    if (btn) btn.classList.replace("ui-button", "ui-button-disabled");
-  };
-
-  const enableNextStepButton = () => {
-    const btn = document.getElementById(
-      "calculate-your-insurance-payment-button",
-    ) as HTMLButtonElement;
-
-    if (btn) btn.classList.replace("ui-button-disabled", "ui-button");
-  };
+  const navigateToFirstStep = () =>
+    (window.location.href = "/calculate-your-insurance/step-1");
 
   useEffect(() => {
-    const newTravelers = newInsurance.insuranceInsuredList?.length
-      ? newInsurance.insuranceInsuredList
-      : Array.from({ length: pax || 1 }, (_, i) => ({
-          isMainInsured: i === 0,
-          insured: {
-            name: "",
-            surname: "",
-            documentNumber: "",
-            documentType: "Resto del mundo",
-            birthDate: "",
-            contactInfoList: [
-              {
-                email: "",
-                phoneNumber: "",
-                web: "",
-              },
-            ],
-            addressInfoList: [
-              {
-                commercialAddress: "",
-                commercialPostalCode: "",
-              },
-            ],
-          },
-        }));
-    setNewInsurance({ ...newInsurance, insuranceInsuredList: newTravelers });
-  }, [pax]);
+    if (pax === 0) navigateToFirstStep();
+    else initInsuranceInsured(pax);
+  }, []);
 
   useEffect(() => {
     const allValid =
@@ -246,9 +194,8 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
           insured.birthDate,
       ) && termsAndConditions;
 
-    if (allValid) enableNextStepButton();
-    else disableNextStepButton();
-    console.log(insuranceInsuredList);
+    if (allValid) enablePaymentButton();
+    else disablePaymentButton();
   }, [newInsurance.insuranceInsuredList, termsAndConditions]);
 
   return (
