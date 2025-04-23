@@ -1,33 +1,43 @@
-import { useSessionStorage } from "@/hooks/useSessionStorage";
-import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
+import useTravelInsuranceSteps from "@/hooks/useTravelInsuranceSteps";
 import type { Country } from "@/models/country";
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
-import { useEffect } from "react";
+import { useEffect, type Key } from "react";
+
+const autocompleteClassName = "flex w-[300px] flex-wrap md:flex-nowrap gap-4";
 
 export default function Step2Form({
   countries = [],
 }: {
   countries: Country[];
 }) {
-  const [policyParams, setPolicyParams] = useSessionStorage<PolicyParams>(
-    "policy-params",
-    {},
-  );
+  const {
+    policyParams,
+    setPolicyDestinationCountry,
+    setPolicyOriginCountry,
+    disableNextStepButton,
+    enableNextStepButton,
+  } = useTravelInsuranceSteps();
 
-  const disableNextStepButton = () => {
-    const btn = document.getElementById(
-      "calculate-your-insurance-next-step-button",
-    ) as HTMLButtonElement;
+  const handleDestinationCountryChange = (item: Key | null) => {
+    if (!item) return;
 
-    if (btn) btn.classList.replace("ui-button", "ui-button-disabled");
+    const selectedCountry = findCountryById(Number(item));
+
+    if (selectedCountry) setPolicyDestinationCountry(selectedCountry);
   };
 
-  const enableNextStepButton = () => {
-    const btn = document.getElementById(
-      "calculate-your-insurance-next-step-button",
-    ) as HTMLButtonElement;
+  const handleOriginCountryChange = (item: Key | null) => {
+    if (!item) return;
 
-    if (btn) btn.classList.replace("ui-button-disabled", "ui-button");
+    const selectedCountry = findCountryById(Number(item));
+
+    if (selectedCountry) setPolicyOriginCountry(selectedCountry);
+  };
+
+  const findCountryById = (id: string | number) => {
+    const country = countries.find((c) => Number(c.id) === Number(id));
+
+    return country || null;
   };
 
   useEffect(() => {
@@ -41,8 +51,8 @@ export default function Step2Form({
   }, [policyParams, enableNextStepButton]);
 
   return (
-    <form className="max-w-sm mx-auto">
-      <div className="flex w-[300px] flex-wrap md:flex-nowrap gap-4 mb-5">
+    <div className="max-w-sm mx-auto">
+      <div className={`${autocompleteClassName} mb-5`}>
         <Autocomplete
           id="origin"
           className="max-w-xs"
@@ -50,25 +60,15 @@ export default function Step2Form({
           label="Origen"
           placeholder="Selecciona tu país de origen"
           aria-label="Selecciona tu país de origen"
-          defaultSelectedKey={
-            policyParams.originCountry?.id &&
-            `${policyParams.originCountry?.id}`
-          }
-          onSelectionChange={(item) =>
-            setPolicyParams({
-              ...policyParams,
-              originCountry: countries.find(
-                (c) => Number(c.id) === Number(item),
-              ),
-            })
-          }
+          defaultSelectedKey={`${policyParams.originCountry?.id || ""}`}
+          onSelectionChange={handleOriginCountryChange}
         >
           {(item) => (
             <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>
           )}
         </Autocomplete>
       </div>
-      <div className="flex w-[300px] flex-wrap md:flex-nowrap gap-4">
+      <div className={autocompleteClassName}>
         <Autocomplete
           id="destination"
           className="max-w-xs"
@@ -76,24 +76,14 @@ export default function Step2Form({
           label="Destino"
           placeholder="Selecciona tu país de destino"
           aria-label="Selecciona tu país de destino"
-          defaultSelectedKey={
-            policyParams.destinationCountry?.id &&
-            `${policyParams.destinationCountry?.id}`
-          }
-          onSelectionChange={(item) =>
-            setPolicyParams({
-              ...policyParams,
-              destinationCountry: countries.find(
-                (c) => Number(c.id) === Number(item),
-              ),
-            })
-          }
+          defaultSelectedKey={`${policyParams.destinationCountry?.id || ""}`}
+          onSelectionChange={handleDestinationCountryChange}
         >
           {(item) => (
             <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>
           )}
         </Autocomplete>
       </div>
-    </form>
+    </div>
   );
 }

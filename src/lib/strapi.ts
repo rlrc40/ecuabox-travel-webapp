@@ -25,8 +25,6 @@ export default async function fetchApi<T>({
 
   const url = new URL(`${import.meta.env.PUBLIC_STRAPI_URL}/api/${endpoint}`);
 
-  console.log("New Strapi request:", url.toString());
-
   if (query) {
     Object.entries(query).forEach(([key, value]) => {
       url.searchParams.append(key, value);
@@ -45,6 +43,5 @@ export default async function fetchApi<T>({
     data = data[0];
   }
 
-  console.log("New Strapi request:", data);
   return data as T;
 }

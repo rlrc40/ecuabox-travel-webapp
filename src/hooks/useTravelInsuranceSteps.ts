@@ -1,5 +1,6 @@
 import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
 import { useSessionStorage } from "./useSessionStorage";
+import type { Country } from "@/models/country";
 
 const useTravelInsuranceSteps = () => {
   const [policyParams, setPolicyParams] = useSessionStorage<PolicyParams>(
@@ -22,6 +23,15 @@ const useTravelInsuranceSteps = () => {
     setPolicyParams({
       ...policyParams,
       pax,
+    });
+  };
+
+  const setPolicyDestinationCountry = (destinationCountry: Country) => {
+    if (!destinationCountry) return;
+
+    setPolicyParams({
+      ...policyParams,
+      destinationCountry,
     });
   };
 
