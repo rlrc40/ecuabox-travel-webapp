@@ -1,11 +1,8 @@
-import { useSessionStorage } from "@/hooks/useSessionStorage";
-import type { NewInsurance } from "@/models/calculate-your-insurance/new-insurance";
-import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
-import type { Policy } from "@/models/policy";
+import useNewInsurance from "@/hooks/useNewInsurance";
+import useTravelInsuranceSteps from "@/hooks/useTravelInsuranceSteps";
 import { Accordion, AccordionItem } from "@heroui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-// Datos del seguro de viaje
 const insuranceData = {
   categories: [
     {
@@ -45,98 +42,28 @@ const insuranceData = {
   ],
 };
 
-export default function Summary() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export default function InsurancePolicySummary() {
+  const { policyParams, getInsurancePolicy, isLoading } =
+    useTravelInsuranceSteps();
 
-  const [policyParams, setPolicyParams] = useSessionStorage<PolicyParams>(
-    "policy-params",
-    {},
-  );
+  const { initInsurance } = useNewInsurance();
 
-  const [newInsurance, setNewInsurance] = useSessionStorage<NewInsurance>(
-    "new-insurance",
-    {},
-  );
-
-  const { startDate, endDate, pax, destinationCountry, originCountry } =
+  const { startDate, endDate, destinationCountry, originCountry } =
     policyParams;
 
   useEffect(() => {
-    const fetchInsuranceData = async () => {
-      setIsLoading(true);
-      setError(null);
+    const prepareNewInsurance = async () => {
+      const policy = await getInsurancePolicy();
 
-      try {
-        const numberOfDays =
-          startDate &&
-          endDate &&
-          Math.ceil(
-            (new Date(endDate).getTime() - new Date(startDate).getTime()) /
-              (1000 * 60 * 60 * 24),
-          );
-        const url =
-          new URL(`${import.meta.env.PUBLIC_STRAPI_URL}/api/policies?`) +
-          new URLSearchParams({
-            numberOfDays: numberOfDays?.toString() || "0",
-            numberOfPax: pax?.toString() || "0",
-          }).toString();
+      if (!policy) return;
 
-        const response = await fetch(url.toString());
-
-        if (!response.ok) {
-          throw new Error("Failed fetch insurance data");
-        }
-
-        const { policy } = (await response.json()) as { policy: Policy };
-
-        setNewInsurance({
-          ...newInsurance,
-          unsuscribeDate: policyParams.endDate,
-          effectDate: policyParams.startDate,
-          quotePresetList: [
-            {
-              paxNum: Number(pax),
-              basePrices: { idDyn: policy.basePrices.idDyn },
-              priceListParamsValues1: { idDyn: policy.priceListParamsValues1 },
-              priceListParamsValues2: { idDyn: policy.priceListParamsValues2 },
-              insuredAmount: policy.retailPriceAmount,
-              countryDestiny: {
-                idDyn: policyParams.destinationCountry!.id,
-                name: policyParams.destinationCountry!.name,
-                isoCode2: policyParams.destinationCountry!.iso2,
-                isoCode3: policyParams.destinationCountry!.iso3,
-              },
-              countryOrigin: {
-                idDyn: policyParams.originCountry!.id,
-                name: policyParams.originCountry!.name,
-                isoCode2: policyParams.originCountry!.iso2,
-                isoCode3: policyParams.originCountry!.iso3,
-              },
-            },
-          ],
-          policy: {
-            idDyn: policy.id,
-            policyNumber: policy.name,
-            product: {
-              idDyn: policy.productId,
-              productName: policy.productName,
-            },
-          },
-        });
-        setPolicyParams({
-          ...policyParams,
-          amount: policy.retailPriceAmount,
-        });
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred",
-        );
-      } finally {
-        setIsLoading(false);
-      }
+      initInsurance({
+        params: policyParams,
+        policy,
+      });
     };
-    fetchInsuranceData();
+
+    prepareNewInsurance();
   }, []);
 
   // Formatea las fechas de inicio y fin o asigna "N/A" si no están disponibles
@@ -185,13 +112,11 @@ export default function Summary() {
           key="1"
           aria-label="Coberturas"
           title={
-            <span className="text-gray-900 font-semibold">
-              Coberturas del Seguro
-            </span>
+            <span className="text-gray-900 font-semibold">Más información</span>
           }
         >
           {/* Tabla de coberturas del seguro con agrupaciones */}
-          <div className="overflow-x-auto bg-white shadow-md rounded-lg mt-4">
+          <div className="overflow-x-auto bg-white shadow-md rounded-lg ">
             <table className="min-w-full table-auto">
               <thead className="bg-gray-100 border-b">
                 <tr>
