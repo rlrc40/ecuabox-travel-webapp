@@ -1,10 +1,13 @@
 ---
 import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
 import Step from "./step.astro";
+import DownloadReportButton from "@/components/react/calculate-your-insurance/steps/DownloadReportButton";
 ---
 
 <Step
   step={CalculateYourInsuranceStep.Confirmation}
   title="Pago realizado"
   description="Tu pago ha sido realizado con éxito. En breve recibirás un correo con los detalles de tu seguro de viaje."
-/>
+>
+  <DownloadReportButton client:only />
+</Step>

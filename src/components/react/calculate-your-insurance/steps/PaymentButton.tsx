@@ -1,36 +1,39 @@
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import type {
-  CalculateYourInsuranceForm,
-  Traveler,
-} from "@/models/calculate-your-insurance/new-insurance";
 import { useSessionStorage } from "@/hooks/useSessionStorage";
+import type {
+  InsuranceInsured,
+  NewInsurance,
+} from "@/models/calculate-your-insurance/new-insurance";
+import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
 
 interface PaymentData {
   amount: number;
   currency: "eur";
   concept: string;
-  travelers?: Traveler[];
+  insuranceInsuredList?: InsuranceInsured[];
   metadata: object;
 }
 
 export default function PaymentButton() {
   const [isLoading, setIsLoading] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
 
-  const [{ travelers, amount = 0, ...formValue }] =
-    useSessionStorage<CalculateYourInsuranceForm>(
-      "calculateYourInsuranceForm",
-      {},
-    );
+  const [policyParams] = useSessionStorage<PolicyParams>("policy-params", {});
+
+  const [newInsurance] = useSessionStorage<NewInsurance>("new-insurance", {});
 
   const paymentData: PaymentData = {
-    amount: amount * 100,
+    amount: (policyParams.amount || 0) * 100,
     currency: "eur",
     concept: "Seguro de viaje",
-    travelers,
     metadata: {
-      ...formValue,
+      startDate: policyParams.startDate || "",
+      endDate: policyParams.endDate || "",
+      pax: policyParams.pax || 0,
+      origin: policyParams.originCountry?.name || "",
+      destination: policyParams.destinationCountry?.name || "",
     },
   };
 
@@ -76,11 +79,11 @@ export default function PaymentButton() {
         id="calculate-your-insurance-payment-button"
         type="button"
         onClick={handlePayment}
-        className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+        className="ui-button-disabled cursor-pointer"
       >
         {isLoading ? "Procesando..." : "Pagar"}
       </button>
-      {error && <p>Error: {error}</p>}
+      <span className="">{error && <p>Error: {error}</p>}</span>
     </>
   );
 }

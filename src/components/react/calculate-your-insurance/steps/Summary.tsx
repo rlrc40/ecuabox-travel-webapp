@@ -1,7 +1,49 @@
 import { useSessionStorage } from "@/hooks/useSessionStorage";
+import type { NewInsurance } from "@/models/calculate-your-insurance/new-insurance";
 import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
 import type { Policy } from "@/models/policy";
+import { Accordion, AccordionItem } from "@heroui/react";
 import { useEffect, useState } from "react";
+
+// Datos del seguro de viaje
+const insuranceData = {
+  categories: [
+    {
+      title: "Garantías de asistencia - incluida cobertura covid-19",
+      coverages: [
+        { name: "Asistencia médica y sanitaria", amount: "30.000 €" },
+        {
+          name: "Repatriación o transporte sanitario de heridos o enfermos",
+          amount: "Ilimitado",
+        },
+        {
+          name: "Repatriación o transporte del asegurado fallecido",
+          amount: "Ilimitado",
+        },
+      ],
+    },
+    {
+      title: "Garantías de equipajes",
+      coverages: [{ name: "Pérdidas materiales", amount: "300 €" }],
+    },
+    {
+      title: "Garantías de responsabilidad civil",
+      coverages: [
+        { name: "Responsabilidad civil privada", amount: "12.000 €" },
+      ],
+    },
+    {
+      title: "Servicios incluidos",
+      coverages: [
+        { name: "Telemedicina", amount: "Incluido" },
+        { name: "Servihelp", amount: "Incluido" },
+        { name: "Servisuccess", amount: "Incluido" },
+        { name: "Serviassist", amount: "Incluido" },
+        { name: "Serviclaims", amount: "Incluido" },
+      ],
+    },
+  ],
+};
 
 export default function Summary() {
   const [isLoading, setIsLoading] = useState(false);
@@ -50,6 +92,8 @@ export default function Summary() {
 
         setNewInsurance({
           ...newInsurance,
+          unsuscribeDate: policyParams.endDate,
+          effectDate: policyParams.startDate,
           quotePresetList: [
             {
               paxNum: Number(pax),
@@ -60,11 +104,13 @@ export default function Summary() {
               countryDestiny: {
                 idDyn: policyParams.destinationCountry!.id,
                 name: policyParams.destinationCountry!.name,
+                isoCode2: policyParams.destinationCountry!.iso2,
                 isoCode3: policyParams.destinationCountry!.iso3,
               },
               countryOrigin: {
                 idDyn: policyParams.originCountry!.id,
                 name: policyParams.originCountry!.name,
+                isoCode2: policyParams.originCountry!.iso2,
                 isoCode3: policyParams.originCountry!.iso3,
               },
             },
@@ -93,46 +139,6 @@ export default function Summary() {
     fetchInsuranceData();
   }, []);
 
-  // Datos del seguro de viaje
-  const insuranceData = {
-    categories: [
-      {
-        title: "Garantías de asistencia - incluida cobertura covid-19",
-        coverages: [
-          { name: "Asistencia médica y sanitaria", amount: "30.000 €" },
-          {
-            name: "Repatriación o transporte sanitario de heridos o enfermos",
-            amount: "Ilimitado",
-          },
-          {
-            name: "Repatriación o transporte del asegurado fallecido",
-            amount: "Ilimitado",
-          },
-        ],
-      },
-      {
-        title: "Garantías de equipajes",
-        coverages: [{ name: "Pérdidas materiales", amount: "300 €" }],
-      },
-      {
-        title: "Garantías de responsabilidad civil",
-        coverages: [
-          { name: "Responsabilidad civil privada", amount: "12.000 €" },
-        ],
-      },
-      {
-        title: "Servicios incluidos",
-        coverages: [
-          { name: "Telemedicina", amount: "Incluido" },
-          { name: "Servihelp", amount: "Incluido" },
-          { name: "Servisuccess", amount: "Incluido" },
-          { name: "Serviassist", amount: "Incluido" },
-          { name: "Serviclaims", amount: "Incluido" },
-        ],
-      },
-    ],
-  };
-
   // Formatea las fechas de inicio y fin o asigna "N/A" si no están disponibles
   const formattedStartDate =
     (startDate && new Date(startDate).toLocaleDateString()) || "N/A";
@@ -140,10 +146,11 @@ export default function Summary() {
     (endDate && new Date(endDate).toLocaleDateString()) || "N/A";
 
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-8">
+    <div className="max-w-4xl mx-auto min-w-[600px] bg-white shadow-lg rounded-lg p-6 mt-8">
       <h2 className="text-2xl font-semibold text-gray-900 mb-4">
         Resumen del Seguro de Viaje
       </h2>
+
       {isLoading ? (
         <div role="status" className="max-w-sm animate-pulse">
           <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
@@ -173,46 +180,57 @@ export default function Summary() {
           </p>
         </div>
       )}
-
-      {/* Tabla de coberturas del seguro con agrupaciones */}
-      <div className="overflow-x-auto bg-white shadow-md rounded-lg mt-4">
-        <table className="min-w-full table-auto">
-          <thead className="bg-gray-100 border-b">
-            <tr>
-              <th className="py-2 px-4 text-left text-sm font-semibold text-gray-700">
-                Coberturas
-              </th>
-              <th className="py-2 px-4 text-left text-sm font-semibold text-gray-700">
-                Monto
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {insuranceData.categories.map((category, categoryIndex) => (
-              <>
-                <tr key={categoryIndex} className="bg-gray-200">
-                  <td
-                    colSpan={2}
-                    className="py-2 px-4 font-semibold text-gray-900"
-                  >
-                    {category.title}
-                  </td>
+      <Accordion>
+        <AccordionItem
+          key="1"
+          aria-label="Coberturas"
+          title={
+            <span className="text-gray-900 font-semibold">
+              Coberturas del Seguro
+            </span>
+          }
+        >
+          {/* Tabla de coberturas del seguro con agrupaciones */}
+          <div className="overflow-x-auto bg-white shadow-md rounded-lg mt-4">
+            <table className="min-w-full table-auto">
+              <thead className="bg-gray-100 border-b">
+                <tr>
+                  <th className="py-2 px-4 text-left text-sm font-semibold text-gray-700">
+                    Coberturas
+                  </th>
+                  <th className="py-2 px-4 text-left text-sm font-semibold text-gray-700">
+                    Monto
+                  </th>
                 </tr>
-                {category.coverages.map((coverage, index) => (
-                  <tr key={index} className="border-b hover:bg-gray-50">
-                    <td className="py-2 px-4 text-sm text-gray-700">
-                      {coverage.name}
-                    </td>
-                    <td className="py-2 px-4 text-sm text-gray-700">
-                      {coverage.amount}
-                    </td>
-                  </tr>
+              </thead>
+              <tbody>
+                {insuranceData.categories.map((category, categoryIndex) => (
+                  <>
+                    <tr key={categoryIndex} className="bg-gray-200">
+                      <td
+                        colSpan={2}
+                        className="py-2 px-4 font-semibold text-gray-900"
+                      >
+                        {category.title}
+                      </td>
+                    </tr>
+                    {category.coverages.map((coverage, index) => (
+                      <tr key={index} className="border-b hover:bg-gray-50">
+                        <td className="py-2 px-4 text-sm text-gray-700">
+                          {coverage.name}
+                        </td>
+                        <td className="py-2 px-4 text-sm text-gray-700">
+                          {coverage.amount}
+                        </td>
+                      </tr>
+                    ))}
+                  </>
                 ))}
-              </>
-            ))}
-          </tbody>
-        </table>
-      </div>
+              </tbody>
+            </table>
+          </div>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 }

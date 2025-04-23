@@ -43,7 +43,7 @@ interface Insured {
   contactInfoList: ContactInfo[];
 }
 
-interface InsuranceInsured {
+export interface InsuranceInsured {
   isMainInsured: boolean;
   insured: Insured;
 }
@@ -58,15 +58,10 @@ interface QuotePreset {
   countryOrigin: Country;
 }
 
-interface SalePoint {
-  idDyn: number;
-}
-
-interface NewInsurance {
+export interface NewInsurance {
   unsuscribeDate?: string;
   effectDate?: string;
   policy?: Policy;
   quotePresetList?: QuotePreset[];
-  salePoint?: SalePoint;
   insuranceInsuredList?: InsuranceInsured[];
 }

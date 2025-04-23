@@ -1,6 +1,6 @@
 import { useSessionStorage } from "@/hooks/useSessionStorage";
 import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
-import type { Country, Province } from "@/models/Country";
+import type { Country, Province } from "@/models/country";
 import {
   Autocomplete,
   AutocompleteItem,
@@ -13,10 +13,8 @@ import {
 } from "@heroui/react";
 import { useEffect, useState } from "react";
 
-const parseDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toISOString().split("T")[0];
-};
+import { parseDate } from "@internationalized/date";
+import type { NewInsurance } from "@/models/calculate-your-insurance/new-insurance";
 
 interface InsuredFormProps {
   countries: Country[];
@@ -36,35 +34,11 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
 
   const [provinces, setProvinces] = useState<Province[]>([]);
 
+  const [termsAndConditions, setTermsAndConditions] = useState(false);
+
   const { pax = 1 } = policyParams;
 
   const { insuranceInsuredList = [] } = newInsurance;
-
-  useEffect(() => {
-    const newTravelers = Array.from({ length: pax || 1 }, (_, i) => ({
-      isMainInsured: i === 0,
-      insured: {
-        name: "",
-        surname: "",
-        documentNumber: "",
-        birthDate: "",
-        contactInfoList: [
-          {
-            email: "",
-            phoneNumber: "",
-            web: "",
-          },
-        ],
-        addressInfoList: [
-          {
-            commercialAddress: "",
-            commercialPostalCode: "",
-          },
-        ],
-      },
-    }));
-    setNewInsurance({ ...newInsurance, insuranceInsuredList: newTravelers });
-  }, [pax]);
 
   const handleTravelerChange = (
     index: number,
@@ -199,9 +173,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
     const { id, value } = e.target;
 
     if (!validateDocument(value)) {
-      setDocumentError(
-        "Formato de documento inválido. Por favor, ingrese un DNI, NIE o CIF válido.",
-      );
+      setDocumentError(`Formato de documento inválido.`);
     } else {
       setDocumentError(null);
     }
@@ -221,41 +193,63 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
     const btn = document.getElementById(
       "calculate-your-insurance-payment-button",
     ) as HTMLButtonElement;
-    if (btn) {
-      btn.classList.replace("text-primary", "text-gray-400");
-      btn.classList.replace("border-primary", "border-gray-400");
-      btn.classList.add("pointer-events-none");
-    }
+
+    if (btn) btn.classList.replace("ui-button", "ui-button-disabled");
   };
 
   const enableNextStepButton = () => {
     const btn = document.getElementById(
       "calculate-your-insurance-payment-button",
     ) as HTMLButtonElement;
-    if (btn) {
-      btn.classList.replace("text-gray-400", "text-primary");
-      btn.classList.replace("border-gray-400", "border-primary");
-      btn.classList.remove("pointer-events-none");
-    }
+
+    if (btn) btn.classList.replace("ui-button-disabled", "ui-button");
   };
 
   useEffect(() => {
-    disableNextStepButton();
-  }, []);
+    const newTravelers = newInsurance.insuranceInsuredList?.length
+      ? newInsurance.insuranceInsuredList
+      : Array.from({ length: pax || 1 }, (_, i) => ({
+          isMainInsured: i === 0,
+          insured: {
+            name: "",
+            surname: "",
+            documentNumber: "",
+            documentType: "Resto del mundo",
+            birthDate: "",
+            contactInfoList: [
+              {
+                email: "",
+                phoneNumber: "",
+                web: "",
+              },
+            ],
+            addressInfoList: [
+              {
+                commercialAddress: "",
+                commercialPostalCode: "",
+              },
+            ],
+          },
+        }));
+    setNewInsurance({ ...newInsurance, insuranceInsuredList: newTravelers });
+  }, [pax]);
 
   useEffect(() => {
-    const allValid = insuranceInsuredList.every(
-      ({ insured }) =>
-        insured?.documentNumber &&
-        insured.name &&
-        insured.surname &&
-        insured.contactInfoList?.length &&
-        insured.contactInfoList[0].email &&
-        insured.birthDate,
-    );
+    const allValid =
+      insuranceInsuredList.every(
+        ({ insured }) =>
+          insured?.documentNumber &&
+          insured.name &&
+          insured.surname &&
+          insured.contactInfoList?.length &&
+          insured.contactInfoList[0].email &&
+          insured.birthDate,
+      ) && termsAndConditions;
+
     if (allValid) enableNextStepButton();
     else disableNextStepButton();
-  }, [newInsurance.insuranceInsuredList]);
+    console.log(insuranceInsuredList);
+  }, [newInsurance.insuranceInsuredList, termsAndConditions]);
 
   return (
     <div>
@@ -280,7 +274,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
             key={index}
             className={`tab-content ${activeTab === index ? "block" : "hidden"}`}
           >
-            <div className="mb-10 border p-4 rounded-lg shadow-sm bg-white dark:bg-gray-800">
+            <div className="mb-10  p-4 rounded-lg shadow-sm bg-white dark:bg-gray-800">
               <h2 className="text-lg font-semibold mb-4">
                 Viajero {index + 1} {isMainInsured && "(Titular)"}
               </h2>
@@ -304,6 +298,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                   onChange={(e) => handleTravelerChange(index, e)}
                 />
                 <Input
+                  className="max-w-[284px]"
                   id="documentNumber"
                   label="Documento de Identidad"
                   aria-label="Documento de Identidad"
@@ -318,6 +313,11 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                   className="max-w-[284px]"
                   label="Fecha de Nacimiento"
                   aria-label="Fecha de Nacimiento"
+                  value={
+                    insured.birthDate
+                      ? (parseDate(insured.birthDate) as DateValue)
+                      : undefined
+                  }
                   onChange={(date) =>
                     handleTravelerBirthdateChange(index, date)
                   }
@@ -370,6 +370,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                   defaultItems={countries}
                   label="País"
                   aria-label="País"
+                  defaultSelectedKey={`${insured.addressInfoList[0]?.commercialCountry?.idDyn}`}
                   onSelectionChange={(item) =>
                     handleTravelerCountryChange(index, Number(item))
                   }
@@ -383,9 +384,19 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                 <Autocomplete
                   id="province"
                   className="max-w-xs"
-                  defaultItems={provinces}
+                  defaultItems={
+                    insured.addressInfoList[0]?.commercialProvince?.idDyn
+                      ? countries.find(
+                          (c) =>
+                            c.id ===
+                            insured.addressInfoList[0]?.commercialCountry
+                              ?.idDyn,
+                        )?.provinces
+                      : provinces
+                  }
                   label="Provincia"
                   aria-label="Provincia"
+                  defaultSelectedKey={`${insured.addressInfoList[0]?.commercialProvince?.idDyn}`}
                   onSelectionChange={(item) =>
                     handleTravelerProvinceChange(index, Number(item))
                   }
@@ -397,22 +408,25 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                   )}
                 </Autocomplete>
               </div>
-
-              {/* Terms */}
-              <div className="flex items-start mt-6">
-                <div className="flex items-center h-5">
-                  <Checkbox defaultSelected isRequired>
-                    Estoy de acuerdo con los{" "}
-                    <a href="#" className="text-blue-600 hover:underline">
-                      términos y condiciones
-                    </a>
-                  </Checkbox>
-                </div>
-              </div>
             </div>
           </div>
         ))}
       </form>
+
+      <div className="flex items-start mt-6">
+        <div className="flex items-center h-5">
+          <Checkbox
+            isSelected={termsAndConditions}
+            onValueChange={setTermsAndConditions}
+            isRequired
+          >
+            Estoy de acuerdo con los{" "}
+            <a href="#" className="text-blue-600 hover:underline">
+              términos y condiciones
+            </a>
+          </Checkbox>
+        </div>
+      </div>
     </div>
   );
 }

@@ -6,6 +6,8 @@ import {
   type RangeValue,
 } from "@heroui/react";
 import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
+import { useEffect } from "react";
+import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
 
 export default function Step1Form() {
   const [policyParams, setPolicyParams] = useSessionStorage<PolicyParams>(
@@ -45,13 +47,48 @@ export default function Step1Form() {
     </svg>
   );
 
+  const disableNextStepButton = () => {
+    const btn = document.getElementById(
+      "calculate-your-insurance-next-step-button",
+    ) as HTMLButtonElement;
+
+    if (btn) btn.classList.replace("ui-button", "ui-button-disabled");
+  };
+
+  const enableNextStepButton = () => {
+    const btn = document.getElementById(
+      "calculate-your-insurance-next-step-button",
+    ) as HTMLButtonElement;
+
+    if (btn) btn.classList.replace("ui-button-disabled", "ui-button");
+  };
+
+  useEffect(() => {
+    disableNextStepButton();
+  }, []);
+
+  useEffect(() => {
+    if (policyParams.startDate && policyParams.endDate && policyParams.pax)
+      enableNextStepButton();
+    else disableNextStepButton();
+  }, [policyParams, enableNextStepButton]);
+
   return (
     <>
       <DateRangePicker
         className="max-w-xs mb-4"
         label="Fechas"
         pageBehavior="single"
+        minValue={today(getLocalTimeZone())}
         visibleMonths={2}
+        defaultValue={
+          policyParams.startDate && policyParams.endDate
+            ? {
+                start: parseDate(policyParams.startDate),
+                end: parseDate(policyParams.endDate),
+              }
+            : null
+        }
         onChange={handleApplyStretchOfDays}
       />
       <Input
@@ -61,6 +98,7 @@ export default function Step1Form() {
         aria-describedby="Número de viajeros"
         aria-label="Número de viajeros"
         onChange={handlePaxChange}
+        value={`${policyParams.pax}`}
         startContent={<PaxIconSVG />}
         className="max-w-xs"
         required
