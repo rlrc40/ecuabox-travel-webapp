@@ -35,6 +35,15 @@ const useTravelInsuranceSteps = () => {
     });
   };
 
+  const setPolicyOriginCountry = (originCountry: Country) => {
+    if (!originCountry) return;
+
+    setPolicyParams({
+      ...policyParams,
+      originCountry,
+    });
+  };
+
   const disableNextStepButton = () => {
     const btn = document.getElementById(
       "calculate-your-insurance-next-step-button",
@@ -56,6 +65,8 @@ const useTravelInsuranceSteps = () => {
     setPolicyParams,
     setPolicyDates,
     setPolicyPax,
+    setPolicyDestinationCountry,
+    setPolicyOriginCountry,
     disableNextStepButton,
     enableNextStepButton,
   };
