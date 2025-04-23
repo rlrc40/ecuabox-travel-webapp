@@ -1,75 +1,49 @@
-import { useSessionStorage } from "@/hooks/useSessionStorage";
 import {
   DateRangePicker,
   Input,
   type DateValue,
   type RangeValue,
 } from "@heroui/react";
-import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
 import { useEffect } from "react";
 import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
+import PaxIconSVG from "../../ui/icons/PaxIconSVG";
+import useTravelInsuranceSteps from "@/hooks/useTravelInsuranceSteps";
 
 export default function Step1Form() {
-  const [policyParams, setPolicyParams] = useSessionStorage<PolicyParams>(
-    "policy-params",
-    {},
-  );
+  const {
+    policyParams,
+    setPolicyDates,
+    setPolicyPax,
+    disableNextStepButton,
+    enableNextStepButton,
+  } = useTravelInsuranceSteps();
+
+  const { startDate, endDate, pax } = policyParams;
 
   const handleApplyStretchOfDays = (value: RangeValue<DateValue> | null) => {
     if (!value) return;
 
-    setPolicyParams({
-      ...policyParams,
-      startDate: value.start.toString(),
-      endDate: value.end.toString(),
-    });
+    setPolicyDates(value.start.toString(), value.end.toString());
   };
 
   const handlePaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPolicyParams({ ...policyParams, pax: parseInt(e.target.value) });
+    setPolicyPax(parseInt(e.target.value));
   };
 
-  const PaxIconSVG = () => (
-    <svg
-      className="w-6 h-6 text-gray-800 dark:text-white"
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      fill="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        fill-rule="evenodd"
-        d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z"
-        clip-rule="evenodd"
-      ></path>
-    </svg>
-  );
-
-  const disableNextStepButton = () => {
-    const btn = document.getElementById(
-      "calculate-your-insurance-next-step-button",
-    ) as HTMLButtonElement;
-
-    if (btn) btn.classList.replace("ui-button", "ui-button-disabled");
-  };
-
-  const enableNextStepButton = () => {
-    const btn = document.getElementById(
-      "calculate-your-insurance-next-step-button",
-    ) as HTMLButtonElement;
-
-    if (btn) btn.classList.replace("ui-button-disabled", "ui-button");
-  };
+  const defaultDateRangeValue =
+    startDate && endDate
+      ? {
+          start: parseDate(startDate),
+          end: parseDate(endDate),
+        }
+      : null;
 
   useEffect(() => {
     disableNextStepButton();
   }, []);
 
   useEffect(() => {
-    if (policyParams.startDate && policyParams.endDate && policyParams.pax)
-      enableNextStepButton();
+    if (startDate && endDate && pax) enableNextStepButton();
     else disableNextStepButton();
   }, [policyParams, enableNextStepButton]);
 
@@ -81,14 +55,7 @@ export default function Step1Form() {
         pageBehavior="single"
         minValue={today(getLocalTimeZone())}
         visibleMonths={2}
-        defaultValue={
-          policyParams.startDate && policyParams.endDate
-            ? {
-                start: parseDate(policyParams.startDate),
-                end: parseDate(policyParams.endDate),
-              }
-            : null
-        }
+        defaultValue={defaultDateRangeValue}
         onChange={handleApplyStretchOfDays}
       />
       <Input
@@ -98,7 +65,7 @@ export default function Step1Form() {
         aria-describedby="Número de viajeros"
         aria-label="Número de viajeros"
         onChange={handlePaxChange}
-        value={`${policyParams.pax}`}
+        value={`${pax}`}
         startContent={<PaxIconSVG />}
         className="max-w-xs"
         required

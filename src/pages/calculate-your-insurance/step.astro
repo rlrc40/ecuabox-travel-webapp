@@ -34,9 +34,9 @@ const { step, title, description } = Astro.props<Props>;
   <section class="m-auto">
     {
       step == CalculateYourInsuranceStep.PersonalInfo ? (
-        <PaymentButton client:only />
+        <PaymentButton client:load />
       ) : step !== CalculateYourInsuranceStep.Confirmation ? (
-        <NextStepButton client:only nextStep={Number(step) + 1}/>
+        <NextStepButton client:load nextStep={Number(step) + 1}/>
       ): <></>
     }
   </section>
