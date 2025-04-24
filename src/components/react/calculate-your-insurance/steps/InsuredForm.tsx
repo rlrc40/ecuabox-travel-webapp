@@ -20,8 +20,16 @@ interface InsuredFormProps {
 }
 
 export default function InsuredForm({ countries }: InsuredFormProps) {
-  const { newInsurance, initInsuranceInsured, updateInsuranceInsured } =
-    useNewInsurance();
+  const {
+    newInsurance,
+    initInsuranceInsured,
+    updateInsuranceInsured,
+    changeInsured,
+    changeInsuredAddress,
+    changeInsuredContact,
+    changeInsuredCountry,
+    changeInsuredProvince,
+  } = useNewInsurance();
 
   const { policyParams, disablePaymentButton, enablePaymentButton } =
     useTravelInsuranceSteps();
@@ -38,106 +46,58 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
 
   const { insuranceInsuredList = [] } = newInsurance;
 
-  const handleTravelerChange = (
+  const handleInsuredChange = (
     index: number,
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { id, value, type, checked } = e.target;
-    const updatedInsuranceInsuredList = [...insuranceInsuredList];
 
-    const insuranceInsuredToUpdate = updatedInsuranceInsuredList[index];
-
-    insuranceInsuredToUpdate.insured = {
-      ...insuranceInsuredToUpdate.insured,
-      [id]: type === "checkbox" ? checked : value,
-    };
-
-    updateInsuranceInsured(index, insuranceInsuredToUpdate);
+    changeInsured(index, id, type === "checkbox" ? checked : value);
   };
 
-  const handleTravelerAddressChange = (
+  const handleInsuredAddressChange = (
     index: number,
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { id, value } = e.target;
-    const updatedInsuranceInsuredList = [...insuranceInsuredList];
 
-    const insuranceInsuredToUpdate = updatedInsuranceInsuredList[index];
-
-    insuranceInsuredToUpdate.insured.addressInfoList[0] = {
-      ...insuranceInsuredToUpdate.insured.addressInfoList[0],
-      [id]: value,
-    };
-
-    updateInsuranceInsured(index, insuranceInsuredToUpdate);
+    changeInsuredAddress(index, id, value);
   };
 
-  const handleTravelerContactChange = (
+  const handleInsuredContactChange = (
     index: number,
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { id, value } = e.target;
-    const updatedInsuranceInsuredList = [...insuranceInsuredList];
 
-    const insuranceInsuredToUpdate = updatedInsuranceInsuredList[index];
-
-    insuranceInsuredToUpdate.insured.contactInfoList[0] = {
-      ...insuranceInsuredToUpdate.insured.contactInfoList[0],
-      [id]: value,
-    };
-
-    updateInsuranceInsured(index, insuranceInsuredToUpdate);
+    changeInsuredContact(index, id, value);
   };
 
-  const handleTravelerBirthdateChange = (
+  const handleInsuredBirthdateChange = (
     index: number,
     date: DateValue | null,
   ) => {
     if (!date) return;
 
-    const updatedInsuranceInsuredList = [...insuranceInsuredList];
+    const birthDate = date.toString();
 
-    const insuranceInsuredToUpdate = updatedInsuranceInsuredList[index];
-
-    insuranceInsuredToUpdate.insured = {
-      ...insuranceInsuredToUpdate.insured,
-      birthDate: date.toString(),
-    };
-
-    updateInsuranceInsured(index, insuranceInsuredToUpdate);
+    changeInsured(index, "birthDate", birthDate);
   };
 
-  const handleTravelerCountryChange = (index: number, key: number) => {
-    const updatedInsuranceInsuredList = [...insuranceInsuredList];
+  const handleInsuredCountryChange = (index: number, key: number) => {
     const country = countries.find((c) => c.id === key);
 
     if (!country) return;
 
-    const insuranceInsuredToUpdate = updatedInsuranceInsuredList[index];
-
-    insuranceInsuredToUpdate.insured.addressInfoList[0].commercialCountry = {
-      idDyn: country.id,
-      name: country.name,
-      isoCode3: country.iso3,
-    };
-
-    updateInsuranceInsured(index, insuranceInsuredToUpdate);
+    changeInsuredCountry(index, country);
   };
 
-  const handleTravelerProvinceChange = (index: number, key: number) => {
-    const updatedInsuranceInsuredList = [...insuranceInsuredList];
+  const handleInsuredProvinceChange = (index: number, key: number) => {
     const province = provinces.find((p) => p.id === key);
 
     if (!province) return;
 
-    const insuranceInsuredToUpdate = updatedInsuranceInsuredList[index];
-
-    insuranceInsuredToUpdate.insured.addressInfoList[0].commercialProvince = {
-      idDyn: province.id,
-      name: province.name,
-    };
-
-    updateInsuranceInsured(index, insuranceInsuredToUpdate);
+    changeInsuredProvince(index, province);
   };
 
   const validateDocument = (document: string): boolean => {
@@ -233,7 +193,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                   label="Nombre"
                   aria-label="Nombre"
                   value={insured.name || ""}
-                  onChange={(e) => handleTravelerChange(index, e)}
+                  onChange={(e) => handleInsuredChange(index, e)}
                   isRequired
                 />
                 <Input
@@ -242,7 +202,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                   aria-label="Apellidos"
                   isRequired
                   value={insured.surname || ""}
-                  onChange={(e) => handleTravelerChange(index, e)}
+                  onChange={(e) => handleInsuredChange(index, e)}
                 />
                 <Input
                   className="max-w-[284px]"
@@ -265,9 +225,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                       ? (parseDate(insured.birthDate) as DateValue)
                       : undefined
                   }
-                  onChange={(date) =>
-                    handleTravelerBirthdateChange(index, date)
-                  }
+                  onChange={(date) => handleInsuredBirthdateChange(index, date)}
                   isRequired
                 />
               </div>
@@ -281,7 +239,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                   label="Teléfono"
                   aria-label="Teléfono"
                   value={insured.contactInfoList[0].phoneNumber || ""}
-                  onChange={(e) => handleTravelerContactChange(index, e)}
+                  onChange={(e) => handleInsuredContactChange(index, e)}
                 />
                 <Input
                   type="email"
@@ -289,7 +247,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                   label="Email"
                   aria-label="Email"
                   value={insured.contactInfoList[0].email || ""}
-                  onChange={(e) => handleTravelerContactChange(index, e)}
+                  onChange={(e) => handleInsuredContactChange(index, e)}
                   isRequired
                 />
               </div>
@@ -302,14 +260,14 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                   label="Dirección"
                   aria-label="Dirección"
                   value={insured.addressInfoList[0].commercialAddress || ""}
-                  onChange={(e) => handleTravelerAddressChange(index, e)}
+                  onChange={(e) => handleInsuredAddressChange(index, e)}
                 />
                 <Input
                   id="commercialPostalCode"
                   label="Código Postal"
                   aria-label="Código Postal"
                   value={insured.addressInfoList[0].commercialPostalCode || ""}
-                  onChange={(e) => handleTravelerAddressChange(index, e)}
+                  onChange={(e) => handleInsuredAddressChange(index, e)}
                 />
                 <Autocomplete
                   id="country"
@@ -319,7 +277,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                   aria-label="País"
                   defaultSelectedKey={`${insured.addressInfoList[0]?.commercialCountry?.idDyn}`}
                   onSelectionChange={(item) =>
-                    handleTravelerCountryChange(index, Number(item))
+                    handleInsuredCountryChange(index, Number(item))
                   }
                 >
                   {(item) => (
@@ -345,7 +303,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                   aria-label="Provincia"
                   defaultSelectedKey={`${insured.addressInfoList[0]?.commercialProvince?.idDyn}`}
                   onSelectionChange={(item) =>
-                    handleTravelerProvinceChange(index, Number(item))
+                    handleInsuredProvinceChange(index, Number(item))
                   }
                 >
                   {(item) => (
