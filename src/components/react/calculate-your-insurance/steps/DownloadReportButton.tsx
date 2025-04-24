@@ -1,55 +1,29 @@
 import { useEffect, useState } from "react";
 import type { PolicyReport } from "@/models/policy-report";
-import { useSessionStorage } from "@/hooks/useSessionStorage";
-import type { NewInsurance } from "@/models/calculate-your-insurance/new-insurance";
 import { Button, Link } from "@heroui/react";
+import useNewInsurance from "@/hooks/useNewInsurance";
 
 export default function DownloadReportButton() {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [error, setError] = useState<string | null>(null);
-
-  const [newInsurance] = useSessionStorage<NewInsurance>("new-insurance", {});
+  const { create, isLoading, error } = useNewInsurance();
 
   const [report, setReport] = useState<PolicyReport>();
 
   useEffect(() => {
     const fetchReport = async () => {
-      setIsLoading(true);
-      setError(null);
-
       try {
-        const createInsuranceUrl = new URL(
-          `${import.meta.env.PUBLIC_STRAPI_URL}/api/insurances/new`,
-        );
+        const report = await create();
 
-        const createResponse = await fetch(createInsuranceUrl.toString(), {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newInsurance),
-        });
-
-        if (!createResponse.ok) {
-          throw new Error("Failed to create insurance");
+        if (!report) {
+          throw new Error("No report found");
         }
 
-        const response = await createResponse.json();
-
-        console.log("Insurance created:", response);
-
-        setReport(response);
+        setReport(report);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred",
-        );
-      } finally {
-        setIsLoading(false);
+        console.error("Error fetching report:", err);
       }
     };
+
     fetchReport();
-    console.log(" NewInsurance", newInsurance);
   }, []);
 
   return (

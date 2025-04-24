@@ -6,6 +6,7 @@ import type {
   NewInsurance,
 } from "@/models/calculate-your-insurance/new-insurance";
 import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
+import { Button } from "@heroui/react";
 
 interface PaymentData {
   amount: number;
@@ -75,14 +76,15 @@ export default function PaymentButton() {
 
   return (
     <>
-      <button
+      <Button
         id="calculate-your-insurance-payment-button"
         type="button"
-        onClick={handlePayment}
-        className="ui-button-disabled cursor-pointer"
+        onPress={handlePayment}
+        className="opacity-disabled pointer-events-none"
+        color="primary"
       >
         {isLoading ? "Procesando..." : "Pagar"}
-      </button>
+      </Button>
       <span className="">{error && <p>Error: {error}</p>}</span>
     </>
   );

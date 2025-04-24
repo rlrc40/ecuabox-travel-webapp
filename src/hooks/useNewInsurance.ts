@@ -5,14 +5,19 @@ import type {
   InsuranceInsured,
   NewInsurance,
 } from "@/models/calculate-your-insurance/new-insurance";
-import type { DateValue } from "@internationalized/date";
 import type { Country, Province } from "@/models/country";
+import { useState } from "react";
+import type { PolicyReport } from "@/models/policy-report";
 
 const useNewInsurance = () => {
   const [newInsurance, setNewInsurance] = useSessionStorage<NewInsurance>(
     "new-insurance",
     {},
   );
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [error, setError] = useState<string | null>(null);
 
   const initInsurance = ({
     params,
@@ -184,11 +189,46 @@ const useNewInsurance = () => {
     updateInsuranceInsured(index, insuranceInsuredToUpdate);
   };
 
+  const create = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const createInsuranceUrl = new URL(
+        `${import.meta.env.PUBLIC_STRAPI_URL}/api/insurances/new`,
+      );
+
+      const createResponse = await fetch(createInsuranceUrl.toString(), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newInsurance),
+      });
+
+      if (!createResponse.ok) {
+        throw new Error("Failed to create insurance");
+      }
+
+      const response = (await createResponse.json()) as PolicyReport;
+
+      return response;
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred",
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     newInsurance,
+    isLoading,
+    error,
+    create,
     initInsurance,
     initInsuranceInsured,
-    updateInsuranceInsured,
     changeInsured,
     changeInsuredAddress,
     changeInsuredContact,

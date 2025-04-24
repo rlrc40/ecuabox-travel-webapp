@@ -1,4 +1,4 @@
-import type { Country, Province } from "@/models/country";
+import type { Country } from "@/models/country";
 import {
   Autocomplete,
   AutocompleteItem,
@@ -23,7 +23,6 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
   const {
     newInsurance,
     initInsuranceInsured,
-    updateInsuranceInsured,
     changeInsured,
     changeInsuredAddress,
     changeInsuredContact,
@@ -37,8 +36,6 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
   const [documentError, setDocumentError] = useState<string | null>(null);
 
   const [activeTab, setActiveTab] = useState(0);
-
-  const [provinces, setProvinces] = useState<Province[]>([]);
 
   const [termsAndConditions, setTermsAndConditions] = useState(false);
 
@@ -93,7 +90,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
   };
 
   const handleInsuredProvinceChange = (index: number, key: number) => {
-    const province = provinces.find((p) => p.id === key);
+    const province = provinceItems.find((p) => p.id === key);
 
     if (!province) return;
 
@@ -117,22 +114,20 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
   ) => {
     const { id, value } = e.target;
 
-    if (!validateDocument(value)) {
+    if (!validateDocument(value))
       setDocumentError(`Formato de documento inválido.`);
-    } else {
-      setDocumentError(null);
-    }
+    else setDocumentError(null);
 
-    const updatedInsuranceInsuredList = [...insuranceInsuredList];
-
-    const insuranceInsuredToUpdate = updatedInsuranceInsuredList[index];
-
-    insuranceInsuredToUpdate.insured = {
-      ...insuranceInsuredToUpdate.insured,
-      [id]: value,
-    };
-    updateInsuranceInsured(index, insuranceInsuredToUpdate);
+    changeInsured(index, id, value);
   };
+
+  const provinceItems =
+    countries.find(
+      (c) =>
+        c.id ===
+        insuranceInsuredList[activeTab]?.insured?.addressInfoList[0]
+          ?.commercialCountry?.idDyn,
+    )?.provinces || [];
 
   const navigateToFirstStep = () =>
     (window.location.href = "/calculate-your-insurance/step-1");
@@ -289,16 +284,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                 <Autocomplete
                   id="province"
                   className="max-w-xs"
-                  defaultItems={
-                    insured.addressInfoList[0]?.commercialProvince?.idDyn
-                      ? countries.find(
-                          (c) =>
-                            c.id ===
-                            insured.addressInfoList[0]?.commercialCountry
-                              ?.idDyn,
-                        )?.provinces
-                      : provinces
-                  }
+                  defaultItems={provinceItems}
                   label="Provincia"
                   aria-label="Provincia"
                   defaultSelectedKey={`${insured.addressInfoList[0]?.commercialProvince?.idDyn}`}
