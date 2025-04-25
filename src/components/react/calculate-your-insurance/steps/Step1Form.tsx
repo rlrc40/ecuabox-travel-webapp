@@ -51,9 +51,10 @@ export default function Step1Form() {
     <>
       <DateRangePicker
         className="max-w-xs mb-4"
-        label="Fechas"
+        label="Periodo de cobertura"
+        aria-label="Periodo de cobertura"
         pageBehavior="single"
-        minValue={today(getLocalTimeZone())}
+        minValue={today(getLocalTimeZone()).add({ days: 1 })}
         visibleMonths={2}
         defaultValue={defaultDateRangeValue}
         onChange={handleApplyStretchOfDays}

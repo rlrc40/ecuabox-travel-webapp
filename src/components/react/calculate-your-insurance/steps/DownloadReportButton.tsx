@@ -28,16 +28,23 @@ export default function DownloadReportButton() {
 
   return (
     <>
-      <Button
-        isLoading={isLoading || !report}
-        download={report?.fileName || ""}
-        href={`data:application/pdf;base64,${report?.base64File || ""}`}
-        as={Link}
-        color="primary"
-      >
-        {isLoading || !report ? "Loading" : "Descargar Poliza"}
-      </Button>
-      {error && <p>Error: {error}</p>}
+      {!error && (
+        <Button
+          isLoading={isLoading || !report}
+          download={report?.fileName || ""}
+          href={`data:application/pdf;base64,${report?.base64File || ""}`}
+          as={Link}
+          color="primary"
+        >
+          {isLoading || !report ? "Loading" : "Descargar Poliza"}
+        </Button>
+      )}
+      {error && (
+        <p>
+          Ha habido un error al generar la poliza, por favor ponte en contacto
+          con el soporte técnico, disculpa las molestias.
+        </p>
+      )}
     </>
   );
 }

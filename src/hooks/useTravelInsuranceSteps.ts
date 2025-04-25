@@ -71,7 +71,7 @@ const useTravelInsuranceSteps = () => {
         Math.ceil(
           (new Date(endDate).getTime() - new Date(startDate).getTime()) /
             (1000 * 60 * 60 * 24),
-        );
+        ) + 1;
       const url =
         new URL(`${import.meta.env.PUBLIC_STRAPI_URL}/api/policies?`) +
         new URLSearchParams({
