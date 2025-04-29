@@ -1,5 +1,5 @@
 import useTravelInsuranceSteps from "@/hooks/useTravelInsuranceSteps";
-import type { Country } from "@/models/country";
+import { EUROPEAN_COUNTRIES, type Country } from "@/models/country";
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { useEffect, type Key } from "react";
 
@@ -40,6 +40,12 @@ export default function Step2Form({
     return country || null;
   };
 
+  const europeCountries = countries.filter(
+    (country) =>
+      country.id !== 130 &&
+      EUROPEAN_COUNTRIES.includes(country.translations["EN"]?.toUpperCase()),
+  );
+
   useEffect(() => {
     disableNextStepButton();
   }, []);
@@ -72,7 +78,7 @@ export default function Step2Form({
         <Autocomplete
           id="destination"
           className="max-w-xs"
-          defaultItems={countries}
+          defaultItems={europeCountries}
           label="Destino"
           placeholder="Selecciona tu país de destino"
           aria-label="Selecciona tu país de destino"

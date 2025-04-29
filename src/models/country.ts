@@ -12,3 +12,33 @@ export interface Province {
   id: number;
   name: string;
 }
+
+export const EUROPEAN_COUNTRIES = [
+  "AUSTRIA",
+  "BELGIUM",
+  "BULGARIA",
+  "CROATIA",
+  "CYPRUS",
+  "CZECHIA",
+  "DENMARK",
+  "ESTONIA",
+  "FINLAND",
+  "FRANCE",
+  "GERMANY",
+  "GREECE",
+  "HUNGARY",
+  "IRELAND",
+  "ITALY",
+  "LATVIA",
+  "LITHUANIA",
+  "LUXEMBOURG",
+  "MALTA",
+  "NETHERLANDS",
+  "POLAND",
+  "PORTUGAL",
+  "ROMANIA",
+  "SLOVAKIA",
+  "SLOVENIA",
+  "SPAIN",
+  "SWEDEN",
+];
