@@ -2,12 +2,27 @@
 import Step1Form from "@/components/react/calculate-your-insurance/steps/Step1Form";
 import Step from "./step.astro";
 import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
+import StepInfo from "@/models/step-info";
+import fetchApi from "@/lib/strapi";
+
+let step: StepInfo;
+
+try {
+  const steps = await fetchApi<StepInfo[]>({
+    endpoint: `steps?locale=es&filters[key][$eq]=0`,
+    wrappedByKey: "data",
+  });
+
+  step = steps[0];
+} catch (error) {
+  return Astro.redirect("/404");
+}
 ---
 
 <Step
   step={CalculateYourInsuranceStep.InsuranceInfo}
-  title="Fechas y Viajeros"
-  description="Selecciona las fechas de tu viaje y los viajeros que te acompañarán."
+  title={step.title}
+  description={step.subtitle}
 >
   <Step1Form client:only />
 </Step>

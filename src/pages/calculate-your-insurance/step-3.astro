@@ -2,12 +2,27 @@
 import InsurancePolicySummary from "@/components/react/calculate-your-insurance/steps/InsurancePolicySummary";
 import Step from "./step.astro";
 import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
+import StepInfo from "@/models/step-info";
+import fetchApi from "@/lib/strapi";
+
+let step: StepInfo;
+
+try {
+  const steps = await fetchApi<StepInfo[]>({
+    endpoint: `steps?locale=es&filters[key][$eq]=2`,
+    wrappedByKey: "data",
+  });
+
+  step = steps[0];
+} catch (error) {
+  return Astro.redirect("/404");
+}
 ---
 
 <Step
   step={CalculateYourInsuranceStep.Summary}
-  title="Resumen del seguro"
-  description="Revisa los detalles de tu seguro de viaje antes de continuar con la compra."
+  title={step.title}
+  description={step.subtitle}
 >
   <InsurancePolicySummary client:only />
 </Step>

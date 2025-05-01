@@ -4,8 +4,11 @@ import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/Calcul
 import { Country } from "@/models/country";
 import fetchApi from "@/lib/strapi";
 import Step2Form from "@/components/react/calculate-your-insurance/steps/Step2Form";
+import StepInfo from "@/models/step-info";
 
 let countries: Country[] = [];
+
+let step: StepInfo;
 
 try {
   countries = await fetchApi<Country[]>({
@@ -15,12 +18,25 @@ try {
 } catch (error) {
   return Astro.redirect("/404");
 }
+
+try {
+  const steps = await fetchApi<StepInfo[]>({
+    endpoint: `steps?locale=es&filters[key][$eq]=1`,
+    wrappedByKey: "data",
+  });
+
+  console.log(steps);
+
+  step = steps[0];
+} catch (error) {
+  return Astro.redirect("/404");
+}
 ---
 
 <Step
   step={CalculateYourInsuranceStep.OriginAndDestination}
-  title="Destino y Origen"
-  description="Indica tu lugar de salida y tu destino para el viaje."
+  title={step.title}
+  description={step.subtitle}
 >
   <Step2Form client:only countries={countries} />
 </Step>

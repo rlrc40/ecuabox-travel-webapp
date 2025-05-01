@@ -2,12 +2,27 @@
 import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
 import Step from "./step.astro";
 import DownloadReportButton from "@/components/react/calculate-your-insurance/steps/DownloadReportButton";
+import StepInfo from "@/models/step-info";
+import fetchApi from "@/lib/strapi";
+
+let step: StepInfo;
+
+try {
+  const steps = await fetchApi<StepInfo[]>({
+    endpoint: `steps?locale=es&filters[key][$eq]=5`,
+    wrappedByKey: "data",
+  });
+
+  step = steps[0];
+} catch (error) {
+  return Astro.redirect("/404");
+}
 ---
 
 <Step
   step={CalculateYourInsuranceStep.Confirmation}
-  title="Pago realizado"
-  description="Tu pago ha sido realizado con éxito. En breve recibirás un correo con los detalles de tu seguro de viaje."
+  title={step.title}
+  description={step.subtitle}
 >
   <DownloadReportButton client:only />
 </Step>

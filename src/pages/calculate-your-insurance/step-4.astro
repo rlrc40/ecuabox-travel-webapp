@@ -3,9 +3,23 @@ import InsuredForm from "@/components/react/calculate-your-insurance/steps/Insur
 import Step from "./step.astro";
 import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
 import { Country } from "@/models/country";
+import StepInfo from "@/models/step-info";
 import fetchApi from "@/lib/strapi";
 
+let step: StepInfo;
+
 let countries: Country[] = [];
+
+try {
+  const steps = await fetchApi<StepInfo[]>({
+    endpoint: `steps?locale=es&filters[key][$eq]=3`,
+    wrappedByKey: "data",
+  });
+
+  step = steps[0];
+} catch (error) {
+  return Astro.redirect("/404");
+}
 
 try {
   countries = await fetchApi<Country[]>({
@@ -19,8 +33,8 @@ try {
 
 <Step
   step={CalculateYourInsuranceStep.PersonalInfo}
-  title="Información Personal"
-  description="Introduce tus datos personales para completar la reserva."
+  title={step.title}
+  description={step.subtitle}
 >
   <InsuredForm client:only countries={countries} />
 </Step>
