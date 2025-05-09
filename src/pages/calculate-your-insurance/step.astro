@@ -3,7 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import Steps from "@/components/calculate-your-insurance/steps/steps.astro";
 import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
 import PaymentButton from "@/components/react/calculate-your-insurance/steps/PaymentButton";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { NextStepButton } from "@/components/react/calculate-your-insurance/steps/NextStepButton";
 
 interface Props {
@@ -13,12 +13,12 @@ interface Props {
   children?: ReactNode;
 }
 
-const { step, title, description } = Astro.props<Props>;
+const { step, title, description } = Astro.props as Props;
 ---
 
 <Layout title="Calcula tu seguro">
-  <div class="flex flex-row gap-8 w-full max-w-screen-xl mx-auto px-4 pb-8">
-    <aside class="w-50 pt-20 mr-10">
+  <div class="flex flex-row flex-wrap gap-8 h-full w-full max-w-screen-xl mx-auto md:px-4 pb-8">
+    <aside class="hidden md:block md:w-50 pt-20 md:mr-10">
       <Steps currentStep={step} />
     </aside>
     <article>
@@ -31,7 +31,7 @@ const { step, title, description } = Astro.props<Props>;
       </section>
     </article>
   </div>
-  <section class="m-auto">
+  <section class="md:px-4 md:m-auto">
     {
       step == CalculateYourInsuranceStep.PersonalInfo ? (
         <PaymentButton client:load />

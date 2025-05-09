@@ -1,3 +1,4 @@
+import useDeviceDetection from "@/hooks/useDeviceDetection";
 import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
 import { Button, Link } from "@heroui/react";
 import { useState } from "react";
@@ -8,6 +9,8 @@ interface NextStepButtonProps {
 
 export const NextStepButton = ({ nextStep }: NextStepButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const device = useDeviceDetection();
 
   const nextStepHref = `/calculate-your-insurance/step-${nextStep}`;
 
@@ -31,13 +34,9 @@ export const NextStepButton = ({ nextStep }: NextStepButtonProps) => {
   }
 
   return (
-    <div className="flex gap-4">
-      {nextStep !== CalculateYourInsuranceStep.OriginAndDestination && (
-        <Button href={prevStepHref} as={Link} color="default">
-          Anterior
-        </Button>
-      )}
+    <div className="flex flex-col md:flex-row-reverse f gap-4">
       <Button
+        fullWidth={device === "mobile"}
         id="calculate-your-insurance-next-step-button"
         onPress={() => setIsLoading(true)}
         isLoading={isLoading}
@@ -47,6 +46,16 @@ export const NextStepButton = ({ nextStep }: NextStepButtonProps) => {
       >
         {isLoading ? "Loading" : title}
       </Button>
+      {nextStep !== CalculateYourInsuranceStep.OriginAndDestination && (
+        <Button
+          fullWidth={device === "mobile"}
+          href={prevStepHref}
+          as={Link}
+          color="default"
+        >
+          Anterior
+        </Button>
+      )}
     </div>
   );
 };

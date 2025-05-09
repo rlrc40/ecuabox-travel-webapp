@@ -3,7 +3,8 @@ import { EUROPEAN_COUNTRIES, type Country } from "@/models/country";
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { useEffect, type Key } from "react";
 
-const autocompleteClassName = "flex w-[300px] flex-wrap md:flex-nowrap gap-4";
+const autocompleteClassName =
+  "flex w-full md:w-[300px] flex-wrap md:flex-nowrap gap-4";
 
 export default function Step2Form({
   countries = [],
@@ -57,11 +58,11 @@ export default function Step2Form({
   }, [policyParams, enableNextStepButton]);
 
   return (
-    <div className="max-w-sm mx-auto">
+    <div className="w-full md:max-w-sm md:mx-auto">
       <div className={`${autocompleteClassName} mb-5`}>
         <Autocomplete
           id="origin"
-          className="max-w-xs"
+          className="md:max-w-xs"
           defaultItems={countries}
           label="Origen"
           placeholder="Selecciona tu país de origen"
@@ -77,7 +78,7 @@ export default function Step2Form({
       <div className={autocompleteClassName}>
         <Autocomplete
           id="destination"
-          className="max-w-xs"
+          className="md:max-w-xs"
           defaultItems={europeCountries}
           label="Destino"
           placeholder="Selecciona tu país de destino"

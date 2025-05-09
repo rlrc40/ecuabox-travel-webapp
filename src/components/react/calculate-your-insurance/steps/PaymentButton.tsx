@@ -8,12 +8,20 @@ import type {
 import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
 import { Button } from "@heroui/react";
 
-interface PaymentData {
+interface NewOrder {
   amount: number;
-  currency: "eur";
+  currency: string;
   concept: string;
-  insuranceInsuredList?: InsuranceInsured[];
-  metadata: object;
+  email: string;
+  passengerData: InsuranceInsured[];
+  metadata: {
+    startDate: string;
+    endDate: string;
+    pax: number;
+    origin: string;
+    destination: string;
+  };
+  createdAt: string;
 }
 
 export default function PaymentButton() {
@@ -25,10 +33,18 @@ export default function PaymentButton() {
 
   const [newInsurance] = useSessionStorage<NewInsurance>("new-insurance", {});
 
-  const paymentData: PaymentData = {
+  const mainInsured =
+    newInsurance?.insuranceInsuredList?.find(
+      (passenger) => passenger.isMainInsured,
+    )?.insured || null;
+
+  const order: NewOrder = {
     amount: (policyParams.amount || 0) * 100,
     currency: "eur",
-    concept: "Seguro de viaje",
+    concept: newInsurance.policy?.policyNumber || "",
+    email: mainInsured?.contactInfoList[0]?.email || "",
+    passengerData: newInsurance?.insuranceInsuredList || [],
+    createdAt: new Date().toISOString(),
     metadata: {
       startDate: policyParams.startDate || "",
       endDate: policyParams.endDate || "",
@@ -54,7 +70,7 @@ export default function PaymentButton() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(paymentData),
+        body: JSON.stringify(order),
       });
 
       if (!response.ok) {
@@ -62,6 +78,7 @@ export default function PaymentButton() {
       }
 
       const data = await response.json();
+
       await stripe?.redirectToCheckout({
         sessionId: data.sessionId,
       });
@@ -77,6 +94,7 @@ export default function PaymentButton() {
   return (
     <>
       <Button
+        fullWidth
         id="calculate-your-insurance-payment-button"
         type="button"
         onPress={handlePayment}

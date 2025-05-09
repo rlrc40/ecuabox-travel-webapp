@@ -17,6 +17,10 @@ try {
 } catch (error) {
   return Astro.redirect("/404");
 }
+
+try {
+  const search = Astro.url.searchParams.get("session_id") || "";
+} catch (error) {}
 ---
 
 <Step

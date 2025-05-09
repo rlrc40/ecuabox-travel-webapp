@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
 import PaxIconSVG from "../../ui/icons/PaxIconSVG";
 import useTravelInsuranceSteps from "@/hooks/useTravelInsuranceSteps";
+import useDeviceDetection from "@/hooks/useDeviceDetection";
 
 export default function Step1Form() {
   const {
@@ -17,6 +18,8 @@ export default function Step1Form() {
     disableNextStepButton,
     enableNextStepButton,
   } = useTravelInsuranceSteps();
+
+  const device = useDeviceDetection();
 
   const { startDate, endDate, pax } = policyParams;
 
@@ -50,12 +53,12 @@ export default function Step1Form() {
   return (
     <>
       <DateRangePicker
-        className="max-w-xs mb-4"
+        className="md:max-w-xs mb-4"
         label="Periodo de cobertura"
         aria-label="Periodo de cobertura"
         pageBehavior="single"
         minValue={today(getLocalTimeZone()).add({ days: 1 })}
-        visibleMonths={2}
+        visibleMonths={device === "mobile" ? 1 : 2}
         defaultValue={defaultDateRangeValue}
         onChange={handleApplyStretchOfDays}
       />
@@ -68,7 +71,7 @@ export default function Step1Form() {
         onChange={handlePaxChange}
         value={`${pax}`}
         startContent={<PaxIconSVG />}
-        className="max-w-xs"
+        className="md:max-w-xs"
         required
       />
     </>

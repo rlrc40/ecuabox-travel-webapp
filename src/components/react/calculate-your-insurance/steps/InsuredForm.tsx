@@ -200,7 +200,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                   onChange={(e) => handleInsuredChange(index, e)}
                 />
                 <Input
-                  className="max-w-[284px]"
+                  className="md:max-w-[284px]"
                   id="documentNumber"
                   label="Documento de Identidad"
                   aria-label="Documento de Identidad"
@@ -212,7 +212,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                   errorMessage={documentError}
                 />
                 <DatePicker
-                  className="max-w-[284px]"
+                  className="md:max-w-[284px]"
                   label="Fecha de Nacimiento"
                   aria-label="Fecha de Nacimiento"
                   value={
@@ -266,7 +266,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                 />
                 <Autocomplete
                   id="country"
-                  className="max-w-xs"
+                  className="md:max-w-xs"
                   defaultItems={countries}
                   label="País"
                   aria-label="País"
@@ -283,7 +283,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                 </Autocomplete>
                 <Autocomplete
                   id="province"
-                  className="max-w-xs"
+                  className="md:max-w-xs"
                   defaultItems={provinceItems}
                   label="Provincia"
                   aria-label="Provincia"

@@ -2,7 +2,7 @@
 import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
 import StepCompleteIcon from "./icons/step-complete-icon.astro";
 import StepIcon from "./icons/step-icon.astro";
-import StepInfo from "@/models/step-info";
+import type StepInfo from "@/models/step-info";
 import fetchApi from "@/lib/strapi";
 
 let steps: StepInfo[];
@@ -20,7 +20,7 @@ const { currentStep } = Astro.props;
 ---
 
 <ol
-  class="relative text-gray-500 border-s border-gray-200 dark:border-gray-700 dark:text-gray-400"
+  class="relative flex flex-row md:flex-col text-gray-500 border-s border-gray-200 dark:border-gray-700 dark:text-gray-400"
 >
   {
     steps.map(({ title, subtitle, icon }, index) => (
@@ -31,8 +31,8 @@ const { currentStep } = Astro.props;
         ) : (
           <StepIcon icon={icon} />
         )}
-        <h3 class="font-medium leading-tight">{title}</h3>
-        <p class="text-sm">{subtitle}</p>
+        <h3 class="text-xs font-medium leading-tight">{title}</h3>
+        <p class="text-sm hidden md:block">{subtitle}</p>
       </li>
     ))
   }

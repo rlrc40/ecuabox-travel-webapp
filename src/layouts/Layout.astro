@@ -142,7 +142,7 @@ const { title } = Astro.props;
       </nav>
     </header>
 
-    <main class="flex flex-col items-center justify-center w-full">
+    <main>
       <slot />
     </main>
 
@@ -402,7 +402,7 @@ const { title } = Astro.props;
   }
 
   body > main {
-    @apply grid place-content-center p-24;
+    @apply grid md:place-content-center pt-24 pb-12 md:p-24 flex-col items-center justify-center w-full content-between place-content-between;
   }
 
   main > div {
