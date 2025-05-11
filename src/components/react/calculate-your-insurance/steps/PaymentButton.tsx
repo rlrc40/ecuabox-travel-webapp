@@ -7,6 +7,7 @@ import type {
 } from "@/models/calculate-your-insurance/new-insurance";
 import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
 import { Button } from "@heroui/react";
+import useDeviceDetection from "@/hooks/useDeviceDetection";
 
 interface NewOrder {
   amount: number;
@@ -26,6 +27,8 @@ interface NewOrder {
 
 export default function PaymentButton() {
   const [isLoading, setIsLoading] = useState(false);
+
+  const device = useDeviceDetection();
 
   const [error, setError] = useState<string | null>(null);
 
@@ -92,9 +95,9 @@ export default function PaymentButton() {
   };
 
   return (
-    <>
+    <div className="flex flex-col md:flex-row-reverse gap-4 md:justify-center">
       <Button
-        fullWidth
+        fullWidth={device === "mobile"}
         id="calculate-your-insurance-payment-button"
         type="button"
         onPress={handlePayment}
@@ -104,6 +107,6 @@ export default function PaymentButton() {
         {isLoading ? "Procesando..." : "Pagar"}
       </Button>
       <span className="">{error && <p>Error: {error}</p>}</span>
-    </>
+    </div>
   );
 }

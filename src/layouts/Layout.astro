@@ -395,14 +395,8 @@ const { title } = Astro.props;
     height: 100%;
   }
 
-  body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
   body > main {
-    @apply grid md:place-content-center pt-24 pb-12 md:p-24 flex-col items-center justify-center w-full content-between place-content-between;
+    @apply flex md:min-h-auto min-h-full md:place-content-center pt-24 md:py-24 md:px-12 flex-col items-center justify-center w-full content-between place-content-between;
   }
 
   main > div {

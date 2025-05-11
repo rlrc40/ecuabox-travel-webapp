@@ -43,7 +43,7 @@ const insuranceData = {
 };
 
 export default function InsurancePolicySummary() {
-  const { policyParams, getInsurancePolicy, isLoading } =
+  const { policyParams, getInsurancePolicy, isLoading, setAmount } =
     useTravelInsuranceSteps();
 
   const { initInsurance } = useNewInsurance();
@@ -56,6 +56,8 @@ export default function InsurancePolicySummary() {
       const policy = await getInsurancePolicy();
 
       if (!policy) return;
+
+      setAmount(policy.retailPriceAmount);
 
       initInsurance({
         params: policyParams,
@@ -73,7 +75,7 @@ export default function InsurancePolicySummary() {
     (endDate && new Date(endDate).toLocaleDateString()) || "N/A";
 
   return (
-    <div className="max-w-4xl mx-auto md:min-w-[600px] bg-white shadow-lg rounded-lg p-6 mt-8">
+    <div className="w-full md:max-w-4xl mx-auto md:min-w-[600px] bg-white shadow-lg rounded-lg p-6 mt-8">
       <h2 className="text-2xl font-semibold text-gray-900 mb-4">
         Resumen del Seguro de Viaje
       </h2>
@@ -105,57 +107,59 @@ export default function InsurancePolicySummary() {
           <p>
             <strong>Destino:</strong> {destinationCountry?.name || "N/A"}
           </p>
+          <Accordion fullWidth={false}>
+            <AccordionItem
+              key="1"
+              aria-label="Coberturas"
+              title={
+                <span className="text-gray-900 font-semibold">
+                  Más información
+                </span>
+              }
+            >
+              {/* Tabla de coberturas del seguro con agrupaciones */}
+              <div className="overflow-x-auto bg-white shadow-md rounded-lg ">
+                <table className="md:min-w-full table-auto">
+                  <thead className="bg-gray-100 border-b">
+                    <tr>
+                      <th className="py-2 px-4 text-left text-sm font-semibold text-gray-700">
+                        Coberturas
+                      </th>
+                      <th className="py-2 px-4 text-left text-sm font-semibold text-gray-700">
+                        Monto
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {insuranceData.categories.map((category, categoryIndex) => (
+                      <>
+                        <tr key={categoryIndex} className="bg-gray-200">
+                          <td
+                            colSpan={2}
+                            className="py-2 px-4 font-semibold text-gray-900"
+                          >
+                            {category.title}
+                          </td>
+                        </tr>
+                        {category.coverages.map((coverage, index) => (
+                          <tr key={index} className="border-b hover:bg-gray-50">
+                            <td className="py-2 px-4 text-sm text-gray-700">
+                              {coverage.name}
+                            </td>
+                            <td className="py-2 px-4 text-sm text-gray-700">
+                              {coverage.amount}
+                            </td>
+                          </tr>
+                        ))}
+                      </>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </AccordionItem>
+          </Accordion>
         </div>
       )}
-      <Accordion>
-        <AccordionItem
-          key="1"
-          aria-label="Coberturas"
-          title={
-            <span className="text-gray-900 font-semibold">Más información</span>
-          }
-        >
-          {/* Tabla de coberturas del seguro con agrupaciones */}
-          <div className="overflow-x-auto bg-white shadow-md rounded-lg ">
-            <table className="min-w-full table-auto">
-              <thead className="bg-gray-100 border-b">
-                <tr>
-                  <th className="py-2 px-4 text-left text-sm font-semibold text-gray-700">
-                    Coberturas
-                  </th>
-                  <th className="py-2 px-4 text-left text-sm font-semibold text-gray-700">
-                    Monto
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {insuranceData.categories.map((category, categoryIndex) => (
-                  <>
-                    <tr key={categoryIndex} className="bg-gray-200">
-                      <td
-                        colSpan={2}
-                        className="py-2 px-4 font-semibold text-gray-900"
-                      >
-                        {category.title}
-                      </td>
-                    </tr>
-                    {category.coverages.map((coverage, index) => (
-                      <tr key={index} className="border-b hover:bg-gray-50">
-                        <td className="py-2 px-4 text-sm text-gray-700">
-                          {coverage.name}
-                        </td>
-                        <td className="py-2 px-4 text-sm text-gray-700">
-                          {coverage.amount}
-                        </td>
-                      </tr>
-                    ))}
-                  </>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </AccordionItem>
-      </Accordion>
     </div>
   );
 }

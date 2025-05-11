@@ -4,7 +4,7 @@ import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { useEffect, type Key } from "react";
 
 const autocompleteClassName =
-  "flex w-full md:w-[300px] flex-wrap md:flex-nowrap gap-4";
+  "flex w-full md:w-[300px] flex-wrap md:flex-nowrap gap-4 md:mx-auto";
 
 export default function Step2Form({
   countries = [],
@@ -58,7 +58,7 @@ export default function Step2Form({
   }, [policyParams, enableNextStepButton]);
 
   return (
-    <div className="w-full md:max-w-sm md:mx-auto">
+    <div className="w-full md:max-w-sm">
       <div className={`${autocompleteClassName} mb-5`}>
         <Autocomplete
           id="origin"

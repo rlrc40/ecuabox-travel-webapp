@@ -146,7 +146,8 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
           insured.surname &&
           insured.contactInfoList?.length &&
           insured.contactInfoList[0].email &&
-          insured.birthDate,
+          insured.birthDate &&
+          insured.addressInfoList[0].commercialCountry,
       ) && termsAndConditions;
 
     if (allValid) enablePaymentButton();

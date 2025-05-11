@@ -17,11 +17,13 @@ const { step, title, description } = Astro.props as Props;
 ---
 
 <Layout title="Calcula tu seguro">
-  <div class="flex flex-row flex-wrap gap-8 h-full w-full max-w-screen-xl mx-auto md:px-4 pb-8">
-    <aside class="hidden md:block md:w-50 pt-20 md:mr-10">
+  <div
+    class="flex md:flex-row flex-1 gap-8 h-full w-full md:max-w-screen-xl mx-auto md:px-4 pb-8"
+  >
+    <aside class="hidden md:block md:w-50 pt-20 md:pt-0 md:mr-10">
       <Steps currentStep={step} />
     </aside>
-    <article>
+    <article class="flex flex-col justify-between md:justify-start w-full px-4">
       <section class="flex flex-col items-center justify-center w-full">
         <h2 class="mb-0 text-center font-light">{title}</h2>
         <h1 class="mb-10 text-center font-semibold">
@@ -29,15 +31,17 @@ const { step, title, description } = Astro.props as Props;
         </h1>
         <slot />
       </section>
+      <section class="mt-4 md:mt-8">
+        {
+          step == CalculateYourInsuranceStep.PersonalInfo ? (
+            <PaymentButton client:load />
+          ) : step !== CalculateYourInsuranceStep.Confirmation ? (
+            <NextStepButton client:load nextStep={Number(step) + 1} />
+          ) : (
+            <></>
+          )
+        }
+      </section>
     </article>
   </div>
-  <section class="md:px-4 md:m-auto">
-    {
-      step == CalculateYourInsuranceStep.PersonalInfo ? (
-        <PaymentButton client:load />
-      ) : step !== CalculateYourInsuranceStep.Confirmation ? (
-        <NextStepButton client:load nextStep={Number(step) + 1}/>
-      ): <></>
-    }
-  </section>
 </Layout>
