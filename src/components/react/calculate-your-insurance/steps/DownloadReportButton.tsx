@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import type { PolicyReport } from "@/models/policy-report";
 import { Button, Link } from "@heroui/react";
 import useNewInsurance from "@/hooks/useNewInsurance";
+import useDeviceDetection from "@/hooks/useDeviceDetection";
 
 export default function DownloadReportButton() {
   const { create, isLoading, error } = useNewInsurance();
+
+  const device = useDeviceDetection();
 
   const [report, setReport] = useState<PolicyReport>();
 
@@ -30,6 +33,7 @@ export default function DownloadReportButton() {
     <>
       {!error && (
         <Button
+          fullWidth={device === "mobile"}
           isLoading={isLoading || !report}
           download={report?.fileName || ""}
           href={`data:application/pdf;base64,${report?.base64File || ""}`}

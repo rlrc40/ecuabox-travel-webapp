@@ -177,7 +177,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
             key={index}
             className={`tab-content ${activeTab === index ? "block" : "hidden"}`}
           >
-            <div className="mb-10  p-4 rounded-lg shadow-sm bg-white dark:bg-gray-800">
+            <div className="mb-10 p-4 rounded-lg shadow-sm bg-white dark:bg-gray-800">
               <h2 className="text-lg font-semibold mb-4">
                 Viajero {index + 1} {isMainInsured && "(Titular)"}
               </h2>
@@ -271,6 +271,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
                   defaultItems={countries}
                   label="País"
                   aria-label="País"
+                  isRequired
                   defaultSelectedKey={`${insured.addressInfoList[0]?.commercialCountry?.idDyn}`}
                   onSelectionChange={(item) =>
                     handleInsuredCountryChange(index, Number(item))

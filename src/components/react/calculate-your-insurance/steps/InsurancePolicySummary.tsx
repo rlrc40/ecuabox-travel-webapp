@@ -75,7 +75,7 @@ export default function InsurancePolicySummary() {
     (endDate && new Date(endDate).toLocaleDateString()) || "N/A";
 
   return (
-    <div className="w-full md:max-w-4xl mx-auto md:min-w-[600px] bg-white shadow-lg rounded-lg p-6 mt-8">
+    <div className="w-full md:max-w-4xl mx-auto md:min-w-[600px] bg-white shadow-lg rounded-lg p-3 md:mt-8">
       <h2 className="text-2xl font-semibold text-gray-900 mb-4">
         Resumen del Seguro de Viaje
       </h2>

@@ -1,9 +1,8 @@
 ---
 import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/CalculateYoutInsuranceStep";
 import Step from "./step.astro";
-import DownloadReportButton from "@/components/react/calculate-your-insurance/steps/DownloadReportButton";
-import StepInfo from "@/models/step-info";
 import fetchApi from "@/lib/strapi";
+import type StepInfo from "@/models/step-info";
 
 let step: StepInfo;
 
@@ -17,16 +16,10 @@ try {
 } catch (error) {
   return Astro.redirect("/404");
 }
-
-try {
-  const search = Astro.url.searchParams.get("session_id") || "";
-} catch (error) {}
 ---
 
 <Step
   step={CalculateYourInsuranceStep.Confirmation}
   title={step.title}
   description={step.subtitle}
->
-  <DownloadReportButton client:only />
-</Step>
+/>
