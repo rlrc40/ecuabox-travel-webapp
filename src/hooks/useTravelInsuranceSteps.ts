@@ -102,8 +102,10 @@ const useTravelInsuranceSteps = () => {
       "calculate-your-insurance-next-step-button",
     ) as HTMLButtonElement;
 
-    if (btn) btn.classList.add("opacity-disabled");
-    if (btn) btn.classList.add("pointer-events-none");
+    if (btn) {
+      btn.classList.add("opacity-disabled");
+      btn.classList.add("pointer-events-none");
+    }
   };
 
   const enableNextStepButton = () => {
@@ -111,8 +113,10 @@ const useTravelInsuranceSteps = () => {
       "calculate-your-insurance-next-step-button",
     ) as HTMLButtonElement;
 
-    if (btn) btn.classList.remove("opacity-disabled");
-    if (btn) btn.classList.remove("pointer-events-none");
+    if (btn) {
+      btn.classList.remove("opacity-disabled");
+      btn.classList.remove("pointer-events-none");
+    }
   };
 
   const disablePaymentButton = () => {
@@ -120,8 +124,10 @@ const useTravelInsuranceSteps = () => {
       "calculate-your-insurance-payment-button",
     ) as HTMLButtonElement;
 
-    if (btn) btn.classList.add("opacity-disabled");
-    if (btn) btn.classList.add("pointer-events-none");
+    if (btn) {
+      btn.classList.add("opacity-disabled");
+      btn.classList.add("pointer-events-none");
+    }
   };
 
   const enablePaymentButton = () => {
@@ -129,8 +135,10 @@ const useTravelInsuranceSteps = () => {
       "calculate-your-insurance-payment-button",
     ) as HTMLButtonElement;
 
-    if (btn) btn.classList.remove("opacity-disabled");
-    if (btn) btn.classList.remove("pointer-events-none");
+    if (btn) {
+      btn.classList.remove("opacity-disabled");
+      btn.classList.remove("pointer-events-none");
+    }
   };
 
   return {
