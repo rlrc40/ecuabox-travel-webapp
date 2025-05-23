@@ -9,7 +9,7 @@ let step: StepInfo;
 
 try {
   const steps = await fetchApi<StepInfo[]>({
-    endpoint: `steps?locale=es&filters[key][$eq]=0`,
+    endpoint: `steps?locale=es`,
     wrappedByKey: "data",
   });
 

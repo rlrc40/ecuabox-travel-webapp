@@ -8,11 +8,11 @@ let step: StepInfo;
 
 try {
   const steps = await fetchApi<StepInfo[]>({
-    endpoint: `steps?locale=es&filters[key][$eq]=5`,
+    endpoint: `steps?locale=es`,
     wrappedByKey: "data",
   });
 
-  step = steps[0];
+  step = steps[5];
 } catch (error) {
   return Astro.redirect("/404");
 }
