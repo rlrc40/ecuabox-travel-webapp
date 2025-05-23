@@ -95,7 +95,7 @@ export default function PaymentButton() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row-reverse gap-4 md:justify-center">
+    <div className="flex flex-col gap-4 md:flex-row-reverse md:justify-center">
       <Button
         fullWidth={device === "mobile"}
         id="calculate-your-insurance-payment-button"

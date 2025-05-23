@@ -16,25 +16,26 @@ try {
 
   console.log(insuranceCategories);
 } catch (error) {
+  console.error("Error fetching insurance categories:", error);
   return Astro.redirect("/404");
 }
 ---
 
 <Layout title="Insurance Categories">
   <main>
-    <h1 class="text-center text-7xl font-extrabold mb-24">
+    <h1 class="mb-24 text-center text-7xl font-extrabold">
       Insurance Categories
     </h1>
 
     <section aria-label="Categorías de seguros">
-      <div class="px-4 mx-auto max-w-screen-xl">
+      <div class="mx-auto max-w-screen-xl px-4">
         <div class="grid gap-6 md:grid-cols-2">
           {
             insuranceCategories.map(({ slug, name, description, image }) => (
               <article class="flex flex-col">
                 <a
                   href={`/insurance-category/${slug}`}
-                  class="mb-2 xl:mb-0 transition hover:scale-110"
+                  class="mb-2 transition hover:scale-110 xl:mb-0"
                 >
                   <img
                     transition:name={`img-${slug}`}
@@ -47,12 +48,12 @@ try {
                 <div class="flex flex-col justify-center">
                   <h2
                     transition:name={`title-${slug}`}
-                    class="mb-2 text-2xl font-bold leading-tight text-white"
+                    class="mb-2 text-2xl leading-tight font-bold text-white"
                   >
                     {name}
                   </h2>
 
-                  <p class="mb-4 text-gray-300 max-w-sm">{description}</p>
+                  <p class="mb-4 max-w-sm text-gray-300">{description}</p>
                 </div>
               </article>
             ))

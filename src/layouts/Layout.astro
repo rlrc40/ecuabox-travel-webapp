@@ -1,12 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
-
-interface Props {
-  title: string;
-}
-
-const { title } = Astro.props;
 ---
 
 <!doctype html>
@@ -62,15 +56,15 @@ const { title } = Astro.props;
     <script async defer src="https://buttons.github.io/buttons.js"></script>
   </head>
   <body>
-    <header class="fixed w-full z-11">
-      <nav class="bg-white border-gray-200 py-2.5 dark:bg-gray-900">
+    <header class="fixed z-11 w-full">
+      <nav class="border-gray-200 bg-white py-2.5 dark:bg-gray-900">
         <div
-          class="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto"
+          class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between px-4"
         >
           <a href="/" class="flex items-center">
             <img
               src="/images/logo.png"
-              class="h-6 mr-3 sm:h-9"
+              class="mr-3 h-6 sm:h-9"
               alt="WayCare Logo"
             />
             <span
@@ -79,22 +73,22 @@ const { title } = Astro.props;
             >
           </a>
           <div class="flex items-center lg:order-2">
-            <!-- <a href="#" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Log in</a> -->
+            <!-- <a href="_" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Log in</a> -->
             <a
               href="/calculate-your-insurance/step-1"
-              class="text-white bg-primary hover:opacity-70 focus:ring-4 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0"
+              class="bg-primary rounded-lg px-4 py-2 text-sm font-medium text-white hover:opacity-70 focus:ring-4 sm:mr-2 lg:mr-0 lg:px-5 lg:py-2.5"
               >Calcula tu seguro</a
             >
             <button
               data-collapse-toggle="mobile-menu-2"
               type="button"
-              class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+              class="ml-1 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 focus:outline-none lg:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
               aria-controls="mobile-menu-2"
               aria-expanded="false"
             >
               <span class="sr-only">Open main menu</span>
               <svg
-                class="w-6 h-6"
+                class="h-6 w-6"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +98,7 @@ const { title } = Astro.props;
                   clip-rule="evenodd"></path></svg
               >
               <svg
-                class="hidden w-6 h-6"
+                class="hidden h-6 w-6"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -116,23 +110,23 @@ const { title } = Astro.props;
             </button>
           </div>
           <div
-            class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1"
+            class="hidden w-full items-center justify-between lg:order-1 lg:flex lg:w-auto"
             id="mobile-menu-2"
           >
             <ul
-              class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0"
+              class="mt-4 flex flex-col font-medium lg:mt-0 lg:flex-row lg:space-x-8"
             >
               <li>
                 <a
-                  href="#"
-                  class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                  href="_"
+                  class="lg:hover:text-primary block border-b border-gray-100 py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 lg:border-0 lg:p-0 lg:hover:bg-transparent dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent lg:dark:hover:text-white"
                   >Team</a
                 >
               </li>
               <li>
                 <a
-                  href="#"
-                  class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                  href="_"
+                  class="lg:hover:text-primary block border-b border-gray-100 py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 lg:border-0 lg:p-0 lg:hover:bg-transparent dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent lg:dark:hover:text-white"
                   >Contacto</a
                 >
               </li>
@@ -147,7 +141,7 @@ const { title } = Astro.props;
     </main>
 
     <footer class="bg-white dark:bg-gray-800">
-      <div class="max-w-screen-xl p-4 py-6 mx-auto lg:py-16 md:p-8 lg:p-10">
+      <div class="mx-auto max-w-screen-xl p-4 py-6 md:p-8 lg:p-10 lg:py-16">
         <div class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
           <div>
             <h3
@@ -157,16 +151,16 @@ const { title } = Astro.props;
             </h3>
             <ul class="text-gray-500 dark:text-gray-400">
               <li class="mb-4">
-                <a href="#" class="hover:underline">About</a>
+                <a href="_" class="hover:underline">About</a>
               </li>
               <li class="mb-4">
-                <a href="#" class="hover:underline">Careers</a>
+                <a href="_" class="hover:underline">Careers</a>
               </li>
               <li class="mb-4">
-                <a href="#" class="hover:underline">Brand Center</a>
+                <a href="_" class="hover:underline">Brand Center</a>
               </li>
               <li class="mb-4">
-                <a href="#" class="hover:underline">Blog</a>
+                <a href="_" class="hover:underline">Blog</a>
               </li>
             </ul>
           </div>
@@ -178,16 +172,16 @@ const { title } = Astro.props;
             </h3>
             <ul class="text-gray-500 dark:text-gray-400">
               <li class="mb-4">
-                <a href="#" class="hover:underline">Discord Server</a>
+                <a href="_" class="hover:underline">Discord Server</a>
               </li>
               <li class="mb-4">
-                <a href="#" class="hover:underline">Twitter</a>
+                <a href="_" class="hover:underline">Twitter</a>
               </li>
               <li class="mb-4">
-                <a href="#" class="hover:underline">Facebook</a>
+                <a href="_" class="hover:underline">Facebook</a>
               </li>
               <li class="mb-4">
-                <a href="#" class="hover:underline">Contact Us</a>
+                <a href="_" class="hover:underline">Contact Us</a>
               </li>
             </ul>
           </div>
@@ -199,13 +193,13 @@ const { title } = Astro.props;
             </h3>
             <ul class="text-gray-500 dark:text-gray-400">
               <li class="mb-4">
-                <a href="#" class="hover:underline">Privacy Policy</a>
+                <a href="_" class="hover:underline">Privacy Policy</a>
               </li>
               <li class="mb-4">
-                <a href="#" class="hover:underline">Licensing</a>
+                <a href="_" class="hover:underline">Licensing</a>
               </li>
               <li class="mb-4">
-                <a href="#" class="hover:underline">Terms</a>
+                <a href="_" class="hover:underline">Terms</a>
               </li>
             </ul>
           </div>
@@ -217,16 +211,16 @@ const { title } = Astro.props;
             </h3>
             <ul class="text-gray-500 dark:text-gray-400">
               <li class="mb-4">
-                <a href="#" class="hover:underline">About</a>
+                <a href="_" class="hover:underline">About</a>
               </li>
               <li class="mb-4">
-                <a href="#" class="hover:underline">Careers</a>
+                <a href="_" class="hover:underline">Careers</a>
               </li>
               <li class="mb-4">
-                <a href="#" class="hover:underline">Brand Center</a>
+                <a href="_" class="hover:underline">Brand Center</a>
               </li>
               <li class="mb-4">
-                <a href="#" class="hover:underline">Blog</a>
+                <a href="_" class="hover:underline">Blog</a>
               </li>
             </ul>
           </div>
@@ -238,37 +232,37 @@ const { title } = Astro.props;
             </h3>
             <ul class="text-gray-500 dark:text-gray-400">
               <li class="mb-4">
-                <a href="#" class="hover:underline">iOS</a>
+                <a href="_" class="hover:underline">iOS</a>
               </li>
               <li class="mb-4">
-                <a href="#" class="hover:underline">Android</a>
+                <a href="_" class="hover:underline">Android</a>
               </li>
               <li class="mb-4">
-                <a href="#" class="hover:underline">Windows</a>
+                <a href="_" class="hover:underline">Windows</a>
               </li>
               <li class="mb-4">
-                <a href="#" class="hover:underline">MacOS</a>
+                <a href="_" class="hover:underline">MacOS</a>
               </li>
             </ul>
           </div>
         </div>
         <hr
-          class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8"
+          class="my-6 border-gray-200 sm:mx-auto lg:my-8 dark:border-gray-700"
         />
         <div class="text-center">
           <a
             href="/"
-            class="flex items-center justify-center mb-5 text-2xl font-semibold text-gray-900 dark:text-white"
+            class="mb-5 flex items-center justify-center text-2xl font-semibold text-gray-900 dark:text-white"
           >
             <img
               src="/images/logo.png"
-              class="h-6 mr-3 sm:h-9"
+              class="mr-3 h-6 sm:h-9"
               alt="WayCare Logo"
             />
             WayCare
           </a>
           <span
-            class="block text-sm text-center text-gray-500 dark:text-gray-400"
+            class="block text-center text-sm text-gray-500 dark:text-gray-400"
             >© 2021-2022 WayCare™. All Rights Reserved. Built with <a
               href="https://flowbite.com"
               class="text-primary hover:underline">Flowbite</a
@@ -277,14 +271,14 @@ const { title } = Astro.props;
               class="text-primary hover:underline">Tailwind CSS</a
             >.
           </span>
-          <ul class="flex justify-center mt-5 space-x-5">
+          <ul class="mt-5 flex justify-center space-x-5">
             <li>
               <a
-                href="#"
-                class="text-gray-500 hover:text-gray-900 dark:hover:text-white dark:text-gray-400"
+                href="_"
+                class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
-                  class="w-5 h-5"
+                  class="h-5 w-5"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   aria-hidden="true"
@@ -297,11 +291,11 @@ const { title } = Astro.props;
             </li>
             <li>
               <a
-                href="#"
-                class="text-gray-500 hover:text-gray-900 dark:hover:text-white dark:text-gray-400"
+                href="_"
+                class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
-                  class="w-5 h-5"
+                  class="h-5 w-5"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   aria-hidden="true"
@@ -314,11 +308,11 @@ const { title } = Astro.props;
             </li>
             <li>
               <a
-                href="#"
-                class="text-gray-500 hover:text-gray-900 dark:hover:text-white dark:text-gray-400"
+                href="_"
+                class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
-                  class="w-5 h-5"
+                  class="h-5 w-5"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   aria-hidden="true"
@@ -330,11 +324,11 @@ const { title } = Astro.props;
             </li>
             <li>
               <a
-                href="#"
-                class="text-gray-500 hover:text-gray-900 dark:hover:text-white dark:text-gray-400"
+                href="_"
+                class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
-                  class="w-5 h-5"
+                  class="h-5 w-5"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   aria-hidden="true"
@@ -347,11 +341,11 @@ const { title } = Astro.props;
             </li>
             <li>
               <a
-                href="#"
-                class="text-gray-500 hover:text-gray-900 dark:hover:text-white dark:text-gray-400"
+                href="_"
+                class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
-                  class="w-5 h-5"
+                  class="h-5 w-5"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   aria-hidden="true"
@@ -394,7 +388,7 @@ const { title } = Astro.props;
   }
 
   body > main {
-    @apply flex md:min-h-auto min-h-full md:place-content-center pt-24 md:py-24 md:px-12 flex-col items-center justify-center w-full content-between place-content-between;
+    @apply flex min-h-full w-full flex-col place-content-between content-between items-center justify-center pt-24 md:min-h-auto md:place-content-center md:px-12 md:py-24;
   }
 
   main > div {

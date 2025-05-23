@@ -2,19 +2,17 @@
 import fetchApi from "../lib/strapi";
 import type StrechOfDays from "../models/strech-of-days";
 
-const { insuranceCategory } = Astro.props;
-
 let stretchesOfDates: StrechOfDays[];
 
 try {
   stretchesOfDates = await fetchApi<StrechOfDays[]>({
-    endpoint:
-      "strech-of-days",
+    endpoint: "strech-of-days",
     wrappedByKey: "data",
   });
 
   console.log(stretchesOfDates);
 } catch (error) {
+  console.error("Error fetching stretches of dates:", error);
   return Astro.redirect("/404");
 }
 ---
@@ -22,11 +20,15 @@ try {
 <div class="w-full max-w-sm">
   <div class="relative">
     <select
-      class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer"
+      class="ease w-full cursor-pointer appearance-none rounded border border-slate-200 bg-transparent py-2 pr-8 pl-3 text-sm text-slate-700 shadow-sm transition duration-300 placeholder:text-slate-400 hover:border-slate-400 focus:border-slate-400 focus:shadow-md focus:outline-none"
     >
-      {stretchesOfDates.map(({ code }) => <option value={code}>
-        <a href="?lang=code">{code}</a>
-      </option>)}
+      {
+        stretchesOfDates.map(({ code }) => (
+          <option value={code}>
+            <a href="?lang=code">{code}</a>
+          </option>
+        ))
+      }
     </select>
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +36,7 @@ try {
       viewBox="0 0 24 24"
       stroke-width="1.2"
       stroke="currentColor"
-      class="h-5 w-5 ml-1 absolute top-2.5 right-2.5 text-slate-700"
+      class="absolute top-2.5 right-2.5 ml-1 h-5 w-5 text-slate-700"
     >
       <path
         stroke-linecap="round"

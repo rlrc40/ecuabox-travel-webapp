@@ -38,7 +38,7 @@ export function AutocompleteInput({
 
   const handleSelect = (suggestion: Suggestion) => {
     setInputValue(suggestion.label);
-    change && change(suggestion.value);
+    if (change) change(suggestion.value);
     setShowSuggestions(false);
   };
 

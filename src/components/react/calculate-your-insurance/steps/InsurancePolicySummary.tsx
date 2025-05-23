@@ -75,19 +75,19 @@ export default function InsurancePolicySummary() {
     (endDate && new Date(endDate).toLocaleDateString()) || "N/A";
 
   return (
-    <div className="w-full md:max-w-4xl mx-auto md:min-w-[600px] bg-white shadow-lg rounded-lg p-3 md:mt-8">
-      <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+    <div className="mx-auto w-full rounded-lg bg-white p-3 shadow-lg md:mt-8 md:max-w-4xl md:min-w-[600px]">
+      <h2 className="mb-4 text-2xl font-semibold text-gray-900">
         Resumen del Seguro de Viaje
       </h2>
 
       {isLoading ? (
         <div role="status" className="max-w-sm animate-pulse">
-          <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
-          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
-          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
-          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
-          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+          <div className="mb-4 h-2.5 w-48 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          <div className="mb-2.5 h-2 max-w-[360px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          <div className="mb-2.5 h-2 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          <div className="mb-2.5 h-2 max-w-[330px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          <div className="mb-2.5 h-2 max-w-[300px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          <div className="h-2 max-w-[360px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
           <span className="sr-only">Loading...</span>
         </div>
       ) : (
@@ -112,20 +112,20 @@ export default function InsurancePolicySummary() {
               key="1"
               aria-label="Coberturas"
               title={
-                <span className="text-gray-900 font-semibold">
+                <span className="font-semibold text-gray-900">
                   Más información
                 </span>
               }
             >
               {/* Tabla de coberturas del seguro con agrupaciones */}
-              <div className="overflow-x-auto bg-white shadow-md rounded-lg ">
-                <table className="md:min-w-full table-auto">
-                  <thead className="bg-gray-100 border-b">
+              <div className="overflow-x-auto rounded-lg bg-white shadow-md">
+                <table className="table-auto md:min-w-full">
+                  <thead className="border-b bg-gray-100">
                     <tr>
-                      <th className="py-2 px-4 text-left text-sm font-semibold text-gray-700">
+                      <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
                         Coberturas
                       </th>
-                      <th className="py-2 px-4 text-left text-sm font-semibold text-gray-700">
+                      <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
                         Monto
                       </th>
                     </tr>
@@ -136,17 +136,17 @@ export default function InsurancePolicySummary() {
                         <tr key={categoryIndex} className="bg-gray-200">
                           <td
                             colSpan={2}
-                            className="py-2 px-4 font-semibold text-gray-900"
+                            className="px-4 py-2 font-semibold text-gray-900"
                           >
                             {category.title}
                           </td>
                         </tr>
                         {category.coverages.map((coverage, index) => (
                           <tr key={index} className="border-b hover:bg-gray-50">
-                            <td className="py-2 px-4 text-sm text-gray-700">
+                            <td className="px-4 py-2 text-sm text-gray-700">
                               {coverage.name}
                             </td>
-                            <td className="py-2 px-4 text-sm text-gray-700">
+                            <td className="px-4 py-2 text-sm text-gray-700">
                               {coverage.amount}
                             </td>
                           </tr>

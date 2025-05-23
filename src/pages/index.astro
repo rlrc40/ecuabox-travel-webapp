@@ -7,25 +7,23 @@ import "../styles/global.css";
 
 let homeData: Home;
 
-let image: string;
-
 try {
   homeData = await fetchApi<Home>({
     endpoint: "home?populate=background",
     wrappedByKey: "data",
   });
-
-  image = `${import.meta.env.PUBLIC_STRAPI_URL}${homeData.background.url}`;
 } catch (error) {
+  console.error("Error fetching home data:", error);
+
   return Astro.redirect("/404");
 }
 ---
 
 <Layout title={homeData.title}>
   <!-- Start block -->
-  <section class="bg-white dark:bg-gray-900 h-screen flex items-center">
+  <section class="flex h-screen items-center bg-white dark:bg-gray-900">
     <div
-      class="grid max-w-screen-xl px-4 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 lg:pt-28"
+      class="mx-auto grid max-w-screen-xl px-4 lg:grid-cols-12 lg:gap-8 lg:py-16 lg:pt-28 xl:gap-0"
     >
       <div class="mr-auto place-self-center lg:col-span-7">
         <img
@@ -34,12 +32,12 @@ try {
           alt="WayCare Logo"
         />
         <h1
-          class="max-w-2xl mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white"
+          class="mb-4 max-w-2xl text-4xl leading-none font-extrabold tracking-tight md:text-5xl xl:text-6xl dark:text-white"
         >
           Building digital <br />products & brands.
         </h1>
         <p
-          class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400"
+          class="mb-6 max-w-2xl font-light text-gray-500 md:text-lg lg:mb-8 lg:text-xl dark:text-gray-400"
         >
           This free and open-source landing page template was built using the
           utility classes from <a
@@ -56,13 +54,13 @@ try {
         <div class="space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
           <a
             href="/calculate-your-insurance/step-1"
-            class="inline-flex items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-gray-900 border border-gray-200 rounded-lg sm:w-auto hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+            class="inline-flex w-full items-center justify-center rounded-lg border border-gray-200 px-5 py-3 text-center text-sm font-medium text-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 sm:w-auto dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-800"
             >Calcula tu seguro
           </a>
         </div>
       </div>
-      <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
-        <img src="./images/hero.png" alt="hero image" />
+      <div class="hidden lg:col-span-5 lg:mt-0 lg:flex">
+        <img src="./images/hero.png" alt="hero" />
       </div>
     </div>
   </section>
@@ -73,7 +71,7 @@ try {
       <div
         class="grid grid-cols-2 gap-8 text-gray-500 sm:gap-12 sm:grid-cols-3 lg:grid-cols-6 dark:text-gray-400"
       >
-        <a href="#" class="flex items-center lg:justify-center">
+        <a href="_" class="flex items-center lg:justify-center">
           <svg
             class="h-9 hover:text-gray-900 dark:hover:text-white"
             viewBox="0 0 125 35"
@@ -87,7 +85,7 @@ try {
               fill="currentColor"></path>
           </svg>
         </a>
-        <a href="#" class="flex items-center lg:justify-center">
+        <a href="_" class="flex items-center lg:justify-center">
           <svg
             class="h-9 hover:text-gray-900 dark:hover:text-white"
             viewBox="0 0 86 29"
@@ -101,7 +99,7 @@ try {
               fill="currentColor"></path>
           </svg>
         </a>
-        <a href="#" class="flex items-center lg:justify-center">
+        <a href="_" class="flex items-center lg:justify-center">
           <svg
             class="h-8 hover:text-gray-900 dark:hover:text-white"
             viewBox="0 0 151 34"
@@ -124,7 +122,7 @@ try {
           </svg>
         </a>
 
-        <a href="#" class="flex items-center lg:justify-center">
+        <a href="_" class="flex items-center lg:justify-center">
           <svg
             class="h-9 hover:text-gray-900 dark:hover:text-white"
             viewBox="0 0 124 38"
@@ -136,7 +134,7 @@ try {
               fill="currentColor"></path>
           </svg>
         </a>
-        <a href="#" class="flex items-center lg:justify-center">
+        <a href="_" class="flex items-center lg:justify-center">
           <svg
             class="h-9 hover:text-gray-900 dark:hover:text-white"
             viewBox="0 0 137 37"
@@ -199,7 +197,7 @@ try {
               fill="currentColor"></path>
           </svg>
         </a>
-        <a href="#" class="flex items-center lg:justify-center">
+        <a href="_" class="flex items-center lg:justify-center">
           <svg
             class="h-6 hover:text-gray-900 dark:hover:text-white"
             viewBox="0 0 124 21"
@@ -253,9 +251,9 @@ try {
   </section> -->
   <!-- End block -->
   <!-- Start block -->
-  <section class="bg-gray-50 dark:bg-gray-800 h-screen flex items-center">
+  <section class="flex h-screen items-center bg-gray-50 dark:bg-gray-800">
     <div
-      class="max-w-screen-xl px-4 py-8 mx-auto space-y-12 lg:space-y-20 lg:py-24 lg:px-6"
+      class="mx-auto max-w-screen-xl space-y-12 px-4 py-8 lg:space-y-20 lg:px-6 lg:py-24"
     >
       <!-- Row -->
       <div class="items-center gap-8 lg:grid lg:grid-cols-2 xl:gap-16">
@@ -272,13 +270,12 @@ try {
           </p>
           <!-- List -->
           <ul
-            role="list"
-            class="pt-8 space-y-5 border-t border-gray-200 my-7 dark:border-gray-700"
+            class="my-7 space-y-5 border-t border-gray-200 pt-8 dark:border-gray-700"
           >
             <li class="flex space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-primary"
+                class="text-primary h-5 w-5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -288,14 +285,14 @@ try {
                   clip-rule="evenodd"></path></svg
               >
               <span
-                class="text-base font-medium leading-tight text-gray-900 dark:text-white"
+                class="text-base leading-tight font-medium text-gray-900 dark:text-white"
                 >Continuous integration and deployment</span
               >
             </li>
             <li class="flex space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-primary"
+                class="text-primary h-5 w-5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -305,14 +302,14 @@ try {
                   clip-rule="evenodd"></path></svg
               >
               <span
-                class="text-base font-medium leading-tight text-gray-900 dark:text-white"
+                class="text-base leading-tight font-medium text-gray-900 dark:text-white"
                 >Development workflow</span
               >
             </li>
             <li class="flex space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-primary"
+                class="text-primary h-5 w-5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -322,7 +319,7 @@ try {
                   clip-rule="evenodd"></path></svg
               >
               <span
-                class="text-base font-medium leading-tight text-gray-900 dark:text-white"
+                class="text-base leading-tight font-medium text-gray-900 dark:text-white"
                 >Knowledge management</span
               >
             </li>
@@ -333,17 +330,17 @@ try {
           </p>
         </div>
         <img
-          class="hidden w-full mb-4 rounded-lg lg:mb-0 lg:flex"
+          class="mb-4 hidden w-full rounded-lg lg:mb-0 lg:flex"
           src="./images/feature-1.png"
-          alt="dashboard feature image"
+          alt="dashboard feature"
         />
       </div>
       <!-- Row -->
       <div class="items-center gap-8 lg:grid lg:grid-cols-2 xl:gap-16">
         <img
-          class="hidden w-full mb-4 rounded-lg lg:mb-0 lg:flex"
+          class="mb-4 hidden w-full rounded-lg lg:mb-0 lg:flex"
           src="./images/feature-2.png"
-          alt="feature image 2"
+          alt="feature 2"
         />
         <div class="text-gray-500 sm:text-lg dark:text-gray-400">
           <h2
@@ -358,13 +355,12 @@ try {
           </p>
           <!-- List -->
           <ul
-            role="list"
-            class="pt-8 space-y-5 border-t border-gray-200 my-7 dark:border-gray-700"
+            class="my-7 space-y-5 border-t border-gray-200 pt-8 dark:border-gray-700"
           >
             <li class="flex space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-primary"
+                class="text-primary h-5 w-5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -374,14 +370,14 @@ try {
                   clip-rule="evenodd"></path></svg
               >
               <span
-                class="text-base font-medium leading-tight text-gray-900 dark:text-white"
+                class="text-base leading-tight font-medium text-gray-900 dark:text-white"
                 >Dynamic reports and dashboards</span
               >
             </li>
             <li class="flex space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-primary"
+                class="text-primary h-5 w-5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -391,14 +387,14 @@ try {
                   clip-rule="evenodd"></path></svg
               >
               <span
-                class="text-base font-medium leading-tight text-gray-900 dark:text-white"
+                class="text-base leading-tight font-medium text-gray-900 dark:text-white"
                 >Templates for everyone</span
               >
             </li>
             <li class="flex space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-primary"
+                class="text-primary h-5 w-5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -408,14 +404,14 @@ try {
                   clip-rule="evenodd"></path></svg
               >
               <span
-                class="text-base font-medium leading-tight text-gray-900 dark:text-white"
+                class="text-base leading-tight font-medium text-gray-900 dark:text-white"
                 >Development workflow</span
               >
             </li>
             <li class="flex space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-primary"
+                class="text-primary h-5 w-5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -425,14 +421,14 @@ try {
                   clip-rule="evenodd"></path></svg
               >
               <span
-                class="text-base font-medium leading-tight text-gray-900 dark:text-white"
+                class="text-base leading-tight font-medium text-gray-900 dark:text-white"
                 >Limitless business automation</span
               >
             </li>
             <li class="flex space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-primary"
+                class="text-primary h-5 w-5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -442,7 +438,7 @@ try {
                   clip-rule="evenodd"></path></svg
               >
               <span
-                class="text-base font-medium leading-tight text-gray-900 dark:text-white"
+                class="text-base leading-tight font-medium text-gray-900 dark:text-white"
                 >Knowledge management</span
               >
             </li>
@@ -457,12 +453,12 @@ try {
   </section>
   <!-- End block -->
   <!-- Start block -->
-  <section class="bg-white dark:bg-gray-900 h-screen flex items-center">
+  <section class="flex h-screen items-center bg-white dark:bg-gray-900">
     <div
-      class="items-center max-w-screen-xl px-4 py-8 mx-auto lg:grid lg:grid-cols-4 lg:gap-16 xl:gap-24 lg:py-24 lg:px-6"
+      class="mx-auto max-w-screen-xl items-center px-4 py-8 lg:grid lg:grid-cols-4 lg:gap-16 lg:px-6 lg:py-24 xl:gap-24"
     >
       <div class="col-span-2 mb-8">
-        <p class="text-lg font-medium text-primary dark:text-primary">
+        <p class="text-primary dark:text-primary text-lg font-medium">
           Trusted Worldwide
         </p>
         <h2
@@ -475,16 +471,16 @@ try {
           we do. We work tirelessly to protect you and your customers.
         </p>
         <div
-          class="pt-6 mt-6 space-y-4 border-t border-gray-200 dark:border-gray-700"
+          class="mt-6 space-y-4 border-t border-gray-200 pt-6 dark:border-gray-700"
         >
           <div>
             <a
-              href="#"
-              class="inline-flex items-center text-base font-medium text-primary hover:text-primary-foreground dark:text-primary dark:hover:text-primary"
+              href="_"
+              class="text-primary hover:text-primary-foreground dark:text-primary dark:hover:text-primary inline-flex items-center text-base font-medium"
             >
               Explore Legality Guide
               <svg
-                class="w-5 h-5 ml-1"
+                class="ml-1 h-5 w-5"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -497,12 +493,12 @@ try {
           </div>
           <div>
             <a
-              href="#"
-              class="inline-flex items-center text-base font-medium text-primary hover:text-primary-foreground dark:text-primary dark:hover:text-primary"
+              href="_"
+              class="text-primary hover:text-primary-foreground dark:text-primary dark:hover:text-primary inline-flex items-center text-base font-medium"
             >
               Visit the Trust Center
               <svg
-                class="w-5 h-5 ml-1"
+                class="ml-1 h-5 w-5"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -520,7 +516,7 @@ try {
       >
         <div>
           <svg
-            class="w-10 h-10 mb-2 text-primary md:w-12 md:h-12 dark:text-primary"
+            class="text-primary dark:text-primary mb-2 h-10 w-10 md:h-12 md:w-12"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -536,7 +532,7 @@ try {
         </div>
         <div>
           <svg
-            class="w-10 h-10 mb-2 text-primary md:w-12 md:h-12 dark:text-primary"
+            class="text-primary dark:text-primary mb-2 h-10 w-10 md:h-12 md:w-12"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -551,7 +547,7 @@ try {
         </div>
         <div>
           <svg
-            class="w-10 h-10 mb-2 text-primary md:w-12 md:h-12 dark:text-primary"
+            class="text-primary dark:text-primary mb-2 h-10 w-10 md:h-12 md:w-12"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -569,7 +565,7 @@ try {
         </div>
         <div>
           <svg
-            class="w-10 h-10 mb-2 text-primary md:w-12 md:h-12 dark:text-primary"
+            class="text-primary dark:text-primary mb-2 h-10 w-10 md:h-12 md:w-12"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -587,11 +583,11 @@ try {
   </section>
   <!-- End block -->
   <!-- Start block -->
-  <section class="bg-gray-50 dark:bg-gray-800 h-screen flex items-center">
-    <div class="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-24 lg:px-6">
-      <figure class="max-w-screen-md mx-auto">
+  <section class="flex h-screen items-center bg-gray-50 dark:bg-gray-800">
+    <div class="mx-auto max-w-screen-xl px-4 py-8 text-center lg:px-6 lg:py-24">
+      <figure class="mx-auto max-w-screen-md">
         <svg
-          class="h-12 mx-auto mb-3 text-gray-400 dark:text-gray-600"
+          class="mx-auto mb-3 h-12 text-gray-400 dark:text-gray-600"
           viewBox="0 0 24 27"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -609,11 +605,11 @@ try {
             dashboard. Perfect choice for your next SaaS application."
           </p>
         </blockquote>
-        <figcaption class="flex items-center justify-center mt-6 space-x-3">
+        <figcaption class="mt-6 flex items-center justify-center space-x-3">
           <img
-            class="w-6 h-6 rounded-full"
+            class="h-6 w-6 rounded-full"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png"
-            alt="profile picture"
+            alt="profile"
           />
           <div
             class="flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700"
@@ -633,9 +629,9 @@ try {
   </section>
   <!-- End block -->
   <!-- Start block -->
-  <section class="bg-white dark:bg-gray-900 h-screen flex items-center">
-    <div class="max-w-screen-xl px-4 py-8 mx-auto lg:py-24 lg:px-6">
-      <div class="max-w-screen-md mx-auto mb-8 text-center lg:mb-12">
+  <section class="flex h-screen items-center bg-white dark:bg-gray-900">
+    <div class="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-24">
+      <div class="mx-auto mb-8 max-w-screen-md text-center lg:mb-12">
         <h2
           class="mb-4 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white"
         >
@@ -647,26 +643,26 @@ try {
         </p>
       </div>
       <div
-        class="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0"
+        class="space-y-8 sm:gap-6 lg:grid lg:grid-cols-3 lg:space-y-0 xl:gap-10"
       >
         <!-- Pricing Card -->
         <div
-          class="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white"
+          class="mx-auto flex max-w-lg flex-col rounded-lg border border-gray-100 bg-white p-6 text-center text-gray-900 shadow xl:p-8 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
         >
           <h3 class="mb-4 text-2xl font-semibold">Starter</h3>
           <p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">
             Best option for personal use & for your next project.
           </p>
-          <div class="flex items-baseline justify-center my-8">
+          <div class="my-8 flex items-baseline justify-center">
             <span class="mr-2 text-5xl font-extrabold">$29</span>
             <span class="text-gray-500 dark:text-gray-400">/month</span>
           </div>
           <!-- List -->
-          <ul role="list" class="mb-8 space-y-4 text-left">
+          <ul class="mb-8 space-y-4 text-left">
             <li class="flex items-center space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                class="h-5 w-5 flex-shrink-0 text-green-500 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -680,7 +676,7 @@ try {
             <li class="flex items-center space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                class="h-5 w-5 flex-shrink-0 text-green-500 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -694,7 +690,7 @@ try {
             <li class="flex items-center space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                class="h-5 w-5 flex-shrink-0 text-green-500 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -710,7 +706,7 @@ try {
             <li class="flex items-center space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                class="h-5 w-5 flex-shrink-0 text-green-500 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -727,7 +723,7 @@ try {
             <li class="flex items-center space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                class="h-5 w-5 flex-shrink-0 text-green-500 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -742,31 +738,31 @@ try {
             </li>
           </ul>
           <a
-            href="#"
-            class="text-white bg-primary hover:bg-primary focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white"
+            href="_"
+            class="bg-primary hover:bg-primary rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:ring-4 dark:text-white"
             >Get started</a
           >
         </div>
         <!-- Pricing Card -->
         <div
-          class="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white"
+          class="mx-auto flex max-w-lg flex-col rounded-lg border border-gray-100 bg-white p-6 text-center text-gray-900 shadow xl:p-8 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
         >
           <h3 class="mb-4 text-2xl font-semibold">Company</h3>
           <p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">
             Relevant for multiple users, extended & premium support.
           </p>
-          <div class="flex items-baseline justify-center my-8">
+          <div class="my-8 flex items-baseline justify-center">
             <span class="mr-2 text-5xl font-extrabold">$99</span>
             <span class="text-gray-500 dark:text-gray-400" dark:text-gray-400
               >/month</span
             >
           </div>
           <!-- List -->
-          <ul role="list" class="mb-8 space-y-4 text-left">
+          <ul class="mb-8 space-y-4 text-left">
             <li class="flex items-center space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                class="h-5 w-5 flex-shrink-0 text-green-500 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -780,7 +776,7 @@ try {
             <li class="flex items-center space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                class="h-5 w-5 flex-shrink-0 text-green-500 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -794,7 +790,7 @@ try {
             <li class="flex items-center space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                class="h-5 w-5 flex-shrink-0 text-green-500 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -811,7 +807,7 @@ try {
             <li class="flex items-center space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                class="h-5 w-5 flex-shrink-0 text-green-500 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -828,7 +824,7 @@ try {
             <li class="flex items-center space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                class="h-5 w-5 flex-shrink-0 text-green-500 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -844,29 +840,29 @@ try {
             </li>
           </ul>
           <a
-            href="#"
-            class="text-white bg-primary hover:bg-primary focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white"
+            href="_"
+            class="bg-primary hover:bg-primary rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:ring-4 dark:text-white"
             >Get started</a
           >
         </div>
         <!-- Pricing Card -->
         <div
-          class="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white"
+          class="mx-auto flex max-w-lg flex-col rounded-lg border border-gray-100 bg-white p-6 text-center text-gray-900 shadow xl:p-8 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
         >
           <h3 class="mb-4 text-2xl font-semibold">Enterprise</h3>
           <p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">
             Best for large scale uses and extended redistribution rights.
           </p>
-          <div class="flex items-baseline justify-center my-8">
+          <div class="my-8 flex items-baseline justify-center">
             <span class="mr-2 text-5xl font-extrabold">$499</span>
             <span class="text-gray-500 dark:text-gray-400">/month</span>
           </div>
           <!-- List -->
-          <ul role="list" class="mb-8 space-y-4 text-left">
+          <ul class="mb-8 space-y-4 text-left">
             <li class="flex items-center space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                class="h-5 w-5 flex-shrink-0 text-green-500 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -880,7 +876,7 @@ try {
             <li class="flex items-center space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                class="h-5 w-5 flex-shrink-0 text-green-500 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -894,7 +890,7 @@ try {
             <li class="flex items-center space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                class="h-5 w-5 flex-shrink-0 text-green-500 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -911,7 +907,7 @@ try {
             <li class="flex items-center space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                class="h-5 w-5 flex-shrink-0 text-green-500 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -928,7 +924,7 @@ try {
             <li class="flex items-center space-x-3">
               <!-- Icon -->
               <svg
-                class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                class="h-5 w-5 flex-shrink-0 text-green-500 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -944,8 +940,8 @@ try {
             </li>
           </ul>
           <a
-            href="#"
-            class="text-white bg-primary hover:bg-primary focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white"
+            href="_"
+            class="bg-primary hover:bg-primary rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:ring-4 dark:text-white"
             >Get started</a
           >
         </div>
@@ -954,14 +950,14 @@ try {
   </section>
   <!-- End block -->
   <!-- Start block -->
-  <section class="bg-white dark:bg-gray-900 h-screen flex items-center">
-    <div class="max-w-screen-xl px-4 pb-8 mx-auto lg:pb-24 lg:px-6">
+  <section class="flex h-screen items-center bg-white dark:bg-gray-900">
+    <div class="mx-auto max-w-screen-xl px-4 pb-8 lg:px-6 lg:pb-24">
       <h2
-        class="mb-6 text-3xl font-extrabold tracking-tight text-center text-gray-900 lg:mb-8 lg:text-3xl dark:text-white"
+        class="mb-6 text-center text-3xl font-extrabold tracking-tight text-gray-900 lg:mb-8 lg:text-3xl dark:text-white"
       >
         Frequently asked questions
       </h2>
-      <div class="max-w-screen-md mx-auto">
+      <div class="mx-auto max-w-screen-md">
         <div
           id="accordion-flush"
           data-accordion="collapse"
@@ -971,7 +967,7 @@ try {
           <h3 id="accordion-flush-heading-1">
             <button
               type="button"
-              class="flex items-center justify-between w-full py-5 font-medium text-left text-gray-900 bg-white border-b border-gray-200 dark:border-gray-700 dark:bg-gray-900 dark:text-white"
+              class="flex w-full items-center justify-between border-b border-gray-200 bg-white py-5 text-left font-medium text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-white"
               data-accordion-target="#accordion-flush-body-1"
               aria-expanded="true"
               aria-controls="accordion-flush-body-1"
@@ -979,7 +975,7 @@ try {
               <span>Can I use Landwind in open-source projects?</span>
               <svg
                 data-accordion-icon=""
-                class="w-6 h-6 rotate-180 shrink-0"
+                class="h-6 w-6 shrink-0 rotate-180"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -995,7 +991,7 @@ try {
             class=""
             aria-labelledby="accordion-flush-heading-1"
           >
-            <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+            <div class="border-b border-gray-200 py-5 dark:border-gray-700">
               <p class="mb-2 text-gray-500 dark:text-gray-400">
                 Landwind is an open-source library of interactive components
                 built on top of Tailwind CSS including buttons, dropdowns,
@@ -1003,7 +999,7 @@ try {
               </p>
               <p class="text-gray-500 dark:text-gray-400">
                 Check out this guide to learn how to <a
-                  href="#"
+                  href="_"
                   class="text-primary dark:text-primary hover:underline"
                   >get started</a
                 > and start developing websites even faster with components on top
@@ -1014,7 +1010,7 @@ try {
           <h3 id="accordion-flush-heading-2">
             <button
               type="button"
-              class="flex items-center justify-between w-full py-5 font-medium text-left text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400"
+              class="flex w-full items-center justify-between border-b border-gray-200 py-5 text-left font-medium text-gray-500 dark:border-gray-700 dark:text-gray-400"
               data-accordion-target="#accordion-flush-body-2"
               aria-expanded="false"
               aria-controls="accordion-flush-body-2"
@@ -1022,7 +1018,7 @@ try {
               <span>Is there a Figma file available?</span>
               <svg
                 data-accordion-icon=""
-                class="w-6 h-6 shrink-0"
+                class="h-6 w-6 shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -1038,7 +1034,7 @@ try {
             class="hidden"
             aria-labelledby="accordion-flush-heading-2"
           >
-            <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+            <div class="border-b border-gray-200 py-5 dark:border-gray-700">
               <p class="mb-2 text-gray-500 dark:text-gray-400">
                 Landwind is first conceptualized and designed using the Figma
                 software so everything you see in the library has a design
@@ -1046,7 +1042,7 @@ try {
               </p>
               <p class="text-gray-500 dark:text-gray-400">
                 Check out the <a
-                  href="#"
+                  href="_"
                   class="text-primary dark:text-primary hover:underline"
                   >Figma design system</a
                 > based on the utility classes from Tailwind CSS and components from
@@ -1057,7 +1053,7 @@ try {
           <h3 id="accordion-flush-heading-3">
             <button
               type="button"
-              class="flex items-center justify-between w-full py-5 font-medium text-left text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400"
+              class="flex w-full items-center justify-between border-b border-gray-200 py-5 text-left font-medium text-gray-500 dark:border-gray-700 dark:text-gray-400"
               data-accordion-target="#accordion-flush-body-3"
               aria-expanded="false"
               aria-controls="accordion-flush-body-3"
@@ -1067,7 +1063,7 @@ try {
               >
               <svg
                 data-accordion-icon=""
-                class="w-6 h-6 shrink-0"
+                class="h-6 w-6 shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -1083,7 +1079,7 @@ try {
             class="hidden"
             aria-labelledby="accordion-flush-heading-3"
           >
-            <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+            <div class="border-b border-gray-200 py-5 dark:border-gray-700">
               <p class="mb-2 text-gray-500 dark:text-gray-400">
                 The main difference is that the core components from Landwind
                 are open source under the MIT license, whereas Tailwind UI is a
@@ -1099,17 +1095,17 @@ try {
               <p class="mb-2 text-gray-500 dark:text-gray-400">
                 Learn more about these technologies:
               </p>
-              <ul class="pl-5 text-gray-500 list-disc dark:text-gray-400">
+              <ul class="list-disc pl-5 text-gray-500 dark:text-gray-400">
                 <li>
                   <a
-                    href="#"
+                    href="_"
                     class="text-primary dark:text-primary hover:underline"
                     >Landwind Pro</a
                   >
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="_"
                     class="text-primary dark:text-primary hover:underline"
                     >Tailwind UI</a
                   >
@@ -1120,7 +1116,7 @@ try {
           <h3 id="accordion-flush-heading-4">
             <button
               type="button"
-              class="flex items-center justify-between w-full py-5 font-medium text-left text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400"
+              class="flex w-full items-center justify-between border-b border-gray-200 py-5 text-left font-medium text-gray-500 dark:border-gray-700 dark:text-gray-400"
               data-accordion-target="#accordion-flush-body-4"
               aria-expanded="false"
               aria-controls="accordion-flush-body-4"
@@ -1128,7 +1124,7 @@ try {
               <span>What about browser support?</span>
               <svg
                 data-accordion-icon=""
-                class="w-6 h-6 shrink-0"
+                class="h-6 w-6 shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -1144,7 +1140,7 @@ try {
             class="hidden"
             aria-labelledby="accordion-flush-heading-4"
           >
-            <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+            <div class="border-b border-gray-200 py-5 dark:border-gray-700">
               <p class="mb-2 text-gray-500 dark:text-gray-400">
                 The main difference is that the core components from Landwind
                 are open source under the MIT license, whereas Tailwind UI is a
@@ -1160,17 +1156,17 @@ try {
               <p class="mb-2 text-gray-500 dark:text-gray-400">
                 Learn more about these technologies:
               </p>
-              <ul class="pl-5 text-gray-500 list-disc dark:text-gray-400">
+              <ul class="list-disc pl-5 text-gray-500 dark:text-gray-400">
                 <li>
                   <a
-                    href="#"
+                    href="_"
                     class="text-primary dark:text-primary hover:underline"
                     >Landwind Pro</a
                   >
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="_"
                     class="text-primary dark:text-primary hover:underline"
                     >Tailwind UI</a
                   >
@@ -1184,20 +1180,20 @@ try {
   </section>
   <!-- End block -->
   <!-- Start block -->
-  <section class="bg-gray-50 dark:bg-gray-800 h-screen flex items-center">
-    <div class="max-w-screen-xl px-4 py-8 mx-auto lg:py-16 lg:px-6">
-      <div class="max-w-screen-sm mx-auto text-center">
+  <section class="flex h-screen items-center bg-gray-50 dark:bg-gray-800">
+    <div class="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16">
+      <div class="mx-auto max-w-screen-sm text-center">
         <h2
-          class="mb-4 text-3xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-white"
+          class="mb-4 text-3xl leading-tight font-extrabold tracking-tight text-gray-900 dark:text-white"
         >
           Start your free trial today
         </h2>
-        <p class="mb-6 font-light text-gray-500 dark:text-gray-400 md:text-lg">
+        <p class="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">
           Try Landwind Platform for 30 days. No credit card required.
         </p>
         <a
-          href="#"
-          class="text-white bg-primary hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-primary dark:hover:bg-primary focus:outline-none dark:focus:ring-purple-800"
+          href="_"
+          class="bg-primary dark:bg-primary dark:hover:bg-primary mr-2 mb-2 rounded-lg px-5 py-2.5 text-sm font-medium text-white hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 focus:outline-none dark:focus:ring-purple-800"
           >Free trial for 30 days</a
         >
       </div>

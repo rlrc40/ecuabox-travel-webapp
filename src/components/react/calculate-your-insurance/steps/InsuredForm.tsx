@@ -156,7 +156,7 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
 
   return (
     <div>
-      <div className="tabs flex space-x-4 mb-6">
+      <div className="tabs mb-6 flex space-x-4">
         <Tabs
           aria-label="Viajeros"
           radius="full"
@@ -177,13 +177,13 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
             key={index}
             className={`tab-content ${activeTab === index ? "block" : "hidden"}`}
           >
-            <div className="mb-10 p-4 rounded-lg shadow-sm bg-white dark:bg-gray-800">
-              <h2 className="text-lg font-semibold mb-4">
+            <div className="mb-10 rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+              <h2 className="mb-4 text-lg font-semibold">
                 Viajero {index + 1} {isMainInsured && "(Titular)"}
               </h2>
 
               {/* General Data */}
-              <div className="grid gap-6 mb-6 md:grid-cols-2">
+              <div className="mb-6 grid gap-6 md:grid-cols-2">
                 <Input
                   id="name"
                   label="Nombre"
@@ -227,8 +227,8 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
               </div>
 
               {/* Contact Data */}
-              <h3 className="text-md font-semibold mb-2">Datos de Contacto</h3>
-              <div className="grid gap-6 mb-6 md:grid-cols-2">
+              <h3 className="text-md mb-2 font-semibold">Datos de Contacto</h3>
+              <div className="mb-6 grid gap-6 md:grid-cols-2">
                 <Input
                   type="phone"
                   id="phoneNumber"
@@ -249,8 +249,8 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
               </div>
 
               {/* Address Data */}
-              <h3 className="text-md font-semibold mb-2">Dirección</h3>
-              <div className="grid gap-6 mb-6 md:grid-cols-2">
+              <h3 className="text-md mb-2 font-semibold">Dirección</h3>
+              <div className="mb-6 grid gap-6 md:grid-cols-2">
                 <Input
                   id="commercialAddress"
                   label="Dirección"
@@ -306,8 +306,8 @@ export default function InsuredForm({ countries }: InsuredFormProps) {
         ))}
       </form>
 
-      <div className="flex items-start mt-6">
-        <div className="flex items-center h-5">
+      <div className="mt-6 flex items-start">
+        <div className="flex h-5 items-center">
           <Checkbox
             isSelected={termsAndConditions}
             onValueChange={setTermsAndConditions}

@@ -53,7 +53,7 @@ export default function Step1Form() {
   return (
     <>
       <DateRangePicker
-        className="md:max-w-xs mb-4"
+        className="mb-4 md:max-w-xs"
         label="Periodo de cobertura"
         aria-label="Periodo de cobertura"
         pageBehavior="single"
