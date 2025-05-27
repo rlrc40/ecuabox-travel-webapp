@@ -6,10 +6,21 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@font-face {
+  font-family: Baloo2;
+  src: url("/fonts/Baloo2-VariableFont_wght.ttf") format("ttf");
+}
+
+html {
+  font-family: "Baloo2", sans-serif;
+}
+
 @theme {
   --color-primary: #005a7a;
   --color-secondary: #00334a;
   --color-tertiary: #0dff96;
+  --font-sans: "Baloo2", "sans-serif";
+  --font-display: "Baloo2", "sans-serif";
 }
 
 .ui-input {
