@@ -3,6 +3,7 @@ import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/Calcul
 import Step from "./step.astro";
 import fetchApi from "@/lib/strapi";
 import type StepInfo from "@/models/step-info";
+import InsurancePolicyReport from "@/components/react/calculate-your-insurance/steps/InsurancePolicyReport";
 
 let step: StepInfo;
 
@@ -23,4 +24,6 @@ try {
   step={CalculateYourInsuranceStep.Confirmation}
   title={step.title}
   description={step.subtitle}
-/>
+>
+  <InsurancePolicyReport client:only="react" />
+</Step>

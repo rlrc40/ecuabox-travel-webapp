@@ -27,10 +27,6 @@ export default defineConfig([
     plugins: {
       prettier,
     },
-    rules: {
-      // disable warnings, since prettier should format on save
-      "prettier/prettier": "on",
-    },
   },
 
   // astro setup with a11y
