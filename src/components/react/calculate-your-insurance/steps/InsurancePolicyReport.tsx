@@ -5,11 +5,16 @@ import useNewInsurance from "@/hooks/useNewInsurance";
 import useDeviceDetection from "@/hooks/useDeviceDetection";
 import PdfViewer from "@/components/ui/PdfViewer";
 import LogoLoading from "../../ui/LogoLoading";
+import useOrders from "@/hooks/useOrders";
 
 export default function InsurancePolicyReport() {
-  const { create, isLoading, error } = useNewInsurance();
+  const { create, isLoading, error, paymentSessionId } = useNewInsurance();
+
+  const { getOrder } = useOrders();
 
   const [loadingReport, setLoadingReport] = useState(true);
+
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   const device = useDeviceDetection();
 
@@ -19,6 +24,18 @@ export default function InsurancePolicyReport() {
     const fetchReport = async () => {
       setLoadingReport(true);
       try {
+        const order = await fetchOrder();
+
+        if (order?.paymentStatus !== "paid") {
+          setPaymentError(
+            "Ha ocurrido un error al procesar el pago, por favor ponte en contacto con el soporte técnico.",
+          );
+
+          setLoadingReport(false);
+
+          throw new Error("Order not paid");
+        }
+
         const report = await create();
 
         if (!report) {
@@ -33,12 +50,23 @@ export default function InsurancePolicyReport() {
       }
     };
 
+    const fetchOrder = async () => {
+      if (!paymentSessionId) {
+        return;
+      }
+      try {
+        return await getOrder(paymentSessionId);
+      } catch (err) {
+        console.error("Error fetching order:", err);
+      }
+    };
+
     fetchReport();
   }, []);
 
   return (
     <>
-      {isLoading || loadingReport ? (
+      {loadingReport ? (
         <>
           <div className="mt-[50%]">
             <LogoLoading />
@@ -46,15 +74,20 @@ export default function InsurancePolicyReport() {
         </>
       ) : (
         <>
+          {paymentError ? (
+            <div className="mb-4 text-center text-red-500">
+              <p>{paymentError}</p>
+            </div>
+          ) : null}
           {report?.base64File && (
             <div className="mb-4">
               <PdfViewer base64Data={report.base64File} />
             </div>
           )}
-          {!error && (
+          {!error && !paymentError && (
             <Button
               fullWidth={device === "mobile"}
-              isLoading={isLoading || !report}
+              isLoading={loadingReport}
               download={report?.fileName || ""}
               href={`data:application/pdf;base64,${report?.base64File || ""}`}
               as={Link}

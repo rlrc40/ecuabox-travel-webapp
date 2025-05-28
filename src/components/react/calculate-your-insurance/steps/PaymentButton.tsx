@@ -1,29 +1,11 @@
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { useSessionStorage } from "@/hooks/useSessionStorage";
-import type {
-  InsuranceInsured,
-  NewInsurance,
-} from "@/models/calculate-your-insurance/new-insurance";
 import type { PolicyParams } from "@/models/calculate-your-insurance/policy-params";
 import { Button } from "@heroui/react";
 import useDeviceDetection from "@/hooks/useDeviceDetection";
-
-interface NewOrder {
-  amount: number;
-  currency: string;
-  concept: string;
-  email: string;
-  passengerData: InsuranceInsured[];
-  metadata: {
-    startDate: string;
-    endDate: string;
-    pax: number;
-    origin: string;
-    destination: string;
-  };
-  createdAt: string;
-}
+import useNewInsurance from "@/hooks/useNewInsurance";
+import useOrders, { type NewOrder } from "@/hooks/useOrders";
 
 export default function PaymentButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +16,9 @@ export default function PaymentButton() {
 
   const [policyParams] = useSessionStorage<PolicyParams>("policy-params", {});
 
-  const [newInsurance] = useSessionStorage<NewInsurance>("new-insurance", {});
+  const { newInsurance, setPaymentSessionId } = useNewInsurance();
+
+  const { createOrder } = useOrders();
 
   const mainInsured =
     newInsurance?.insuranceInsuredList?.find(
@@ -66,21 +50,16 @@ export default function PaymentButton() {
         import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY || "",
       );
 
-      const url = new URL(`${import.meta.env.PUBLIC_STRAPI_URL}/api/orders`);
+      const data = await createOrder(order);
 
-      const response = await fetch(url.toString(), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(order),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create checkout session");
+      if (!data) {
+        throw new Error("Failed to create order");
+      }
+      if (!data.sessionId) {
+        throw new Error("No session ID returned from order creation");
       }
 
-      const data = await response.json();
+      setPaymentSessionId(data.sessionId);
 
       await stripe?.redirectToCheckout({
         sessionId: data.sessionId,

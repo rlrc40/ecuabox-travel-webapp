@@ -15,6 +15,11 @@ const useNewInsurance = () => {
     {},
   );
 
+  const [paymentSessionId, setPaymentSessionId] = useSessionStorage<string>(
+    "payment-session-id",
+    "",
+  );
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
@@ -226,6 +231,8 @@ const useNewInsurance = () => {
     newInsurance,
     isLoading,
     error,
+    paymentSessionId,
+    setPaymentSessionId,
     create,
     initInsurance,
     initInsuranceInsured,

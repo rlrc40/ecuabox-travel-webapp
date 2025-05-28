@@ -5,7 +5,6 @@ import CalculateYourInsuranceStep from "@/models/calculate-your-insurance/Calcul
 import PaymentButton from "@/components/react/calculate-your-insurance/steps/PaymentButton";
 import type { ReactNode } from "react";
 import { NextStepButton } from "@/components/react/calculate-your-insurance/steps/NextStepButton";
-import DownloadReportButton from "@/components/react/calculate-your-insurance/steps/DownloadReportButton";
 
 interface Props {
   step: CalculateYourInsuranceStep;
@@ -38,8 +37,6 @@ const { step, title, description } = Astro.props as Props;
             <PaymentButton client:load />
           ) : step !== CalculateYourInsuranceStep.Confirmation ? (
             <NextStepButton client:load nextStep={Number(step) + 1} />
-          ) : step === CalculateYourInsuranceStep.Confirmation ? (
-            <DownloadReportButton client:only="react" />
           ) : (
             <></>
           )
